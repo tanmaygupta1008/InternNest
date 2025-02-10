@@ -1,0 +1,15 @@
+<!-- yourapp/templates/employer_home.html -->
+{% extends 'base.html' %}
+{% block title %}Employer Home{% endblock %}
+{% block content %}
+  <h2>Welcome, {{ user.first_name }}</h2>
+  <p>This is your employer dashboard. Here you can manage your job postings and view applications.</p>
+  <h3>Your Job Postings:</h3>
+  <ul>
+    {% for job in opportunities %}
+      <li>{{ job.title }} - Posted on {{ job.posted_at|date:"M d, Y" }}</li>
+    {% empty %}
+      <li>You have not posted any jobs yet.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

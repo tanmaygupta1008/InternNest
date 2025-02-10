@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Internship Portal</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { width: 80%; margin: auto; padding: 20px; }
+        .job-card { border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Internships & Jobs</h1>
+        {% for job in jobs %}
+            <div class="job-card">
+                <h2>{{ job.title }}</h2>
+                <p><b>Category:</b> {{ job.category }}</p>
+                <p><b>Location:</b> {{ job.location }}</p>
+                <p><b>Deadline:</b> {{ job.deadline }}</p>
+                <a href="{{ job.google_form_link }}" target="_blank">Apply Here</a>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

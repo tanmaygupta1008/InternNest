@@ -1,0 +1,53 @@
+<!-- yourapp/templates/opportunity_detail.html -->
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Opportunity Details{% endblock %}
+{% block content %}
+  <h2>{{ opportunity.title }}</h2>
+  <p><strong>Employer:</strong> {{ opportunity.employer.company_name }}</p>
+  <p><strong>Location:</strong> {{ opportunity.location }}</p>
+  <p><strong>Opportunity Type:</strong> {{ opportunity.opportunity_type|title }}</p>
+  
+  {% if opportunity.salary_range %}
+    <p><strong>Salary Range:</strong> {{ opportunity.salary_range }}</p>
+  {% elif opportunity.stipend %}
+    <p><strong>Stipend:</strong> {{ opportunity.stipend }}</p>
+  {% endif %}
+  
+  {% if opportunity.duration %}
+    <p><strong>Duration:</strong> {{ opportunity.duration }}</p>
+  {% endif %}
+  
+  {% if opportunity.start_date %}
+    <p><strong>Start Date:</strong> {{ opportunity.start_date|date:"d F, Y" }}</p>
+  {% endif %}
+  
+  {% if opportunity.application_deadline %}
+    <p><strong>Application Deadline:</strong> {{ opportunity.application_deadline|date:"d F, Y" }}</p>
+  {% endif %}
+  
+  {% if opportunity.category %}
+    <p><strong>Category:</strong> {{ opportunity.category.name }}</p>
+  {% endif %}
+  
+  <p><strong>Skills Required:</strong>
+    {% for skill in opportunity.skills_required.all %}
+      {{ skill.name }}{% if not forloop.last %}, {% endif %}
+    {% empty %}
+      No skills listed.
+    {% endfor %}
+  </p>
+  
+  {% if opportunity.experience_required %}
+    <p><strong>Experience Required:</strong> {{ opportunity.experience_required }}</p>
+  {% endif %}
+  
+  <p><strong>Description:</strong></p>
+  <p>{{ opportunity.description }}</p>
+  
+  <p><strong>Posted at:</strong> {{ opportunity.posted_at|date:"d F, Y H:i" }}</p>
+  <p><strong>Last Updated:</strong> {{ opportunity.updated_at|date:"d F, Y H:i" }}</p>
+  
+  <!-- Optionally, include a link to go back to the job listings -->
+  <p><a href="{% url 'job_seeking' %}">Back to Listings</a></p>
+{% endblock %}

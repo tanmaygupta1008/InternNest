@@ -1,0 +1,11 @@
+<!-- yourapp/templates/candidate_profile.html -->
+{% extends 'base.html' %}
+{% block title %}Candidate Profile{% endblock %}
+{% block content %}
+  <h2>Your Profile</h2>
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save Profile</button>
+  </form>
+{% endblock %}

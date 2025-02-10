@@ -1,0 +1,575 @@
+<!-- yourapp/templates/candidate_home.html -->
+{% comment %} {% extends 'base.html' %}
+{% block title %}Candidate Home{% endblock %}
+{% block content %}
+  <h2>Welcome, {{ user.first_name }}</h2>
+  <p>This is your candidate dashboard. Here you can view your applications and saved jobs.</p>
+  <!-- You can add more dashboard widgets here -->
+{% endblock %} {% endcomment %}
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Candidate Home Page</title>
+
+    <link rel="stylesheet" href="{% static 'styless1.css' %}" />
+  </head>
+  <body>
+    <div id="webcrumbs">
+      <div class="w-[1280px] mx-auto">
+        
+        <nav
+          class="bg-white shadow-lg sticky top-0 z-50 transition-all duration-300 hover:shadow-xl"
+        >
+          <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+              <h1 class="text-2xl font-semibold relative group">
+                InternNext
+                <svg
+                  class="absolute -right-8 -top-4 text-violet-400 w-8 h-8 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3 17C6.5 14.5 9.5 14.5 13 17M12 6.5C11 6.5 10 7 9.5 8M3 8.5C6.5 11 9.5 11 13 8.5"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  ></path>
+                </svg>
+              </h1>
+              <div class="flex items-center space-x-6">
+                <details class="relative group">
+                  <summary
+                    class="hover:text-violet-600 cursor-pointer list-none flex items-center"
+                  >
+                    Categories
+                    <svg
+                      class="w-4 h-4 ml-1 transition-transform duration-200 group-open:rotate-180"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 9l-7 7-7-7"
+                      ></path>
+                    </svg>
+                  </summary>
+                  <div
+                    class="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50"
+                  >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Software Development</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Data Science</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Marketing</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Design</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Business</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Engineering</a
+                    >
+                  </div>
+                </details>
+                <a
+                    class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
+                    href="{% url 'candidate_home' %}"
+                    >Home</a
+                  >
+                <a
+                  class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
+                  href="{% url 'job_seeking' %}"
+                  >Jobs</a
+                >
+                <a
+                  class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
+                  href={% url 'candidate_profile' %}
+                  >Profile</a
+                >
+                <button
+                  class="bg-violet-600 text-white px-4 py-2 rounded-lg hover:bg-violet-700 transform hover:scale-105 transition-all duration-300 hover:shadow-lg relative group"
+                >
+                <a href="{% url 'logout' %}">Logout</a>
+                  <svg
+                    class="absolute -right-4 -bottom-3 text-violet-400 w-6 h-6 transition-transform duration-300 group-hover:rotate-12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M19 9C19 11 17.5 14.5 12 14.5C6.5 14.5 5 11 5 9"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </nav>
+        <main class="container mx-auto px-6 py-12">
+          <section class="relative mb-24">
+            <div class="grid grid-cols-2 gap-12 items-center">
+              <div class="space-y-8">
+                <h2
+                  class="text-6xl font-bold bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent"
+                >
+                  Hey  <i>{{ user.first_name }}</i> , Launch Your Career with InternNext
+                </h2>
+                <p class="text-xl text-gray-600">
+                  Connect with top companies and find the perfect internship
+                  opportunity to kickstart your professional journey.
+                </p>
+                <div class="flex space-x-4">
+                  <button
+                    class="bg-violet-600 text-white px-8 py-4 rounded-xl hover:bg-violet-700 transform hover:scale-105 transition-all duration-300 hover:shadow-xl"
+                  >
+                    <a href="{% url 'job_seeking' %}">Find Internships</a>
+                  </button>
+                  <button
+                    class="border-2 border-violet-600 px-8 py-4 rounded-xl hover:bg-violet-50 transform hover:scale-105 transition-all duration-300"
+                  >
+                  <a href="{% url 'job_posting' %}">Post Internships</a>
+                  </button>
+                </div>
+              </div>
+              <div class="h-[500px] relative group">
+                <iframe
+                  class="w-full h-full rounded-2xl shadow-2xl transform transition-all duration-500 group-hover:scale-105 group-hover:rotate-2"
+                  src="https://webcrumbs.cloud/placeholder"
+                  frameborder="0"
+                ></iframe>
+              </div>
+            </div>
+          </section>
+          <section class="grid grid-cols-3 gap-8 mb-24">
+            <div
+              class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] group"
+            >
+              <div
+                class="h-12 w-12 bg-violet-100 rounded-xl mb-6 p-3 group-hover:bg-violet-200 transition-all duration-300"
+              >
+                <svg
+                  class="text-violet-600"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12 3L14 9L20 9L15 13L17 19L12 15L7 19L9 13L4 9L10 9L12 3Z"
+                    stroke="currentColor"
+                    fill="currentColor"
+                  ></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold mb-4">Find Opportunities</h3>
+              <p class="text-gray-600">
+                Browse through thousands of internship opportunities from
+                leading companies worldwide.
+              </p>
+            </div>
+            <div
+              class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] group"
+            >
+              <div
+                class="h-12 w-12 bg-violet-100 rounded-xl mb-6 p-3 group-hover:bg-violet-200 transition-all duration-300"
+              >
+                <svg
+                  class="text-violet-600"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12 21L10 15L4 15L9 11L7 5L12 9L17 5L15 11L20 15L14 15L12 21Z"
+                    stroke="currentColor"
+                    fill="currentColor"
+                  ></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold mb-4">Easy Application</h3>
+              <p class="text-gray-600">
+                Apply with just one click and track your application status in
+                real-time.
+              </p>
+            </div>
+            <div
+              class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] group"
+            >
+              <div
+                class="h-12 w-12 bg-violet-100 rounded-xl mb-6 p-3 group-hover:bg-violet-200 transition-all duration-300"
+              >
+                <svg
+                  class="text-violet-600"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3 17C6.5 14.5 9.5 14.5 13 17M12 6.5C11 6.5 10 7 9.5 8M3 8.5C6.5 11 9.5 11 13 8.5"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  ></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold mb-4">Career Growth</h3>
+              <p class="text-gray-600">
+                Get mentorship and guidance to help you grow in your
+                professional career.
+              </p>
+            </div>
+          </section>
+          <section class="mb-24">
+            <h2 class="text-3xl font-bold mb-12 text-center">
+              Top Companies Hiring Interns
+            </h2>
+            <div class="overflow-hidden relative">
+              <div class="flex animate-[slide_15s_linear_infinite]">
+                <div class="flex min-w-full justify-between px-8">
+                  <div class="flex min-w-full justify-between gap-16">
+                    <div
+                      class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group flex-1"
+                    >
+                      <div class="flex flex-col items-center">
+                        <i
+                          class="fa-brands fa-google text-4xl text-gray-700 group-hover:text-violet-600 transition-colors duration-300 mb-4"
+                        ></i>
+                        <p class="font-semibold">Google</p>
+                      </div>
+                    </div>
+                    <div
+                      class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group flex-1"
+                    >
+                      <div class="flex flex-col items-center">
+                        <i
+                          class="fa-brands fa-microsoft text-4xl text-gray-700 group-hover:text-violet-600 transition-colors duration-300 mb-4"
+                        ></i>
+                        <p class="font-semibold">Microsoft</p>
+                      </div>
+                    </div>
+                    <div
+                      class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group flex-1"
+                    >
+                      <div class="flex flex-col items-center">
+                        <i
+                          class="fa-brands fa-apple text-4xl text-gray-700 group-hover:text-violet-600 transition-colors duration-300 mb-4"
+                        ></i>
+                        <p class="font-semibold">Apple</p>
+                      </div>
+                    </div>
+                    <div
+                      class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group flex-1"
+                    >
+                      <div class="flex flex-col items-center">
+                        <i
+                          class="fa-brands fa-amazon text-4xl text-gray-700 group-hover:text-violet-600 transition-colors duration-300 mb-4"
+                        ></i>
+                        <p class="font-semibold">Amazon</p>
+                      </div>
+                    </div>
+                    <div
+                      class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group flex-1"
+                    >
+                      <div class="flex flex-col items-center">
+                        <i
+                          class="fa-brands fa-meta text-4xl text-gray-700 group-hover:text-violet-600 transition-colors duration-300 mb-4"
+                        ></i>
+                        <p class="font-semibold">Meta</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex min-w-full justify-between gap-16">
+                    <div
+                      class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group flex-1"
+                    >
+                      <div class="flex flex-col items-center">
+                        <i
+                          class="fa-brands fa-google text-4xl text-gray-700 group-hover:text-violet-600 transition-colors duration-300 mb-4"
+                        ></i>
+                        <p class="font-semibold">Google</p>
+                      </div>
+                    </div>
+                    <div
+                      class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group flex-1"
+                    >
+                      <div class="flex flex-col items-center">
+                        <i
+                          class="fa-brands fa-microsoft text-4xl text-gray-700 group-hover:text-violet-600 transition-colors duration-300 mb-4"
+                        ></i>
+                        <p class="font-semibold">Microsoft</p>
+                      </div>
+                    </div>
+                    <div
+                      class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group flex-1"
+                    >
+                      <div class="flex flex-col items-center">
+                        <i
+                          class="fa-brands fa-apple text-4xl text-gray-700 group-hover:text-violet-600 transition-colors duration-300 mb-4"
+                        ></i>
+                        <p class="font-semibold">Apple</p>
+                      </div>
+                    </div>
+                    <div
+                      class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group flex-1"
+                    >
+                      <div class="flex flex-col items-center">
+                        <i
+                          class="fa-brands fa-amazon text-4xl text-gray-700 group-hover:text-violet-600 transition-colors duration-300 mb-4"
+                        ></i>
+                        <p class="font-semibold">Amazon</p>
+                      </div>
+                    </div>
+                    <div
+                      class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group flex-1"
+                    >
+                      <div class="flex flex-col items-center">
+                        <i
+                          class="fa-brands fa-meta text-4xl text-gray-700 group-hover:text-violet-600 transition-colors duration-300 mb-4"
+                        ></i>
+                        <p class="font-semibold">Meta</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <style>
+              @keyframes slide {
+                0% {
+                  transform: translateX(0);
+                }
+                100% {
+                  transform: translateX(-100%);
+                }
+              }
+            </style>
+          </section>
+          <section class="grid grid-cols-3 gap-8 mb-24">
+            <div
+              class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] group"
+            >
+              <div class="text-center">
+                <h3
+                  class="text-4xl font-bold bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent mb-2"
+                >
+                  500+
+                </h3>
+                <p class="text-gray-600 font-medium">Companies Hiring</p>
+              </div>
+            </div>
+            <div
+              class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] group"
+            >
+              <div class="text-center">
+                <h3
+                  class="text-4xl font-bold bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent mb-2"
+                >
+                  200+
+                </h3>
+                <p class="text-gray-600 font-medium">New Openings Daily</p>
+              </div>
+            </div>
+            <div
+              class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] group"
+            >
+              <div class="text-center">
+                <h3
+                  class="text-4xl font-bold bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent mb-2"
+                >
+                  10K+
+                </h3>
+                <p class="text-gray-600 font-medium">Active Students</p>
+              </div>
+            </div>
+          </section>
+          <section class="mb-24">
+            <h2 class="text-3xl font-bold mb-12 text-center">
+              What Our Users Say
+            </h2>
+            <div class="grid grid-cols-3 gap-8">
+              <div
+                class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] group"
+              >
+                <div class="flex items-center mb-4">
+                  <div class="h-12 w-12 bg-violet-100 rounded-full"></div>
+                  <div class="ml-4">
+                    <h4 class="font-semibold">Sarah Johnson</h4>
+                    <p class="text-sm text-gray-600">
+                      Software Engineering Intern
+                    </p>
+                  </div>
+                </div>
+                <p class="text-gray-600">
+                  &quot;InternHub helped me land my dream internship at Google.
+                  The platform is incredibly user-friendly and the application
+                  process was seamless.&quot;
+                </p>
+                <div class="flex text-violet-600 mt-4">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                </div>
+              </div>
+              <div
+                class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] group"
+              >
+                <div class="flex items-center mb-4">
+                  <div class="h-12 w-12 bg-violet-100 rounded-full"></div>
+                  <div class="ml-4">
+                    <h4 class="font-semibold">Michael Chen</h4>
+                    <p class="text-sm text-gray-600">Marketing Intern</p>
+                  </div>
+                </div>
+                <p class="text-gray-600">
+                  &quot;The variety of opportunities available on InternHub is
+                  amazing. I found exactly what I was looking for and gained
+                  valuable experience.&quot;
+                </p>
+                <div class="flex text-violet-600 mt-4">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                </div>
+              </div>
+              <div
+                class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] group"
+              >
+                <div class="flex items-center mb-4">
+                  <div class="h-12 w-12 bg-violet-100 rounded-full"></div>
+                  <div class="ml-4">
+                    <h4 class="font-semibold">Emily Rodriguez</h4>
+                    <p class="text-sm text-gray-600">Data Science Intern</p>
+                  </div>
+                </div>
+                <p class="text-gray-600">
+                  &quot;The mentorship program on InternHub is exceptional. I
+                  received guidance that helped shape my career path
+                  significantly.&quot;
+                </p>
+                <div class="flex text-violet-600 mt-4">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                </div>
+              </div>
+            </div>
+          </section>
+          <footer class="bg-white rounded-xl shadow-lg p-12">
+            <div class="grid grid-cols-4 gap-8 mb-8">
+              <div>
+                <h3 class="font-bold text-xl mb-4">Contact Us</h3>
+                <div class="space-y-2">
+                  <p class="flex items-center text-gray-600">
+                    <i class="fa-solid fa-location-dot mr-2"></i> 123 Tech
+                    Street, San Francisco, CA
+                  </p>
+                  <p class="flex items-center text-gray-600">
+                    <i class="fa-solid fa-phone mr-2"></i> +1 (555) 123-4567
+                  </p>
+                  <p class="flex items-center text-gray-600">
+                    <i class="fa-solid fa-envelope mr-2"></i>
+                    contact@internhub.com
+                  </p>
+                </div>
+              </div>
+              <div>
+                <h3 class="font-bold text-xl mb-4">Quick Links</h3>
+                <ul class="space-y-2">
+                  <li
+                    class="text-gray-600 hover:text-violet-600 transition-colors duration-300 cursor-pointer"
+                  >
+                    About Us
+                  </li>
+                  <li
+                    class="text-gray-600 hover:text-violet-600 transition-colors duration-300 cursor-pointer"
+                  >
+                    Find Internships
+                  </li>
+                  <li
+                    class="text-gray-600 hover:text-violet-600 transition-colors duration-300 cursor-pointer"
+                  >
+                    Post Internship
+                  </li>
+                  <li
+                    class="text-gray-600 hover:text-violet-600 transition-colors duration-300 cursor-pointer"
+                  >
+                    Blog
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h3 class="font-bold text-xl mb-4">Follow Us</h3>
+                <div class="flex space-x-4">
+                  <i
+                    class="fa-brands fa-facebook text-2xl text-gray-600 hover:text-violet-600 transition-colors duration-300 cursor-pointer"
+                  ></i>
+                  <i
+                    class="fa-brands fa-twitter text-2xl text-gray-600 hover:text-violet-600 transition-colors duration-300 cursor-pointer"
+                  ></i>
+                  <i
+                    class="fa-brands fa-linkedin text-2xl text-gray-600 hover:text-violet-600 transition-colors duration-300 cursor-pointer"
+                  ></i>
+                  <i
+                    class="fa-brands fa-instagram text-2xl text-gray-600 hover:text-violet-600 transition-colors duration-300 cursor-pointer"
+                  ></i>
+                </div>
+              </div>
+              <div>
+                <h3 class="font-bold text-xl mb-4">Newsletter</h3>
+                <div class="relative">
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    class="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-violet-600"
+                  />
+                  <button
+                    class="absolute right-2 top-1/2 -translate-y-1/2 bg-violet-600 text-white px-4 py-1 rounded-lg hover:bg-violet-700 transition-colors duration-300"
+                  >
+                    Subscribe
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="border-t pt-8 text-center text-gray-600">
+              <p>© 2024 InternHub. All rights reserved.</p>
+            </div>
+          </footer>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
