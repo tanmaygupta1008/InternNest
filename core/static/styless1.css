@@ -38,6 +38,10 @@ html {
 body {
   line-height: inherit;
   margin: 0;
+  background-image: url('your-image.jpg');
+  background-size: cover; /* Ensures the image covers the entire body */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  background-position: center; /* Centers the image */
 }
 hr {
   border-top-width: 1px;

@@ -270,6 +270,16 @@ def candidate_profile(request):
         form = CandidateProfileForm(instance=profile)
     return render(request, 'candidate_profile.html', {'form': form})
 
+@login_required
+def candidate_prof(request):
+    if request.user.user_type != 'candidate':
+        return redirect('login')
+    try:
+        profile = request.user.candidate_profile
+    except CandidateProfile.DoesNotExist:
+        profile = None
+    candidate_prof=CandidateProfile.objects.all()
+    return render(request, 'candidate_prof.html', {'candidate_prof': candidate_prof})
 
 @login_required
 def job_seeking(request):

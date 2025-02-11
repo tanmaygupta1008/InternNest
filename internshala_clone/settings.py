@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -151,3 +152,6 @@ EMAIL_HOST_PASSWORD = "rerjkjymjsgsavpo"  # Use the App Password here
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'  # or any home/dashboard page
 LOGOUT_REDIRECT_URL = '/login/'  # Ensure logout goes to the right place
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

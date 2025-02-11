@@ -218,7 +218,7 @@ class CandidateProfile(models.Model):
     # You might want to store skills as JSON or a comma‐separated list. Alternatively, see the ManyToMany below.
     skills = models.TextField(blank=True, null=True)
     profile_summary = models.TextField(blank=True, null=True)
-    profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='', blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
