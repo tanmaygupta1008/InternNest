@@ -247,7 +247,8 @@ def candidate_home(request):
     if request.user.user_type != 'candidate':
         return redirect('login')
     # For demonstration, you could load candidate applications, saved opportunities, etc.
-    return render(request, 'candidate_home.html')
+    opportunities = Opportunity.objects.all()
+    return render(request, 'candidate_home.html', {'opportunities': opportunities})
 
 
 @login_required
