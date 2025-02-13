@@ -8,6 +8,7 @@
     <title>Home Page</title>
 
     <link rel="stylesheet" href="{% static 'styless1.css' %}" />
+    <link rel="stylesheet" href="{% static 'company_details.css' %}" />
   </head>
   <body>
     <div id="webcrumbs">
@@ -233,6 +234,208 @@
                 professional career.
               </p>
             </div>
+          </section>
+          <section class="mb-12">
+            <div
+              class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300"
+            >
+              <div class="flex items-center justify-between mb-8">
+                <h2
+                  class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+                >
+                  Companies Directory
+                </h2>
+                <div class="relative w-96">
+                  <span
+                  class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                  >
+                  search
+                  </span>
+                  <input
+                  type="text"
+                  id="companySearch"
+                  placeholder="Search companies or titles..."
+                  class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 outline-none transition-all duration-300"
+                  onkeyup="searchCompanies()"
+                  />
+                </div>
+                </div>
+
+                <div class="relative">
+                <div class="flex overflow-hidden" id="slider">
+                  <div
+                  class="abcd flex min-w-full justify-between gap-8 transition-transform duration-500"
+                  >
+                  {% with total_count=opportunities|length %}
+                   {% for opportunity in opportunities %} 
+                   {% with count=forloop.counter %}
+                  {% if forloop.last %}
+                  {% if count <= 2 %}
+                  <script>
+                  document.querySelector('.abcd').style.justifyContent = 'center';
+                  console.log("less than 2");
+                  </script>
+                  {% endif %}
+                  {% endif %}
+                  <div
+                  class="abc company-card {{ opportunity.employer.company_name|lower }} bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 hover:scale-[1.02] cursor-pointer border border-transparent hover:border-purple-100"
+                  >
+                  <div class="flex items-center gap-4 mb-4">
+                  <div
+                    class="w-16 h-16 bg-white rounded-lg shadow-sm flex items-center justify-center"
+                  >
+                    <span
+                    class="material-symbols-outlined text-3xl text-blue-600"
+                    >apartment</span
+                    >
+                  </div>
+                  <div>
+                    <h3 class="text-xl font-bold company-name">
+                    {{ opportunity.employer.company_name }}
+                    </h3>
+                    <p class="text-gray-600 job-title">{{ opportunity.title }}</p>
+                  </div>
+                  </div>
+                  <p class="text-gray-600 mb-6 line-clamp-2">
+                  {{ opportunity.description }}
+                  </p>
+                  <div class="flex gap-2 mb-6 flex-wrap">
+                  <span
+                    class="px-4 py-1.5 bg-blue-100 text-blue-600 rounded-full text-sm font-medium"
+                    >Enterprise</span
+                  >
+                  <span
+                    class="px-4 py-1.5 bg-purple-100 text-purple-600 rounded-full text-sm font-medium"
+                    >500+ Employees</span
+                  >
+                  </div>
+                  <button
+                  class="w-full py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-medium hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
+                  >
+                  <a href="{% url 'opportunity_detail' opportunity.id %}">
+                    View Details</a
+                  >
+                  </button>
+                  </div>
+                  {% endwith %} 
+                  {% endfor %}
+                  {% endwith %}
+                  </div>
+
+            <script>
+            function searchCompanies() {
+              let input = document.getElementById('companySearch').value.toLowerCase();
+              let cards = document.getElementsByClassName('company-card');
+              
+              for (let card of cards) {
+              let companyName = card.getElementsByClassName('company-name')[0].textContent.toLowerCase();
+              let jobTitle = card.getElementsByClassName('job-title')[0].textContent.toLowerCase();
+              if (companyName.includes(input) || jobTitle.includes(input)) {
+                card.style.display = "block";
+              } else {
+                card.style.display = "none";
+              }
+              }
+            }
+        </script>
+                </div>
+                <div class="absolute top-1/2 -translate-y-1/2 left-0">
+                  <button
+                    id="prev"
+                    class="bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all duration-300"
+                  >
+                    <span class="material-symbols-outlined">chevron_left</span>
+                  </button>
+                </div>
+                <div class="absolute top-1/2 -translate-y-1/2 right-0">
+                  <button
+                    id="next"
+                    class="bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-all duration-300"
+                  >
+                    <span class="material-symbols-outlined">chevron_right</span>
+                  </button>
+                </div>
+                <div class="absolute bottom-0 left-0 right-0 p-4">
+                  <input
+                    type="range"
+                    id="sliderRange"
+                    class="w-full h-4 bg-gray-200 rounded-full appearance-none cursor-pointer"
+                    min="0"
+                    max="100"
+                    value="0"
+                  />
+                </div>
+              </div>
+            </div>
+            <style>
+              /* Custom styling for the range input */
+              input[type="range"] {
+                -webkit-appearance: none;
+                appearance: none;
+              }
+
+              input[type="range"]::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 30px;
+                height: 10px;
+                background: #7c3aed;
+                border-radius: 3px;
+                cursor: pointer;
+              }
+
+              input[type="range"]::-webkit-slider-runnable-track {
+                height: 8px;
+                background: #e5e7eb;
+                border-radius: 4px;
+              }
+              @keyframes slide {
+                0% {
+                  transform: translateX(0);
+                }
+                100% {
+                  transform: translateX(-100%);
+                }
+              }
+            </style>
+            <script>
+              const slider = document.getElementById("slider");
+              const next = document.getElementById("next");
+              const prev = document.getElementById("prev");
+              const sliderRange = document.getElementById("sliderRange");
+              const scrollAmount = 300;
+
+              prev.addEventListener("click", () => {
+                slider.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+                updateSliderRange();
+              });
+
+              next.addEventListener("click", () => {
+                slider.scrollBy({ left: scrollAmount, behavior: "smooth" });
+                updateSliderRange();
+              });
+
+              slider.addEventListener("scroll", updateSliderRange);
+
+              sliderRange.addEventListener("input", () => {
+                const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+                slider.scrollLeft = (sliderRange.value / 100) * maxScrollLeft;
+              });
+
+              function updateSliderRange() {
+                const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+                sliderRange.value = (slider.scrollLeft / maxScrollLeft) * 100;
+              }
+              console.log("{{ count }}");
+              {% if count <= 3 %}
+              console.log("less than 2");
+              <style>
+                .abcd{
+                  justify-content: center;
+                }
+              </style>
+              {% endif %}
+            </script>
           </section>
           <section class="mb-24">
             <h2 class="text-3xl font-bold mb-12 text-center">

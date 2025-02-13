@@ -442,15 +442,7 @@ endblock %} {% block content %}
                 const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
                 sliderRange.value = (slider.scrollLeft / maxScrollLeft) * 100;
               }
-              console.log("{{ count }}");
-              {% if count <= 3 %}
-              console.log("less than 2");
-              <style>
-                .abcd{
-                  justify-content: center;
-                }
-              </style>
-              {% endif %}
+              
             </script>
           </section>
           <section class="mb-24">

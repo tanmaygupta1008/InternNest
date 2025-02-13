@@ -100,7 +100,8 @@ from .models import CustomUser, CandidateProfile, EmployerProfile, Opportunity
 # Registration View
 # ----------------------------
 def home(request):
-    return render(request, 'index11.html')
+    opportunities = Opportunity.objects.all()
+    return render(request, 'index11.html', {'opportunities': opportunities})
 
 def register(request):
     """
@@ -351,6 +352,7 @@ def job_posting(request):
         form = OpportunityForm()
     return render(request, 'job_posting.html', {'form': form})
 
+@login_required
 def opportunity_detail(request, opportunity_id):
     opportunity = get_object_or_404(Opportunity, id=opportunity_id)
     return render(request, 'opportunity_detail.html', {'opportunity': opportunity})
