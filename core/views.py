@@ -184,38 +184,47 @@ def register(request):
 #                     return render(request, "login.html", {"otp_sent": True, "email": email, "user_type": user_type})
 
 #     return render(request, "login.html")
-
 def user_login(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
         user_type = request.POST.get('user_type')
 
-        # If "Get OTP" button is clicked
-        if 'get_otp' in request.POST:
+        # Handle "Get OTP" and "Resend OTP" buttons
+        if 'get_otp' in request.POST or 'resend_otp' in request.POST:
+            print("Resend OTP button clicked")
+            # Use session data for Resend OTP if available
+            email = request.session.get('email', email)
+            password = request.session.get('password', password)
+            user_type = request.session.get('user_type', user_type)
+
             user = authenticate(request, email=email, password=password)
             if user is not None and user.user_type == user_type:
-                request.session['email'] = email  # Store email in session
-                request.session['password'] = password  # Store password in session
+                # Store session data
+                request.session['email'] = email
+                request.session['password'] = password
                 request.session['user_type'] = user_type
 
-                # Generate OTP using django-otp
+                # Generate OTP
                 device = user.emaildevice_set.first()
                 if device:
                     device.generate_challenge()
-                    messages.success(request, "OTP has been sent to your email.")
-                    return redirect('login')  # Redirect back to the same page
+                    if 'resend_otp' in request.POST:
+                        messages.success(request, "OTP has been resent to your email.")
+                    else:
+                        messages.success(request, "OTP has been sent to your email.")
+                    return redirect('login')
 
                 messages.error(request, "OTP device not found.")
             else:
                 messages.error(request, "Invalid credentials.")
             return redirect('login')
 
-        # If "Verify OTP & Login" button is clicked
+        # Handle "Verify OTP" button
         elif 'verify_otp' in request.POST:
             otp = request.POST.get('otp')
             email = request.session.get('email')  # Retrieve email from session
-            password = request.session.get('password')  # Retrieve password from session
+            password = request.session.pop('password', None)  # Remove password from session
             user_type = request.session.get('user_type')
 
             user = authenticate(request, email=email, password=password)
@@ -232,6 +241,9 @@ def user_login(request):
             return redirect('login')
 
     return render(request, 'login.html')
+
+
+
 
 
 

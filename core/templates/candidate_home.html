@@ -325,13 +325,10 @@ endblock %} {% block content %}
                     >500+ Employees</span
                   >
                   </div>
-                  <button
-                  class="w-full py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-medium hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
-                  >
-                  <a href="{% url 'opportunity_detail' opportunity.id %}">
-                    View Details</a
-                  >
-                  </button>
+                  <a href="{% url 'opportunity_detail' opportunity.id %}"
+                  class="block w-full py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-medium hover:shadow-lg hover:scale-[1.02] transition-all duration-300 text-center">
+                  View Details
+                  </a>
                   </div>
                   {% endwith %} 
                   {% endfor %}
