@@ -1,5 +1,3 @@
-<!-- yourapp/templates/job_seeking.html -->
-<!-- yourapp/templates/job_seeking.html -->
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}Job Listings{% endblock %}
@@ -7,125 +5,75 @@
   <link rel="stylesheet" href="{% static 'styles.css' %}">
 {% endblock %}
 {% block content %}
-  <h2>Available Jobs and Internships</h2>
-  <div class="all_cards">
-  {% for opportunity in opportunities %}
-    <div class="card-design-1">
-      <!-- (Optional) Image or icon placeholder -->
-      <div class="card-design-1-child bg-[#F4EBFF] ">
-        <!-- You might include a logo or icon here -->
-      </div>
-      
-      <!-- Salary / Stipend -->
-      <div class="hr">
-        <span>
-          {% if opportunity.salary_range %}
-            {{ opportunity.salary_range }}
-          {% elif opportunity.stipend %}
-            {{ opportunity.stipend }}
-          {% else %}
-            N/A
-          {% endif %}
-        </span>
-        <span class="hr1">/month</span>
-      </div>
-      
-      <!-- Location -->
-      <div class="mumbai-india">
-        {{ opportunity.location }}
-      </div>
-      
-      <!-- (Optional) Additional design element -->
-      <div class="card-design-1-item">
-        <!-- You can add extra design elements here -->
-      </div>
-      
-      <!-- Start Date (or any date you want to show) -->
-      <div class="rectangle-parent">
-        <div class="group-child">
-          <!-- Design element -->
+  <h2 class="heading">Available Jobs and Internships</h2>
+  <div class="all-cards">
+    {% for opportunity in opportunities %}
+      <div class="card">
+        
+        <div class="card-body">
+          <div class="card-header">
+            <p class="start-date">
+              {% if opportunity.start_date %}
+                {{ opportunity.start_date|date:"d F, Y" }}
+              {% else %}
+                Not Specified
+              {% endif %}
+            </p>
+            <div class="company-logo">
+              <img src="{% static 'images/default_job.png' %}" alt="Company Logo">
+            </div>
+          </div>
+          
+          <div class="company-info">
+            <p class="company-name">{{ opportunity.employer.company_name }}</p>
+            <h3 class="job-title">{{ opportunity.title }}</h3>
+          </div>
+
+          <div class="tag-list">
+            <p class="skills tag">
+              {% for skill in opportunity.skills_required.all %}
+                {{ skill.name }}{% if not forloop.last %}, {% endif %}
+              {% empty %}
+                No skills listed
+              {% endfor %}
+            </p>
+
+            <p class="job-type tag">{{ opportunity.opportunity_type|title }}</p>
+
+            <p class="experience tag">{{ opportunity.experience_required }} Year Experience</p>
+
+            <p class="work-arrangement tag">
+              {% if opportunity.opportunity_type == "job" %}
+                Full Time
+              {% else %}
+                Part Time
+              {% endif %}
+            </p>
+          </div>
         </div>
-        <div class="part-time">
-          {% if opportunity.start_date %}
-            {{ opportunity.start_date|date:"d F, Y" }}
-          {% else %}
-            Not Specified
-          {% endif %}
-        </div>
-      </div>
-      
-      <!-- Opportunity Type -->
-      <div class="rectangle-group">
-        <div class="group-item">
-          <!-- Design element -->
-        </div>
-        <div class="part-time">
-          {{ opportunity.opportunity_type|title }}
-        </div>
-      </div>
-      
-      <!-- Experience Required -->
-      <div class="rectangle-container">
-        <div class="group-inner">
-          <!-- Design element -->
-        </div>
-        <div class="part-time">
-          {{ opportunity.experience_required }}
-        </div>
-      </div>
-      
-      <!-- Skills (example: comma separated list) -->
-      <div class="group-div">
-        <div class="rectangle-div">
-          <!-- Design element -->
-        </div>
-        <div class="project-work">
-          {% for skill in opportunity.skills_required.all %}
-            {{ skill.name }}{% if not forloop.last %}, {% endif %}
-          {% empty %}
-            No skills listed
-          {% endfor %}
+
+        <div class="card-footer">
+          <div class="card-footer-container">
+            <p class="salary">
+              ₹
+              {% if opportunity.salary_range %}
+              {{ opportunity.salary_range }}
+              <span>/month</span>
+              {% elif opportunity.stipend %}
+              {{ opportunity.stipend }}
+              <span>/month</span>
+              {% else %}
+              N/A
+              {% endif %}
+            </p>
+            <p class="location">{{ opportunity.location }}</p>
+          </div>
+
+          <a href="{% url 'opportunity_detail' opportunity.id %}" class="details-btn">Details</a>
         </div>
       </div>
-      
-      <!-- Work Arrangement (example placeholder text; customize as needed) -->
-      <div class="rectangle-parent1">
-        <div class="group-child1">
-          <!-- Design element -->
-        </div>
-        <div class="project-work">
-          {% if opportunity.opportunity_type == "job" %}
-            Full Time
-          {% else %}
-            Part Time
-          {% endif %}
-        </div>
-      </div>
-      
-      <!-- Employer Company Name -->
-      <div class="amazon">
-        {{ opportunity.employer.company_name }}
-      </div>
-      
-      <!-- Opportunity Title -->
-      <div class="senior-uiux-designer">
-        {{ opportunity.title }}
-      </div>
-      
-      <!-- Image (using a static placeholder; update as needed) -->
-      <img class="image-1-icon" alt="Opportunity Image" src="{% static 'images/default_job.png' %}">
-      
-      <!-- (Optional) Additional design container -->
-      <div class="card-design-1-inner">
-        <!-- Additional design element -->
-      </div>
-      
-      <!-- Details button linking to the detail view page -->
-      <a href="{% url 'opportunity_detail' opportunity.id %}" class="details">Details</a>
-    </div>
-  
-  {% empty %}
-    <p>No opportunities available at this time.</p>
-  {% endfor %}
+    {% empty %}
+      <p>No opportunities available at this time.</p>
+    {% endfor %}
   </div>
 {% endblock %}

@@ -1,199 +1,153 @@
-.card-design-1-child {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    border-radius: 25px;
-    background-color: rgb(234, 218, 254);
-    width: 450px;
-    height: 430px;
-}
-.hr1 {
-    font-size: 20px;
-}
-.hr {
-    position: absolute;
-    top: 365px;
-    left: 18px;
-    font-weight: 500;
-    font-size: 24px;
-}
-.mumbai-india {
-    position: absolute;
-    top: 394px;
-    left: 18px;
-    font-weight: 500;
-    color: #848484;
-}
-.card-design-1-item  {
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.25);
-    border-radius: 18px;
-    /* background-color: #ffe1cb; */
-    background-color: #f6f6f6;
-    width: 434px;
-    height: 342px;
-}
-.group-child {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    border-radius: 18.5px;
-    background-color: rgb(234, 218, 254);
-    border: 1px solid #8d8d8d;
-    box-sizing: border-box;
-    width: 150px;
-    height: 36px;
-}
-.rectangle-parent {
-    position: absolute;
-    top: 23px;
-    left: 18px;
-    width: 150px;
-    height: 36px;
-}
-.group-item {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    border-radius: 18.5px;
-    border: 1px solid #8d8d8d;
-    box-sizing: border-box;
-    width: 90px;
-    height: 36px;
-    background-color: rgb(234, 218, 254);
-}
-.part-time {
-    position: absolute;
-    top: 9px;
-    left: 10px;
-    font-weight: 500;
-
-}
-.rectangle-group {
-    position: absolute;
-    top: 213px;
-    left: 18px;
-    width: 90px;
-    height: 36px;
-
-}
-.group-inner {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    border-radius: 18.5px;
-    border: 1px solid #8d8d8d;
-    box-sizing: border-box;
-    width: 109px;
-    height: 36px;
-    background-color: rgb(234, 218, 254);
-}
-.rectangle-container {
-    position: absolute;
-    top: 213px;
-    left: 119px;
-    width: 109px;
-    height: 36px;
-}
-.rectangle-div {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    border-radius: 18.5px;
-    border: 1px solid #8d8d8d;
-    box-sizing: border-box;
-    width: 115px;
-    height: 36px;
-    background-color: rgb(234, 218, 254);
-}
-.project-work {
-    position: absolute;
-    top: 9px;
-    left: 11px;
-    font-weight: 500;
-    background-color: rgb(234, 218, 254);
-}
-.group-div {
-    position: absolute;
-    top: 213px;
-    left: 239px;
-    width: 115px;
-    height: 36px;
-}
-.group-child1 {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    border-radius: 18.5px;
-    border: 1px solid #8d8d8d;
-    box-sizing: border-box;
-    width: 80px;
-    height: 36px;
-    background-color: rgb(234, 218, 254);
-}
-.rectangle-parent1 {
-    position: absolute;
-    top: 260px;
-    left: 18px;
-    width: 70px;
-    height: 36px;
-}
-.amazon {
-    position: absolute;
-    top: 105px;
-    left: 18px;
-    font-size: 16px;
-    font-weight: 500;
-}
-.senior-uiux-designer {
-    position: absolute;
-    top: 124px;
-    left: 18px;
-    font-size: 32px;
-    font-weight: 500;
-    display: inline-block;
-    width: 203px;
-}
-.image-1-icon {
-    position: absolute;
-    top: 105px;
-    left: 382px;
-    border-radius: 112.5px;
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-}
-.card-design-1-inner {
-    position: absolute;
-    top: 365px;
-    left: 335px;
-    border-radius: 23.5px;
-    background-color: rgb(124 58 237 );
-    width: 97px;
-    height: 47px;
-}
-.details {
-    position: absolute;
-    top: 380px;
-    left: 357px;
-    color: #fff;
-}
-.card-design-1 {
-    width: 100%;
-    position: relative;
-    height: 430px;
-    text-align: left;
-    font-size: 15px;
-    color: #000;
-    font-family: Inter;
+.heading {
+  text-align: center;
+  font-size: 32px;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
-.all_cards {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 50px;
-    margin-left: 50px;
-    margin-right: 50px;
+/* Container for All Job Cards */
+.all-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Job Card */
+.card {
+  background: white;
+  border-radius: 30px;
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.25);
+  max-width: 400px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: white;
+}
+
+.card-body {
+  background-color: #7b3aec;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+/* Card Header */
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding-bottom: 15px;
+}
+
+.company-logo img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: white;
+}
+
+.company-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.company-name {
+  font-size: 14px;
+}
+
+.job-title {
+  font-size: 24px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* Card Body */
+.card-body p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+/* Job Details */
+.salary {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.salary span {
+  font-size: 18px;
+}
+
+.location {
+  font-size: 18px;
+  text-transform: capitalize;
+}
+
+.job-type,
+.experience,
+.skills,
+.work-arrangement {
+  font-size: 14px;
+}
+
+.start-date {
+  font-size: 14px;
+  background-color: white;
+  color: black;
+  font-weight: bold;
+  padding: 10px 15px;
+  border-radius: 30px;
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.25);
+}
+
+/* Card Footer */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  align-items: center;
+}
+
+.card-footer-container {
+  color: black;
+}
+
+.details-btn {
+  background: #7c3aed;
+  padding: 8px 15px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.details-btn:hover {
+  background: #5a2cc8;
+}
+
+/* TAG LIST */
+.tag-list {
+  padding-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2px 8px;
+  font-size: 12px;
+  width: 100%;
+}
+
+.tag {
+  text-align: center;
+  background-color: transparent;
+  border: 1px solid white;
+  border-radius: 30px;
+  padding: 6px 9px;
+  white-space: nowrap;
+}
+
+.tag:hover {
+  background-color: #723cce;
+  cursor: default;
 }
