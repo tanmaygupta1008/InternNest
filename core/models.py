@@ -300,23 +300,74 @@ class Opportunity(models.Model):
 # Applications
 ###########################
 
-class Application(models.Model):
-    STATUS_CHOICES = (
+
+class Job(models.Model):
+    employer = models.ForeignKey(EmployerProfile, on_delete=models.CASCADE, related_name='jobs')
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    location = models.CharField(max_length=255)
+    requirements = models.TextField(blank=True, null=True)
+    posted_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.title} at {self.employer.company_name}"
+
+class JobApplication(models.Model):
+    STATUS_CHOICES = [
         ('applied', 'Applied'),
-        ('reviewed', 'Reviewed'),
-        ('interview', 'Interview'),
+        ('under_review', 'Under Review'),
+        ('shortlisted', 'Shortlisted'),
         ('rejected', 'Rejected'),
-        ('accepted', 'Accepted'),
-    )
-    candidate = models.ForeignKey(CandidateProfile, on_delete=models.CASCADE, related_name='applications',default=None)
-    opportunity = models.ForeignKey(Opportunity, on_delete=models.CASCADE, related_name='applications',default=None)
+        ('hired', 'Hired'),
+    ]
+
+    opportunity = models.ForeignKey(Opportunity, on_delete=models.CASCADE, related_name='applications')
+    candidate = models.ForeignKey(CandidateProfile, on_delete=models.CASCADE, related_name='applications')
+    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='applied')
+    applied_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     resume_url = models.URLField(blank=True, null=True)
     cover_letter = models.TextField(blank=True, null=True)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='applied')
-    applied_at = models.DateTimeField(auto_now_add=True)
-    
+
+    def save(self, *args, **kwargs):
+        if self.pk:  # Update existing application
+            previous = JobApplication.objects.get(pk=self.pk)
+            if previous.status != self.status:
+                ApplicationCounter.update_counters(self.opportunity.employer, previous.status, self.status)
+        else:  # New application
+            ApplicationCounter.increment(self.opportunity.employer, 'applied')
+        super().save(*args, **kwargs)
+
+class ApplicationCounter(models.Model):
+    employer = models.OneToOneField(EmployerProfile, on_delete=models.CASCADE, related_name='application_counter')
+    applied = models.PositiveIntegerField(default=0)
+    under_review = models.PositiveIntegerField(default=0)
+    shortlisted = models.PositiveIntegerField(default=0)
+    rejected = models.PositiveIntegerField(default=0)
+    hired = models.PositiveIntegerField(default=0)
+
+    @classmethod
+    def increment(cls, employer, status):
+        counter, _ = cls.objects.get_or_create(employer=employer)
+        setattr(counter, status, getattr(counter, status) + 1)
+        counter.save()
+
+    @classmethod
+    def decrement(cls, employer, status):
+        counter, _ = cls.objects.get_or_create(employer=employer)
+        if getattr(counter, status) > 0:
+            setattr(counter, status, getattr(counter, status) - 1)
+            counter.save()
+
+    @classmethod
+    def update_counters(cls, employer, old_status, new_status):
+        if old_status != new_status:
+            cls.decrement(employer, old_status)
+            cls.increment(employer, new_status)
+
     def __str__(self):
-        return f"{self.candidate.user.email} - {self.opportunity.title}"
+        return f"Application counters for {self.employer.company_name}"
 
 ###########################
 # Saved Opportunities

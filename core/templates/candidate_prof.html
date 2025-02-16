@@ -246,8 +246,8 @@
             {% for edu in opportunity.education %}
             <li class="mb-4">
               <div class="flex justify-between items-center">
-                <p class="font-semibold" style="text-transform: uppercase;">
-                    &nbsp;&nbsp;&nbsp;&nbsp; ⦿&emsp;{{ edu.degree }} at {{ edu.institution }}
+                <p class="a" style="text-transform: uppercase; font-weight: 600; font-size: 1.3rem;">
+                    &nbsp;&nbsp;&nbsp;&nbsp; ⦿&emsp;<strong>{{ edu.degree }}</strong>
                 </p>
                 <button
                   class="bg-indigo-500 text-white px-4 py-1 rounded-full hover:bg-indigo-600 transition-all duration-300"
@@ -305,7 +305,6 @@
           {% endif %}
         </div>
 
-        
         <div class="space-y-6">
           <h2
             class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"
@@ -319,7 +318,7 @@
               <p
                 class="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"
               >
-                12
+                {{ application_status.total_applications }}
               </p>
               <p class="text-gray-600 font-medium">Applications Sent</p>
             </div>
@@ -329,7 +328,7 @@
               <p
                 class="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"
               >
-                5
+                {{ application_status.under_review }}
               </p>
               <p class="text-gray-600 font-medium">Under Review</p>
             </div>
@@ -339,7 +338,7 @@
               <p
                 class="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"
               >
-                3
+                {{ application_status.shortlisted }}
               </p>
               <p class="text-gray-600 font-medium">Shortlisted</p>
             </div>
@@ -352,56 +351,34 @@
             Recent Applications
           </h2>
           <div class="space-y-4">
+            {% for application in recent_applications %}
             <div
               class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300"
             >
               <div class="flex justify-between items-center">
                 <div>
                   <h3 class="text-xl font-semibold">
-                    Frontend Developer Intern
+                    {{ application.opportunity.title }}
                   </h3>
-                  <p class="text-gray-600">Google LLC</p>
+                  <p class="text-gray-600">{{ application.opportunity.employer.name }}</p>
                 </div>
                 <span
-                  class="px-4 py-2 bg-yellow-100 text-yellow-800 rounded-full font-medium"
-                  >Under Review</span
+                  class="px-4 py-2 rounded-full font-medium
+                    {% if application.status == 'Under Review' %} bg-yellow-100 text-yellow-800
+                    {% elif application.status == 'Shortlisted' %} bg-green-100 text-green-800
+                    {% elif application.status == 'Applied' %} bg-blue-100 text-blue-800
+                    {% endif %}"
                 >
+                  {{ application.status }}
+                </span>
               </div>
             </div>
-            <div
-              class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300"
-            >
-              <div class="flex justify-between items-center">
-                <div>
-                  <h3 class="text-xl font-semibold">
-                    Software Engineer Intern
-                  </h3>
-                  <p class="text-gray-600">Microsoft</p>
-                </div>
-                <span
-                  class="px-4 py-2 bg-green-100 text-green-800 rounded-full font-medium"
-                  >Shortlisted</span
-                >
-              </div>
-            </div>
-            <div
-              class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300"
-            >
-              <div class="flex justify-between items-center">
-                <div>
-                  <h3 class="text-xl font-semibold">
-                    React Developer Intern
-                  </h3>
-                  <p class="text-gray-600">Meta</p>
-                </div>
-                <span
-                  class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full font-medium"
-                  >Applied</span
-                >
-              </div>
-            </div>
+            {% empty %}
+            <p class="text-gray-600">No recent applications to show.</p>
+            {% endfor %}
           </div>
         </div>
+        
       </div>
     </div>
   </div>

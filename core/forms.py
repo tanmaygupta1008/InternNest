@@ -26,8 +26,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import (
     CustomUser, CandidateProfile, EmployerProfile, Category, Skill,
-    Opportunity, Application, SavedOpportunity, Notification,
-    Message, StaticPage, FAQ
+    Opportunity, JobApplication, SavedOpportunity, Notification,
+    Message, StaticPage, FAQ , ApplicationCounter
 )
 from datetime import date
 
@@ -140,10 +140,7 @@ class OpportunityForm(forms.ModelForm):
         )
 
 
-class ApplicationForm(forms.ModelForm):
-    class Meta:
-        model = Application
-        fields = ('resume_url', 'cover_letter')
+
 
 
 class SavedOpportunityForm(forms.ModelForm):

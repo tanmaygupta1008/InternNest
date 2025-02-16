@@ -12,9 +12,8 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import (
     CustomUser, CandidateProfile, EmployerProfile, Category, Skill,
-    Opportunity, Application, SavedOpportunity, Notification,
-    Message, StaticPage, FAQ
-)
+    Opportunity, JobApplication, SavedOpportunity, Notification,
+    Message, StaticPage, FAQ , ApplicationCounter)
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 
 #############################
@@ -53,9 +52,10 @@ admin.site.register(EmployerProfile)
 admin.site.register(Category)
 admin.site.register(Skill)
 admin.site.register(Opportunity)
-admin.site.register(Application)
+admin.site.register(JobApplication)
 admin.site.register(SavedOpportunity)
 admin.site.register(Notification)
 admin.site.register(Message)
 admin.site.register(StaticPage)
 admin.site.register(FAQ)
+admin.site.register(ApplicationCounter)

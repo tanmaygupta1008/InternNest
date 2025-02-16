@@ -1,0 +1,49 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>apply</title>
+    <link rel="stylesheet"  href="{% static 'style.css' %}" />
+    <link rel="stylesheet"  href="{% static 'styless1.css' %}" />
+    <link rel="stylesheet"  href="{% static 'candidate_prof.css' %}" />
+</head>
+<body>
+    <div class="space-y-6">
+        <h2 class="text-2xl font-bold">{{ opportunity.title }}</h2>
+        <p class="text-gray-600">{{ opportunity.description }}</p>
+        <p class="text-gray-600 font-medium">{{ opportunity.location }}</p>
+        <p class="text-gray-600 font-medium">Deadline: {{ opportunity.application_deadline }}</p>
+      
+        <form method="POST">
+          {% csrf_token %}
+          <div class="space-y-4">
+            <label class="block">
+              <span class="text-gray-700">Resume URL</span>
+              <input
+                type="url"
+                name="resume_url"
+                required
+                class="block w-full mt-1 p-2 border rounded-lg"
+              />
+            </label>
+            <label class="block">
+              <span class="text-gray-700">Cover Letter</span>
+              <textarea
+                name="cover_letter"
+                class="block w-full mt-1 p-2 border rounded-lg"
+              ></textarea>
+            </label>
+          </div>
+          <button
+            type="submit"
+            class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg"
+          >
+            Apply
+          </button>
+        </form>
+      </div>
+      
+</body>
+</html>

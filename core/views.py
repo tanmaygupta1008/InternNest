@@ -94,7 +94,7 @@ from .forms import (
     CandidateProfileForm, EmployerProfileForm, 
     OpportunityForm
 )
-from .models import CustomUser, CandidateProfile, EmployerProfile, Opportunity
+from .models import CustomUser, CandidateProfile, EmployerProfile, Opportunity,JobApplication, CandidateProfile, ApplicationCounter
 
 # ----------------------------
 # Registration View
@@ -304,7 +304,20 @@ def candidate_prof(request):
     except CandidateProfile.DoesNotExist:
         profile = None
     candidate_prof=CandidateProfile.objects.all()
-    return render(request, 'candidate_prof.html', {'candidate_prof': candidate_prof})
+    candidate_profile = get_object_or_404(CandidateProfile, user=request.user)
+    application_status = {
+        "total_applications": JobApplication.objects.filter(candidate=candidate_profile).count(),
+        "under_review": JobApplication.objects.filter(candidate=candidate_profile, status="Under Review").count(),
+        "shortlisted": JobApplication.objects.filter(candidate=candidate_profile, status="Shortlisted").count(),
+    }
+    recent_applications = JobApplication.objects.filter(candidate=candidate_profile).order_by('-applied_at')[:5]
+
+    return render(request, 'candidate_prof.html', {
+        "application_status": application_status,
+        "recent_applications": recent_applications,
+        'candidate_prof': candidate_prof
+    })
+    
 
 @login_required
 def job_seeking(request):
@@ -379,3 +392,26 @@ def job_posting(request):
 def opportunity_detail(request, opportunity_id):
     opportunity = get_object_or_404(Opportunity, id=opportunity_id)
     return render(request, 'opportunity_detail.html', {'opportunity': opportunity})
+
+@login_required
+def opportunity_apply(request, pk):
+    opportunity = get_object_or_404(Opportunity, pk=pk)
+    if request.method == 'POST':
+        candidate_profile = get_object_or_404(CandidateProfile, user=request.user)
+        resume_url = request.POST.get('resume_url')
+        cover_letter = request.POST.get('cover_letter')
+
+        # Create the application
+        JobApplication.objects.create(
+            opportunity=opportunity,
+            candidate=candidate_profile,
+            resume_url=resume_url,
+            cover_letter=cover_letter,
+        )
+
+        # Increment the applied counter
+        ApplicationCounter.increment(opportunity.employer, 'applied')
+        return redirect('candidate_prof')  # Redirect to a success page or dashboard
+
+    return render(request, 'opportunity_apply.html', {'opportunity': opportunity})
+

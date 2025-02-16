@@ -50,4 +50,10 @@
   
   <!-- Optionally, include a link to go back to the job listings -->
   <p><a href="{% url 'job_seeking' %}">Back to Listings</a></p>
+  <a
+        href="{% url 'opportunity_apply' opportunity.id %}"
+        class="text-indigo-600 hover:underline"
+      >
+        View Details
+      </a>
 {% endblock %}
