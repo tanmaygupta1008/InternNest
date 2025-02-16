@@ -53,8 +53,12 @@ class CustomUserChangeForm(UserChangeForm):
 class CandidateProfileForm(forms.ModelForm):
     class Meta:
         model = CandidateProfile
-        fields = ('resume_url', 'education', 'experience', 'skills', 'profile_summary', 'profile_picture', 'birthdate')
-
+        fields = ('resume_url', 'education', 'experience', 'skills', 'profile_summary', 'profile_picture', 'birthdate','currently')
+  
+    widgets = {
+            'birthdate': forms.DateInput(attrs={'type': 'date'}),
+            'currently': forms.Select(choices=CandidateProfile.EMPLOYMENT_STATUS_CHOICES),
+        }
     def clean_education(self):
         education_data = {}
         for key, value in self.data.items():

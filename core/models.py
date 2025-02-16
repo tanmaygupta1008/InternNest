@@ -211,6 +211,12 @@ class CustomUser(AbstractUser):
 #################################
 
 class CandidateProfile(models.Model):
+    EMPLOYMENT_STATUS_CHOICES = [
+        ('employed', 'Employed'),
+        ('not_employed', 'Not Employed'),
+        ('student', 'Student'),
+    ]
+
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='candidate_profile')
     resume_url = models.URLField(blank=True, null=True)
     education = models.JSONField(default=list, blank=True)  # To store multiple education entries
@@ -220,6 +226,11 @@ class CandidateProfile(models.Model):
     profile_picture = models.ImageField(upload_to='', blank=True, null=True)
     birthdate = models.DateField(blank=True, null=True)  # New birthdate field
     updated_at = models.DateTimeField(auto_now=True)
+    currently = models.CharField(
+        max_length=15,
+        choices=EMPLOYMENT_STATUS_CHOICES,
+        default='not_employed'
+    )
 
     def __str__(self):
         return f"{self.user.email}'s Candidate Profile"

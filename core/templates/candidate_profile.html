@@ -80,12 +80,37 @@ block content %}
             </div>
         
           <!-- Birthdate -->
-          <div>
+          <div class="flex space-x-4">
+            <div>
             <label class="block font-medium">Birthdate</label>
             <input
               type="date"
               name="birthdate"
               value="{{ opportunity.birthdate|date:'Y-m-d'}}"
+              class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300"
+            />
+          </div>
+          <div>
+            <label for="currently" class="block text-sm font-medium text-gray-700">
+              Employment Status
+            </label>
+            <select
+              id="currently"
+              name="currently"
+              class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300"
+            >
+              <option value="employed" {% if form.instance.currently == "employed" %}selected{% endif %}>Employed</option>
+              <option value="not_employed" {% if form.instance.currently == "not_employed" %}selected{% endif %}>Not Employed</option>
+              <option value="student" {% if form.instance.currently == "student" %}selected{% endif %}>Student</option>
+            </select>
+            </div>
+          </div>
+          <div>
+            <label class="block font-medium">Resume url</label>
+            <input
+              type="url"
+              name="resume_url"
+              value="{{ opportunity.resume_url}}"
               class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300"
             />
           </div>
