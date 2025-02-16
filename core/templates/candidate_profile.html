@@ -1,11 +1,264 @@
+{% comment %}
 <!-- yourapp/templates/candidate_profile.html -->
-{% extends 'base.html' %}
-{% block title %}Candidate Profile{% endblock %}
-{% block content %}
-  <h2>Your Profile</h2>
-  <form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save Profile</button>
-  </form>
-{% endblock %}
+{% extends 'base.html' %} {% block title %}Candidate Profile{% endblock %} {%
+block content %}
+<h2>Your Profile</h2>
+<form method="POST" enctype="multipart/form-data">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit">Save Profile</button>
+</form>
+{% endblock %} {% endcomment %} 
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Webcrumbs Plugin</title>
+    <link
+      rel="stylesheet"
+      href="{% static 'candidate_profile_change.css' %}"></link>
+  </head>
+  <body>
+    <div id="webcrumbs">
+      <div class="w-[800px] bg-white rounded-lg shadow-lg p-8">
+        <h1 class="text-2xl font-semibold">Candidate Profile</h1>
+        <div>
+        {% if messages %}
+        <ul class="mt-4">
+          {% for message in messages %}
+          <li class="text-red-500">{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+        </div>
+        <form method="POST" enctype="multipart/form-data" class="space-y-6">
+          {% csrf_token %}
+          {% for opportunity in candidate_prof %}
+          {% if opportunity.user == user %}
+          <div class="flex items-center space-x-6">
+            <div class="relative w-32 h-32">
+              <!-- Profile Picture Preview -->
+              <img
+                id="profilePreview"
+                src="{{ opportunity.profile_picture.url|default:'https://placehold.co/400' }}"
+                alt="Profile"
+                class="w-full h-full object-cover rounded-full ring-2 ring-[#8B5CF6] hover:ring-4 transition-all duration-300"
+              />
+        
+              <!-- File Input -->
+              <label
+                for="profilePictureInput"
+                class="absolute bottom-0 right-0 bg-gradient-to-r from-blue-500 to-purple-500 p-2 rounded-full cursor-pointer hover:from-blue-600 hover:to-purple-600 transition-all duration-300"
+              >
+                <span class="material-symbols-outlined text-white">add_a_photo</span>
+              </label>
+              <input
+                id="profilePictureInput"
+                name="profile_picture"
+                type="file"
+                accept="image/*"
+                class="hidden"
+                onchange="previewProfilePicture(event)"
+              />
+            </div>
+          </div>
+
+          <!-- First Name --><!--Last Name-->
+          <div id="name-section" class="flex space-x-4">
+            <label class="block font-medium">Name</label>
+            <input
+              name="first_name"
+              placeholder="First Name"
+              class="abc p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300"
+              value="{{ opportunity.user.first_name }}"></input>
+            <input
+              name="last_name"
+              placeholder="Last Name"
+              class="abc p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300"
+             value="{{ opportunity.user.last_name }}"></input>
+            </div>
+        
+          <!-- Birthdate -->
+          <div>
+            <label class="block font-medium">Birthdate</label>
+            <input
+              type="date"
+              name="birthdate"
+              value="{{ opportunity.birthdate|date:'Y-m-d'}}"
+              class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300"
+            />
+          </div>
+        
+          <!-- Education Section -->
+<div id="education-section">
+  <label class="block font-medium">Education</label>
+  {% for edu in opportunity.education %}
+  <div class="flex space-x-4 items-center education-entry">
+    <input
+      type="text"
+      name="education[{{ forloop.counter0 }}][degree]"
+      value="{{ edu.degree }}"
+      placeholder="Degree"
+      class="flex-1 p-3 border rounded-lg"
+    />
+    <input
+      type="text"
+      name="education[{{ forloop.counter0 }}][institution]"
+      value="{{ edu.institution }}"
+      placeholder="Institution"
+      class="flex-1 p-3 border rounded-lg"
+    />
+    <input
+      type="text"
+      name="education[{{ forloop.counter0 }}][end_year]"
+      value="{{ edu.end_year }}"
+      placeholder="End Year"
+      class="flex-1 p-3 border rounded-lg"
+    />
+    <button type="button" class="remove-education text-red-500">Remove</button>
+  </div>
+  {% endfor %}
+</div>
+<button type="button" class="abc add-education  py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300">Add Education</button>
+
+        
+          <!-- Experience -->
+          <div id="experience-section">
+            <label class="block font-medium">Experience</label>
+            {% for exp in opportunity.experience %}
+            <div class="flex space-x-4 items-center experience-entry">
+              <input
+                type="text"
+                name="experience_company[]"
+                value="{{ exp.company }}"
+                placeholder="Company"
+                class="flex-1 p-3 border rounded-lg"
+              />
+              <input
+                type="text"
+                name="experience_position[]"
+                value="{{ exp.position }}"
+                placeholder="Position"
+                class="flex-1 p-3 border rounded-lg"
+              />
+              <input
+                type="date"
+                name="experience_start_date[]"
+                value="{{ exp.start_date }}"
+                class="flex-1 p-3 border rounded-lg"
+              />
+              <input
+                type="date"
+                name="experience_end_date[]"
+                value="{{ exp.end_date }}"
+                class="flex-1 p-3 border rounded-lg"
+              />
+              <button type="button" class="remove-experience text-red-500">Remove</button>
+            </div>
+            {% endfor %}
+          </div>
+          <button type="button" class="add-experience abc add-education  py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300">Add Experience</button>
+        
+          <!-- Skills -->
+          <div id="skills-section">
+            <label class="block font-medium">Skills</label>
+            {% for skill in opportunity.skills %}
+            <div class="flex items-center space-x-4 skill-entry">
+              <input
+                type="text"
+                name="skills[]"
+                value="{{ skill }}"
+                placeholder="Skill"
+                class="flex-1 p-3 border rounded-lg"
+              />
+              <button type="button" class="remove-skill text-red-500">Remove</button>
+            </div>
+            {% endfor %}
+          </div>
+          <button type="button" class="add-skill abc add-education  py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300">Add Skill</button>
+        
+          <!-- Profile Summary -->
+          <div id="summary-section">
+          <label class="block font-medium">Profile Summary</label>
+          <textarea
+            name="profile_summary"
+            placeholder="Profile Summary"
+            rows="4"
+            class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300"
+          >{{ opportunity.profile_summary }}</textarea>
+          </div>
+        
+          <button
+            type="submit"
+            class="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300"
+          >
+            Save Changes
+          </button>
+          {% endif %}
+          {% endfor %}
+        </form>
+        
+        <script>
+          // Add and Remove Dynamic Fields for Education, Experience, and Skills
+          document.querySelector('.add-education').addEventListener('click', () => {
+            const section = document.getElementById('education-section');
+            const index = section.querySelectorAll('.education-entry').length;
+            const entry = `<div class="flex space-x-4 items-center education-entry">
+                <input type="text" name="education[${index}][degree]" placeholder="Degree" class="flex-1 p-3 border rounded-lg" />
+                <input type="text" name="education[${index}][institution]" placeholder="Institution" class="flex-1 p-3 border rounded-lg" />
+                <input type="text" name="education[${index}][end_year]"  placeholder="End Year" class="flex-1 p-3 border rounded-lg" />
+                <button type="button" class="remove-education text-red-500">Remove</button>
+              </div>`;
+            section.insertAdjacentHTML('beforeend', entry);
+          });
+          
+          document.querySelector('.add-experience').addEventListener('click', () => {
+            const section = document.getElementById('experience-section');
+            const index = section.querySelectorAll('.experience-entry').length;
+            const entry = `<div class="flex space-x-4 items-center experience-entry">
+                <input type="text" name="experience_company[${index}]"  placeholder="Company Name" class="flex-1 p-3 border rounded-lg" />
+                <input type="text" name="experience_position[${index}]" placeholder="Position" class="flex-1 p-3 border rounded-lg" />
+                <input type="date" name="experience_start_date[${index}]" placeholder="Start-Date" class="flex-1 p-3 border rounded-lg " />
+                <input type="date" name="experience_end_date[${index}]" placeholder="End-Date" class="flex-1 p-3 border rounded-lg" />
+                <button type="button" class="remove-experience text-red-500">Remove</button>
+              </div>`;
+            section.insertAdjacentHTML('beforeend', entry);
+          });
+          
+          document.querySelector('.add-skill').addEventListener('click', () => {
+            const section = document.getElementById('skills-section');
+            const entry = `<div class="flex items-center space-x-4 skill-entry">
+                <input type="text" name="skills[]" placeholder="Skill" class="flex-1 p-3 border rounded-lg" />
+                <button type="button" class="remove-skill text-red-500">Remove</button>
+              </div>`;
+            section.insertAdjacentHTML('beforeend', entry);
+          });
+          
+          document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-education')) {
+              e.target.closest('.education-entry').remove();
+            } else if (e.target.classList.contains('remove-experience')) {
+              e.target.closest('.experience-entry').remove();
+            } else if (e.target.classList.contains('remove-skill')) {
+              e.target.closest('.skill-entry').remove();
+            }
+          });
+          
+        
+          document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-education')) {
+              e.target.closest('.education-entry').remove();
+            } else if (e.target.classList.contains('remove-experience')) {
+              e.target.closest('.experience-entry').remove();
+            } else if (e.target.classList.contains('remove-skill')) {
+              e.target.closest('.skill-entry').remove();
+            }
+          });
+        </script>
+        
+        
+      </div>
+    </div>
+  </body>
+</html>

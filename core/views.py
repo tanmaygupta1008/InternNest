@@ -263,7 +263,6 @@ def candidate_home(request):
     opportunities = Opportunity.objects.all()
     return render(request, 'candidate_home.html', {'opportunities': opportunities})
 
-
 @login_required
 def candidate_profile(request):
     if request.user.user_type != 'candidate':
@@ -272,17 +271,29 @@ def candidate_profile(request):
         profile = request.user.candidate_profile
     except CandidateProfile.DoesNotExist:
         profile = None
+
+    candidate_prof = CandidateProfile.objects.all()  # Define this outside the conditional blocks
+    
     if request.method == 'POST':
+        print("1")
         form = CandidateProfileForm(request.POST, request.FILES, instance=profile)
+        print("POST data:", request.POST)
+
         if form.is_valid():
+            print("2")
             candidate_profile = form.save(commit=False)
             candidate_profile.user = request.user
             candidate_profile.save()
             messages.success(request, "Profile updated successfully.")
             return redirect('candidate_profile')
+        else:
+            # Print the form errors to the console
+            print("Form is invalid. Errors:", form.errors)
     else:
         form = CandidateProfileForm(instance=profile)
-    return render(request, 'candidate_profile.html', {'form': form})
+
+    return render(request, 'candidate_profile.html', {'form': form, 'candidate_prof': candidate_prof})
+ 
 
 @login_required
 def candidate_prof(request):

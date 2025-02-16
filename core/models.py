@@ -213,16 +213,17 @@ class CustomUser(AbstractUser):
 class CandidateProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='candidate_profile')
     resume_url = models.URLField(blank=True, null=True)
-    education = models.TextField(blank=True, null=True)
-    experience = models.TextField(blank=True, null=True)
-    # You might want to store skills as JSON or a comma‐separated list. Alternatively, see the ManyToMany below.
-    skills = models.TextField(blank=True, null=True)
+    education = models.JSONField(default=list, blank=True)  # To store multiple education entries
+    experience = models.JSONField(default=list, blank=True)  # To store multiple experiences
+    skills = models.JSONField(default=list, blank=True)  # To store multiple skills
     profile_summary = models.TextField(blank=True, null=True)
     profile_picture = models.ImageField(upload_to='', blank=True, null=True)
+    birthdate = models.DateField(blank=True, null=True)  # New birthdate field
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.user.email}'s Candidate Profile"
+
 
 
 class EmployerProfile(models.Model):

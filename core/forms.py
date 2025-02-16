@@ -29,6 +29,7 @@ from .models import (
     Opportunity, Application, SavedOpportunity, Notification,
     Message, StaticPage, FAQ
 )
+from datetime import date
 
 #############################
 # Custom User Forms
@@ -52,7 +53,68 @@ class CustomUserChangeForm(UserChangeForm):
 class CandidateProfileForm(forms.ModelForm):
     class Meta:
         model = CandidateProfile
-        fields = ('resume_url', 'education', 'experience', 'skills', 'profile_summary', 'profile_picture')
+        fields = ('resume_url', 'education', 'experience', 'skills', 'profile_summary', 'profile_picture', 'birthdate')
+
+    def clean_education(self):
+        education_data = {}
+        for key, value in self.data.items():
+            if key.startswith('education['):
+                # Extract the index and field name
+                index = int(key.split('[')[1].split(']')[0])
+                field = key.split('[')[2].split(']')[0]
+
+                # Group the data by index
+                if index not in education_data:
+                    education_data[index] = {}
+                education_data[index][field] = value
+
+        # Convert grouped data into a list of dictionaries
+        education_list = [entry for entry in education_data.values()]
+
+        # Validate the entries
+        for entry in education_list:
+            if not all(key in entry for key in ['degree', 'institution', 'end_year']):
+                raise forms.ValidationError("Each education entry must have a degree, institution, and end year.")
+        return education_list
+
+    def clean_skills(self):
+        skills = self.data.getlist('skills[]')
+        if not skills:
+            raise forms.ValidationError("Skills cannot be empty.")
+        return skills
+
+    def clean_experience(self):
+     experience_data = {}
+     for key, value in self.data.items():
+        if key.startswith('experience['):
+            index = int(key.split('[')[1].split(']')[0])
+            field = key.split('[')[2].split(']')[0]
+
+            if index not in experience_data:
+                experience_data[index] = {}
+            experience_data[index][field] = value
+
+     # Convert grouped data into a list of dictionaries
+     experience_list = [entry for entry in experience_data.values()]
+
+     # Validate each entry
+     for entry in experience_list:
+        if not all(key in entry for key in ['company', 'position', 'start_date', 'end_date']):
+            raise forms.ValidationError("Each experience entry must include company, position, start date, and end date.")
+     return experience_list
+
+
+    def clean_birthdate(self):
+        birthdate = self.cleaned_data.get('birthdate')
+
+        if not birthdate:
+            return None  # Allow empty birthdate if it's optional
+        
+        # Optional: Ensure the birthdate is not in the future
+        if birthdate > date.today():
+            raise forms.ValidationError("Birthdate cannot be in the future.")
+        
+        return birthdate
 
 
 class EmployerProfileForm(forms.ModelForm):
