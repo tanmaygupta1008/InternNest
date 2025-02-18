@@ -1,389 +1,289 @@
-{% load static%}
+{% comment %}
+<!-- yourapp/templates/candidate_profile.html -->
+{% extends 'base.html' %} {% block title %}Candidate Profile{% endblock %} {%
+block content %}
+<h2>Your Profile</h2>
+<form method="POST" enctype="multipart/form-data">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit">Save Profile</button>
+</form>
+{% endblock %} {% endcomment %} 
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Webcrumbs Plugin</title>
-    <link rel="stylesheet"  href="{% static 'style.css' %}" />
-    <link rel="stylesheet"  href="{% static 'styless1.css' %}" />
-    <link rel="stylesheet"  href="{% static 'candidate_prof.css' %}" />
+    <link
+      rel="stylesheet"
+      href="{% static 'candidate_profile_change.css' %}"></link>
   </head>
   <body>
     <div id="webcrumbs">
-        <div class="w-[1280px] mx-auto">
-        <nav
-        class=" sticky top-0 z-50 transition-all duration-300 hover:shadow-xl"
-      >
-            
-                {% comment %} <li><a href="{% url 'candidate_home' %}">Home</a></li>
-                <li><a href="{% url 'candidate_profile' %}">Profile</a></li>
-                <li><a href="{% url 'job_seeking' %}">Jobs</a></li> {% endcomment %}
-                <div class="container mx-auto px-6 py-4">
-                  <div class="flex items-center justify-between">
-                    <h1 class="text-2xl font-semibold relative group">
-                      InternNext
-                      <svg
-                        class="absolute -right-8 -top-4 text-violet-400 w-8 h-8 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M3 17C6.5 14.5 9.5 14.5 13 17M12 6.5C11 6.5 10 7 9.5 8M3 8.5C6.5 11 9.5 11 13 8.5"
-                          stroke="currentColor"
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                        ></path>
-                      </svg>
-                    </h1>
-                    <div class="flex items-center space-x-6">
-                      <details class="relative group">
-                        <summary
-                          class="hover:text-violet-600 cursor-pointer list-none flex items-center"
-                        >
-                          Categories
-                          <svg
-                            class="w-4 h-4 ml-1 transition-transform duration-200 group-open:rotate-180"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M19 9l-7 7-7-7"
-                            ></path>
-                          </svg>
-                        </summary>
-                        <div
-                          class="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50"
-                        >
-                          <a
-                            href="#"
-                            class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
-                            >Software Development</a
-                          >
-                          <a
-                            href="#"
-                            class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
-                            >Data Science</a
-                          >
-                          <a
-                            href="#"
-                            class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
-                            >Marketing</a
-                          >
-                          <a
-                            href="#"
-                            class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
-                            >Design</a
-                          >
-                          <a
-                            href="#"
-                            class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
-                            >Business</a
-                          >
-                          <a
-                            href="#"
-                            class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
-                            >Engineering</a
-                          >
-                        </div>
-                      </details>
-                      <a
-                        class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
-                        href="{% url 'candidate_home' %}"
-                        >Home</a
-                      >
-                      <a
-                        class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
-                        href="{% url 'job_seeking' %}"
-                        >Jobs</a
-                      >
-                      
-                      <a
-                        class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
-                        href={% url 'candidate_prof' %}
-                        >Profile</a
-                      >
-                      
-                      <button
-                        class="bg-violet-600 text-white px-4 py-2 rounded-lg hover:bg-violet-700 transform hover:scale-105 transition-all duration-300 hover:shadow-lg relative group"
-                      >
-                      <a href="{% url 'logout' %}">Logout</a>
-                        <svg
-                          class="absolute -right-4 -bottom-3 text-violet-400 w-6 h-6 transition-transform duration-300 group-hover:rotate-12"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M19 9C19 11 17.5 14.5 12 14.5C6.5 14.5 5 11 5 9"
-                            stroke="currentColor"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                          ></path>
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-        </nav>
-    </div>
-    </div>
-    <div id="webcrumbs">
-      {% for opportunity in candidate_prof %}
-  {% if opportunity.user == user %}
-  <div
-    class="w-[1280px] bg-gradient-to-br from-white to-indigo-50 rounded-xl shadow-2xl p-10"
-  >
-    <div class="flex items-start gap-10">
-      <div class="relative group">
-        <div
-          class="w-56 h-56 rounded-full overflow-hidden ring-4 ring-indigo-500/80 transform transition-all duration-300 group-hover:scale-105 group-hover:shadow-xl"
-        >
-          <img
-            src="{{ opportunity.profile_picture.url }}"
-            alt="Profile"
-            class="w-full h-full object-cover"
-          />
+      <div class="w-[800px] bg-white rounded-lg shadow-lg p-8">
+        <h1 class="text-2xl font-semibold">Candidate Profile</h1>
+        <div>
+        {% if messages %}
+        <ul class="mt-4">
+          {% for message in messages %}
+          <li class="text-red-500">{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
         </div>
-      </div>
-      <div class="flex-1">
-        <div class="flex justify-between items-center mb-8">
-          <h1
-            class="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"
-          >
-            {{ opportunity.user.first_name }} {{ opportunity.user.last_name }}
-          </h1>
-            <a href="{% url 'candidate_profile' %}"
-            class="bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-8 py-3 rounded-lg hover:from-indigo-600 hover:to-purple-600 transform transition-all duration-300 hover:scale-105 hover:shadow-lg inline-block"
-            >
-            Edit Profile
-            </a>
-        </div>
-
-        <!-- Birthdate -->
-         <div class="birres flex items-center  mb-6 ">  
-        <div
-          class=" birthdate space-y-2 bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
-        >
-        <h2
-        class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"
-      >
-        Birthdate
-      </h2>
-          <p class="font-semibold">
-            {{ opportunity.birthdate|default:"Birthdate not mentioned" }}
-          </p>
-        </div>
-          <div
-          class="resume space-y-2 bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
-        >
-        <h2
-        class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"
-      >
-        Resume
-      </h2>
-          <p class="font-semibold">
-            {% if opportunity.resume_url %}
-            <a href="{{ opportunity.resume_url }}"><u>Click here</u></a>
-            {% else %}
-            Resume not mentioned.
-            {% endif %}
-          </p>
-        </div>
-        <div
-          class="employment space-y-2 bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
->
-  <h2
-    class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"
-  >
-    Employment Status
-  </h2>
-  {% if opportunity.currently %}
-    <p class="font-semibold text-indigo-600">{{ opportunity.currently|capfirst }}</p>
-  {% else %}
-    <p class="text-gray-500">Employment status not mentioned.</p>
-  {% endif %}
-</div>
-      </div>
-
-        <!-- Skills -->
-        <div class="space-y-4 bg-white p-6 rounded-lg shadow-md mb-10 mt-10 pt-8 border-t">
-          <h2
-            class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"
-          >
-            Skills
-          </h2>
-          <div class="flex flex-wrap gap-3">
-            {% if opportunity.skills %}
-              {% for skill in opportunity.skills %}
-              <span
-                class="px-6 py-2 bg-gradient-to-r from-indigo-100 to-purple-100 rounded-full hover:from-indigo-200 hover:to-purple-200 transition-all duration-300 cursor-default font-medium "
-                style="text-transform: uppercase;"
-                >{{ skill }}</span
+        <form method="POST" enctype="multipart/form-data" class="space-y-6">
+          {% csrf_token %}
+          {% for opportunity in candidate_prof %}
+          {% if opportunity.user == user %}
+          <div class="flex items-center space-x-6">
+            <div class="relative w-32 h-32">
+              <!-- Profile Picture Preview -->
+              <img
+                id="profilePreview"
+                src="{{ opportunity.profile_picture.url|default:'https://placehold.co/400' }}"
+                alt="Profile"
+                class="w-full h-full object-cover rounded-full ring-2 ring-[#8B5CF6] hover:ring-4 transition-all duration-300"
+              />
+        
+              <!-- File Input -->
+              <label
+                for="profilePictureInput"
+                class="absolute bottom-0 right-0 bg-gradient-to-r from-blue-500 to-purple-500 p-2 rounded-full cursor-pointer hover:from-blue-600 hover:to-purple-600 transition-all duration-300"
               >
-              {% endfor %}
-            {% else %}
-              <p>No skills mentioned.</p>
-            {% endif %}
+                <span class="material-symbols-outlined text-white">add_a_photo</span>
+              </label>
+              <input
+                id="profilePictureInput"
+                name="profile_picture"
+                type="file"
+                accept="image/*"
+                class="hidden"
+                onchange="previewProfilePicture(event)"
+              />
+            </div>
           </div>
-        </div>
 
-        <!-- Education -->
-        <div class="space-y-4 bg-white p-6 rounded-lg shadow-md mb-10">
-          <h2
-            class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"
-            
-          >
-            Education
-          </h2>
-          {% if opportunity.education %}
-          <ul>
-            {% for edu in opportunity.education %}
-            <li class="mb-4">
-              <div class="flex justify-between items-center">
-                <p class="a" style="text-transform: uppercase; font-weight: 600; font-size: 1.3rem;">
-                    &nbsp;&nbsp;&nbsp;&nbsp; ⦿&emsp;<strong>{{ edu.degree }}</strong>
-                </p>
-                <button
-                  class="bg-indigo-500 text-white px-4 py-1 rounded-full hover:bg-indigo-600 transition-all duration-300"
-                  onclick="toggleDropdown('edu-{{ forloop.counter }}')"
-                  style="width: 50px; text-align: center;"
-                >
-                  ▼ 
-                </button>
-              </div>
-              <div
-                id="edu-{{ forloop.counter }}"
-                class="hidden mt-2 space-y-2 bg-indigo-50 p-4 rounded-lg shadow-inner"
-                style="text-transform: uppercase;"
-              >
-              <p>&emsp;&emsp;&emsp;&emsp;<strong>Institution:</strong> {{ edu.institution }} &emsp; | &emsp; <strong>Degree:</strong> {{ edu.degree }}  &emsp; | &emsp;  <strong>End Year:</strong> {{ edu.end_year }}
-              </p>
-              </div>
-            </li>
+          <!-- First Name --><!--Last Name-->
+          <div id="name-section" class="flex space-x-4">
+            <label class="block font-medium">Name</label>
+            <input
+              name="first_name"
+              placeholder="First Name"
+              class="abc p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300"
+              value="{{ opportunity.user.first_name }}"></input>
+            <input
+              name="last_name"
+              placeholder="Last Name"
+              class="abc p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300"
+             value="{{ opportunity.user.last_name }}"></input>
+            </div>
+        
+          <!-- Birthdate -->
+          <div class="flex space-x-4">
+            <div>
+            <label class="block font-medium">Birthdate</label>
+            <input
+              type="date"
+              name="birthdate"
+              value="{{ opportunity.birthdate|date:'Y-m-d'}}"
+              class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300"
+            />
+          </div>
+          <div>
+            <label for="currently" class="block text-sm font-medium text-gray-700">
+              Employment Status
+            </label>
+            <select
+              id="currently"
+              name="currently"
+              class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300"
+            >
+              <option value="employed" {% if form.instance.currently == "employed" %}selected{% endif %}>Employed</option>
+              <option value="not_employed" {% if form.instance.currently == "not_employed" %}selected{% endif %}>Not Employed</option>
+              <option value="student" {% if form.instance.currently == "student" %}selected{% endif %}>Student</option>
+            </select>
+            </div>
+          </div>
+          <div>
+            <label class="block font-medium">Resume url</label>
+            <input
+              type="url"
+              name="resume_url"
+              value="{{ opportunity.resume_url}}"
+              class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300"
+            />
+          </div>
+        
+          <!-- Education Section -->
+<div id="education-section">
+  <label class="block font-medium">Education</label>
+  {% for edu in opportunity.education %}
+  <div class="flex space-x-4 items-center education-entry">
+    <input
+      type="text"
+      name="education[{{ forloop.counter0 }}][degree]"
+      value="{{ edu.degree }}"
+      placeholder="Degree"
+      class="flex-1 p-3 border rounded-lg"
+    />
+    <input
+      type="text"
+      name="education[{{ forloop.counter0 }}][institution]"
+      value="{{ edu.institution }}"
+      placeholder="Institution"
+      class="flex-1 p-3 border rounded-lg"
+    />
+    <input
+      type="text"
+      name="education[{{ forloop.counter0 }}][end_year]"
+      value="{{ edu.end_year }}"
+      placeholder="End Year"
+      class="flex-1 p-3 border rounded-lg"
+    />
+    <button type="button" class="remove-education text-red-500">Remove</button>
+  </div>
+  {% endfor %}
+</div>
+<button type="button" class="abc add-education  py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300">Add Education</button>
+
+        
+          <!-- Experience -->
+          <div id="experience-section">
+            <label class="block font-medium">Experience</label>
+            {% for exp in opportunity.experience %}
+            <div class="flex space-x-4 items-center experience-entry">
+              <input
+                type="text"
+                name="experience_company[]"
+                value="{{ exp.company }}"
+                placeholder="Company"
+                class="flex-1 p-3 border rounded-lg"
+              />
+              <input
+                type="text"
+                name="experience_position[]"
+                value="{{ exp.position }}"
+                placeholder="Position"
+                class="flex-1 p-3 border rounded-lg"
+              />
+              <input
+                type="date"
+                name="experience_start_date[]"
+                value="{{ exp.start_date }}"
+                class="flex-1 p-3 border rounded-lg"
+              />
+              <input
+                type="date"
+                name="experience_end_date[]"
+                value="{{ exp.end_date }}"
+                class="flex-1 p-3 border rounded-lg"
+              />
+              <button type="button" class="remove-experience text-red-500">Remove</button>
+            </div>
             {% endfor %}
-          </ul>
-          {% else %}
-          <p>No Education mentioned.</p>
+          </div>
+          <button type="button" class="add-experience abc add-education  py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300">Add Experience</button>
+        
+          <!-- Skills -->
+          <div id="skills-section">
+            <label class="block font-medium">Skills</label>
+            {% for skill in opportunity.skills %}
+            <div class="flex items-center space-x-4 skill-entry">
+              <input
+                type="text"
+                name="skills[]"
+                value="{{ skill }}"
+                placeholder="Skill"
+                class="flex-1 p-3 border rounded-lg"
+              />
+              <button type="button" class="remove-skill text-red-500">Remove</button>
+            </div>
+            {% endfor %}
+          </div>
+          <button type="button" class="add-skill abc add-education  py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300">Add Skill</button>
+        
+          <!-- Profile Summary -->
+          <div id="summary-section">
+          <label class="block font-medium">Profile Summary</label>
+          <textarea
+            name="profile_summary"
+            placeholder="Profile Summary"
+            rows="4"
+            class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300"
+          >{{ opportunity.profile_summary }}</textarea>
+          </div>
+        
+          <button
+            type="submit"
+            class="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300"
+          >
+            Save Changes
+          </button>
           {% endif %}
-        </div>
+          {% endfor %}
+        </form>
         
         <script>
-          function toggleDropdown(id) {
-            const element = document.getElementById(id);
-            element.classList.toggle('hidden');
-          }
+          // Add and Remove Dynamic Fields for Education, Experience, and Skills
+          document.querySelector('.add-education').addEventListener('click', () => {
+            const section = document.getElementById('education-section');
+            const index = section.querySelectorAll('.education-entry').length;
+            const entry = `<div class="flex space-x-4 items-center education-entry">
+                <input type="text" name="education[${index}][degree]" placeholder="Degree" class="flex-1 p-3 border rounded-lg" />
+                <input type="text" name="education[${index}][institution]" placeholder="Institution" class="flex-1 p-3 border rounded-lg" />
+                <input type="text" name="education[${index}][end_year]"  placeholder="End Year" class="flex-1 p-3 border rounded-lg" />
+                <button type="button" class="remove-education text-red-500">Remove</button>
+              </div>`;
+            section.insertAdjacentHTML('beforeend', entry);
+          });
+          
+          document.querySelector('.add-experience').addEventListener('click', () => {
+            const section = document.getElementById('experience-section');
+            const index = section.querySelectorAll('.experience-entry').length;
+            const entry = `<div class="flex space-x-4 items-center experience-entry">
+                <input type="text" name="experience_company[${index}]"  placeholder="Company Name" class="flex-1 p-3 border rounded-lg" />
+                <input type="text" name="experience_position[${index}]" placeholder="Position" class="flex-1 p-3 border rounded-lg" />
+                <input type="date" name="experience_start_date[${index}]" placeholder="Start-Date" class="flex-1 p-3 border rounded-lg " />
+                <input type="date" name="experience_end_date[${index}]" placeholder="End-Date" class="flex-1 p-3 border rounded-lg" />
+                <button type="button" class="remove-experience text-red-500">Remove</button>
+              </div>`;
+            section.insertAdjacentHTML('beforeend', entry);
+          });
+          
+          document.querySelector('.add-skill').addEventListener('click', () => {
+            const section = document.getElementById('skills-section');
+            const entry = `<div class="flex items-center space-x-4 skill-entry">
+                <input type="text" name="skills[]" placeholder="Skill" class="flex-1 p-3 border rounded-lg" />
+                <button type="button" class="remove-skill text-red-500">Remove</button>
+              </div>`;
+            section.insertAdjacentHTML('beforeend', entry);
+          });
+          
+          document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-education')) {
+              e.target.closest('.education-entry').remove();
+            } else if (e.target.classList.contains('remove-experience')) {
+              e.target.closest('.experience-entry').remove();
+            } else if (e.target.classList.contains('remove-skill')) {
+              e.target.closest('.skill-entry').remove();
+            }
+          });
+          
+        
+          document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-education')) {
+              e.target.closest('.education-entry').remove();
+            } else if (e.target.classList.contains('remove-experience')) {
+              e.target.closest('.experience-entry').remove();
+            } else if (e.target.classList.contains('remove-skill')) {
+              e.target.closest('.skill-entry').remove();
+            }
+          });
         </script>
         
-
-
-        <!-- Experience -->
-        <div class="space-y-4 bg-white p-6 rounded-lg shadow-md mb-10">
-          <h2
-            class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"
-          >
-            Experience
-          </h2>
-          {% if opportunity.experience %}
-          <ul>
-            {% for exp in opportunity.experience %}
-            <li>
-              <p class="font-semibold">{{ exp.position }} at {{ exp.company }}</p>
-              <p class="text-gray-500">
-                {{ exp.start_date }} - {{ exp.end_date|default:"Present" }}
-              </p>
-            </li>
-            {% endfor %}
-          </ul>
-          {% else %}
-          <p><strong>No experience mentioned.</strong></p>
-          {% endif %}
-        </div>
-
-        <div class="space-y-6">
-          <h2
-            class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"
-          >
-            Application Status
-          </h2>
-          <div class="grid grid-cols-3 gap-6">
-            <div
-              class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-            >
-              <p
-                class="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"
-              >
-                {{ application_status.total_applications }}
-              </p>
-              <p class="text-gray-600 font-medium">Applications Sent</p>
-            </div>
-            <div
-              class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-            >
-              <p
-                class="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"
-              >
-                {{ application_status.under_review }}
-              </p>
-              <p class="text-gray-600 font-medium">Under Review</p>
-            </div>
-            <div
-              class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-            >
-              <p
-                class="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"
-              >
-                {{ application_status.shortlisted }}
-              </p>
-              <p class="text-gray-600 font-medium">Shortlisted</p>
-            </div>
-          </div>
-        </div>
-        <div class="mt-10 pt-8 border-t">
-          <h2
-            class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-6"
-          >
-            Recent Applications
-          </h2>
-          <div class="space-y-4">
-            {% for application in recent_applications %}
-            <div
-              class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300"
-            >
-              <div class="flex justify-between items-center">
-                <div>
-                  <h3 class="text-xl font-semibold">
-                    {{ application.opportunity.title }}
-                  </h3>
-                  <p class="text-gray-600">{{ application.opportunity.employer.name }}</p>
-                </div>
-                <span
-                  class="px-4 py-2 rounded-full font-medium
-                    {% if application.status == 'Under Review' %} bg-yellow-100 text-yellow-800
-                    {% elif application.status == 'Shortlisted' %} bg-green-100 text-green-800
-                    {% elif application.status == 'Applied' %} bg-blue-100 text-blue-800
-                    {% endif %}"
-                >
-                  {{ application.status }}
-                </span>
-              </div>
-            </div>
-            {% empty %}
-            <p class="text-gray-600">No recent applications to show.</p>
-            {% endfor %}
-          </div>
-        </div>
         
       </div>
-    </div>
-  </div>
-  {% endif %}
-{% endfor %}
     </div>
   </body>
 </html>
