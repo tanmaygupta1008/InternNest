@@ -18,11 +18,125 @@ block content %}
     <link
       rel="stylesheet"
       href="{% static 'candidate_profile_change.css' %}"></link>
+      <link rel="stylesheet"  href="{% static 'styless1.css' %}" />
   </head>
   <body>
     <div id="webcrumbs">
-      <div class="w-[800px] bg-white rounded-lg shadow-lg p-8">
-        <h1 class="text-2xl font-semibold">Candidate Profile</h1>
+      <nav
+          class="bg-white shadow-lg sticky top-0 z-50 transition-all duration-300 hover:shadow-xl"
+        >
+          <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+              <h1 class="text-2xl font-semibold relative group">
+                InternNext
+                <svg
+                  class="absolute -right-8 -top-4 text-violet-400 w-8 h-8 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3 17C6.5 14.5 9.5 14.5 13 17M12 6.5C11 6.5 10 7 9.5 8M3 8.5C6.5 11 9.5 11 13 8.5"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  ></path>
+                </svg>
+              </h1>
+              <div class="flex items-center space-x-6">
+                <details class="relative group">
+                  <summary
+                    class="hover:text-violet-600 cursor-pointer list-none flex items-center"
+                  >
+                    Categories
+                    <svg
+                      class="w-4 h-4 ml-1 transition-transform duration-200 group-open:rotate-180"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 9l-7 7-7-7"
+                      ></path>
+                    </svg>
+                  </summary>
+                  <div
+                    class="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50"
+                  >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Software Development</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Data Science</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Marketing</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Design</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Business</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Engineering</a
+                    >
+                  </div>
+                </details>
+                <a
+                  class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
+                  href="{% url 'candidate_home' %}"
+                  >Home</a
+                >
+                <a
+                  class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
+                  href="{% url 'job_seeking' %}"
+                  >Jobs</a
+                >
+                <a
+                  class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
+                  href="{% url 'candidate_profile' %}"
+                  >Profile</a
+                >
+                <button
+                  class="bg-violet-600 text-white px-4 py-2 rounded-lg hover:bg-violet-700 transform hover:scale-105 transition-all duration-300 hover:shadow-lg relative group"
+                >
+                  <a href="{% url 'logout' %}">Logout</a>
+                  <svg
+                    class="absolute -right-4 -bottom-3 text-violet-400 w-6 h-6 transition-transform duration-300 group-hover:rotate-12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M19 9C19 11 17.5 14.5 12 14.5C6.5 14.5 5 11 5 9"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </nav>
+      <div class=" bg-white rounded-lg shadow-lg p-8" style="max-width: 900px">
+        <h1 class=" font-semibold" style="font-size:xx-large;text-align:center;">Candidate Profile</h1>
         <div>
         {% if messages %}
         <ul class="mt-4">
@@ -32,81 +146,82 @@ block content %}
         </ul>
         {% endif %}
         </div>
-        <form method="POST" enctype="multipart/form-data" class="space-y-6">
+        <form method="POST" enctype="multipart/form-data" class="space-y-6" style="max-width: 900px">
           {% csrf_token %}
           {% for opportunity in candidate_prof %}
           {% if opportunity.user == user %}
-          <div class="flex items-center space-x-6">
-            <div class="relative w-32 h-32">
-              <!-- Profile Picture Preview -->
-              <img
-                id="profilePreview"
-                src="{{ opportunity.profile_picture.url|default:'https://placehold.co/400' }}"
-                alt="Profile"
-                class="w-full h-full object-cover rounded-full ring-2 ring-[#8B5CF6] hover:ring-4 transition-all duration-300"
-              />
-        
-              <!-- File Input -->
-              <label
-                for="profilePictureInput"
-                class="absolute bottom-0 right-0 bg-gradient-to-r from-blue-500 to-purple-500 p-2 rounded-full cursor-pointer hover:from-blue-600 hover:to-purple-600 transition-all duration-300"
-              >
-                <span class="material-symbols-outlined text-white">add_a_photo</span>
-              </label>
-              <input
-                id="profilePictureInput"
-                name="profile_picture"
-                type="file"
-                accept="image/*"
-                class="hidden"
-                onchange="previewProfilePicture(event)"
-              />
-            </div>
+          
+        <!-- Profile Picture Section -->
+        <div class="flex items-center space-x-6">
+          <!-- Profile Picture Section -->
+          <div class="relative w-32 h-32">
+            <img id="profilePreview" 
+                 src="{{ opportunity.profile_picture.url|default:'https://placehold.co/400' }}"
+                 alt="Profile"
+                 class="w-full h-full object-cover rounded-full ring-2 ring-[#8B5CF6] hover:ring-4 transition-all duration-300" />
+            
+            <label for="profilePictureInput"
+                   class="absolute bottom-0 right-0 bg-gradient-to-r from-blue-500 to-purple-500 p-2 rounded-full cursor-pointer hover:from-blue-600 hover:to-purple-600 transition-all duration-300">
+              <span class="material-symbols-outlined text-white">add_a_photo</span>
+            </label>
+            <input id="profilePictureInput"
+                   name="profile_picture"
+                   type="file"
+                   accept="image/*"
+                   class="hidden"
+                   onchange="previewProfilePicture(event)" />
           </div>
 
-          <!-- First Name --><!--Last Name-->
-          <div id="name-section" class="flex space-x-4">
-            <label class="block font-medium">Name</label>
-            <input
-              name="first_name"
-              placeholder="First Name"
-              class="abc p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300"
-              value="{{ opportunity.user.first_name }}"></input>
-            <input
-              name="last_name"
-              placeholder="Last Name"
-              class="abc p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300"
-             value="{{ opportunity.user.last_name }}"></input>
+          <!-- Name and Birthdate Section -->
+          <div id="name-section" class="flex-1 space-y-6">
+            <div class="space-y-2">
+              <label class="ca block font-medium" style="position:relative; left:12px;">Name</label>
+              <div class="flex gap-4">
+                <div class="flex-1" style="max-width: 200px;">
+                  <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">First Name</label>
+                <input name="first_name"
+                       placeholder="First Name"
+                       class="w-1/2 p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300"
+                       value="{{ opportunity.user.first_name }}" />
+              </div>
+              <div class="flex-1" style="max-width: 200px;">
+                <label style="position:relative; left:22px; font-size:0.875rem; color:#6B7280;">Last Name</label>
+                <input name="last_name"
+                       placeholder="Last Name"
+                       class="w-1/2 p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300"
+                       style="position:relative; left:12px;"
+                       value="{{ opportunity.user.last_name }}" />
+                       </div>
+              </div>
             </div>
-        
-          <!-- Birthdate -->
-          <div class="flex space-x-4">
-            <div>
-            <label class="block font-medium">Birthdate</label>
-            <input
-              type="date"
-              name="birthdate"
-              value="{{ opportunity.birthdate|date:'Y-m-d'}}"
-              class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300"
-            />
-          </div>
-          <div>
-            <label for="currently" class="block text-sm font-medium text-gray-700">
-              Employment Status
-            </label>
-            <select
-              id="currently"
-              name="currently"
-              class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300"
-            >
-              <option value="employed" {% if form.instance.currently == "employed" %}selected{% endif %}>Employed</option>
-              <option value="not_employed" {% if form.instance.currently == "not_employed" %}selected{% endif %}>Not Employed</option>
-              <option value="student" {% if form.instance.currently == "student" %}selected{% endif %}>Student</option>
-            </select>
+
+            <div class="flex gap-8">
+              <div class="w-1/2 space-y-2">
+                <label class="ca block font-medium" style="position:relative; left:12px;">Birthdate</label>
+                <input type="date"
+                       name="birthdate"
+                       value="{{ opportunity.birthdate|date:'Y-m-d'}}"
+                       class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300"
+                       style="min-height:51.6px;max-width:90%;"/>
+              </div>
+
+              <div class="w-1/2 space-y-2 " >
+                <label class="ca block font-medium" style="position:relative; left:12px;">Employment Status</label>
+                <select id="currently"
+                        name="currently"
+                        class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300"
+                        style="min-height:51.6px;max-width:80%;">
+
+                  <option value="employed" {% if form.instance.currently == "employed" %}selected{% endif %}>Employed</option>
+                  <option value="not_employed" {% if form.instance.currently == "not_employed" %}selected{% endif %}>Not Employed</option>
+                  <option value="student" {% if form.instance.currently == "student" %}selected{% endif %}>Student</option>
+                </select>
+              </div>
             </div>
           </div>
+        </div>
           <div>
-            <label class="block font-medium">Resume url</label>
+            <label class="ca block font-medium" style="position:relative; left:12px;">Resume url</label>
             <input
               type="url"
               name="resume_url"
@@ -117,23 +232,32 @@ block content %}
         
           <!-- Education Section -->
 <div id="education-section">
-  <label class="block font-medium">Education</label>
+  <label class="ca block font-medium" style="position:relative; left:12px;">Education</label>
   {% for edu in opportunity.education %}
   <div class="flex space-x-4 items-center education-entry">
-    <input
+    <div class="flex-1" style="max-width: 200px;">
+      <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">Degree</label>
+        <input
       type="text"
       name="education[{{ forloop.counter0 }}][degree]"
       value="{{ edu.degree }}"
       placeholder="Degree"
       class="flex-1 p-3 border rounded-lg"
     />
-    <input
+    </div>
+    <div class="flex-1" style="max-width: 200px;">
+      
+      <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">Institution</label>
+        <input
       type="text"
       name="education[{{ forloop.counter0 }}][institution]"
       value="{{ edu.institution }}"
       placeholder="Institution"
       class="flex-1 p-3 border rounded-lg"
     />
+    </div>
+    <div class="flex-1" style="max-width: 200px;">
+      <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">End Year</label>
     <input
       type="text"
       name="education[{{ forloop.counter0 }}][end_year]"
@@ -141,7 +265,9 @@ block content %}
       placeholder="End Year"
       class="flex-1 p-3 border rounded-lg"
     />
-    <button type="button" class="remove-education text-red-500">Remove</button>
+    </div>
+    <button type="button" class="abc remove-education py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300" style="position:relative; top:12px">Remove</button>
+
   </div>
   {% endfor %}
 </div>
@@ -150,9 +276,11 @@ block content %}
         
           <!-- Experience -->
           <div id="experience-section">
-            <label class="block font-medium">Experience</label>
+            <label class="ca block font-medium" style="position:relative; left:12px;">Experience</label>
             {% for exp in opportunity.experience %}
             <div class="flex space-x-4 items-center experience-entry">
+              <div class="flex-1">
+                <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">Company Name</label>
               <input
                 type="text"
                 name="experience_company[]"
@@ -160,6 +288,9 @@ block content %}
                 placeholder="Company"
                 class="flex-1 p-3 border rounded-lg"
               />
+              </div>
+              <div class="flex-1">
+                <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">Position</label>
               <input
                 type="text"
                 name="experience_position[]"
@@ -167,19 +298,26 @@ block content %}
                 placeholder="Position"
                 class="flex-1 p-3 border rounded-lg"
               />
+              </div>
+              <div class="flex-1">
+                <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">Start Date</label>
               <input
                 type="date"
                 name="experience_start_date[]"
                 value="{{ exp.start_date }}"
                 class="flex-1 p-3 border rounded-lg"
               />
+              </div>
+              <div class="flex-1">
+                <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">End Date</label>
               <input
                 type="date"
                 name="experience_end_date[]"
                 value="{{ exp.end_date }}"
                 class="flex-1 p-3 border rounded-lg"
               />
-              <button type="button" class="remove-experience text-red-500">Remove</button>
+              </div>
+              <button type="button" class="abc remove-experience py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300">Remove</button>
             </div>
             {% endfor %}
           </div>
@@ -187,7 +325,7 @@ block content %}
         
           <!-- Skills -->
           <div id="skills-section">
-            <label class="block font-medium">Skills</label>
+            <label class="ca block font-medium" style="position:relative; left:12px;">Skills</label>
             {% for skill in opportunity.skills %}
             <div class="flex items-center space-x-4 skill-entry">
               <input
@@ -197,7 +335,7 @@ block content %}
                 placeholder="Skill"
                 class="flex-1 p-3 border rounded-lg"
               />
-              <button type="button" class="remove-skill text-red-500">Remove</button>
+              <button type="button" class="abcd remove-skill py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300">Remove</button>
             </div>
             {% endfor %}
           </div>
@@ -205,7 +343,7 @@ block content %}
         
           <!-- Profile Summary -->
           <div id="summary-section">
-          <label class="block font-medium">Profile Summary</label>
+          <label class="ca block font-medium" style="position:relative; left:12px;">Profile Summary</label>
           <textarea
             name="profile_summary"
             placeholder="Profile Summary"
@@ -230,10 +368,19 @@ block content %}
             const section = document.getElementById('education-section');
             const index = section.querySelectorAll('.education-entry').length;
             const entry = `<div class="flex space-x-4 items-center education-entry">
+                <div class="flex-1" style="max-width: 200px;">
+              <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">Degree</label>
                 <input type="text" name="education[${index}][degree]" placeholder="Degree" class="flex-1 p-3 border rounded-lg" />
+                </div>
+                <div class="flex-1" style="max-width: 200px;">
+                <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">Institution</label>
                 <input type="text" name="education[${index}][institution]" placeholder="Institution" class="flex-1 p-3 border rounded-lg" />
+                </div>
+                <div class="flex-1" style="max-width: 200px;">
+                <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">End Year</label>
                 <input type="text" name="education[${index}][end_year]"  placeholder="End Year" class="flex-1 p-3 border rounded-lg" />
-                <button type="button" class="remove-education text-red-500">Remove</button>
+                </div>
+                <button type="button" class="abc remove-education py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300" style="position:relative; top:12px">Remove</button>
               </div>`;
             section.insertAdjacentHTML('beforeend', entry);
           });
@@ -242,11 +389,23 @@ block content %}
             const section = document.getElementById('experience-section');
             const index = section.querySelectorAll('.experience-entry').length;
             const entry = `<div class="flex space-x-4 items-center experience-entry">
-                <input type="text" name="experience_company[${index}]"  placeholder="Company Name" class="flex-1 p-3 border rounded-lg" />
-                <input type="text" name="experience_position[${index}]" placeholder="Position" class="flex-1 p-3 border rounded-lg" />
-                <input type="date" name="experience_start_date[${index}]" placeholder="Start-Date" class="flex-1 p-3 border rounded-lg " />
-                <input type="date" name="experience_end_date[${index}]" placeholder="End-Date" class="flex-1 p-3 border rounded-lg" />
-                <button type="button" class="remove-experience text-red-500">Remove</button>
+              <div class="flex-1" style="max-width: 200px;">
+              <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">Company Name</label>
+              <input type="text" name="experience_company[${index}]" placeholder="Company Name" class="w-full p-3 border rounded-lg" />
+              </div>
+              <div class="flex-1" style="max-width: 150px;">
+              <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">Position</label>
+              <input type="text" name="experience_position[${index}]" placeholder="Position" class="w-full p-3 border rounded-lg" />
+                </div>
+                <div class="flex-1" style="max-width: 150px;">
+                <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">Start Date</label>
+                <input type="date" name="experience_start_date[${index}]" class="w-full p-3 border rounded-lg" />
+                </div>
+                <div class="flex-1" style="max-width: 150px;">
+                <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">End Date</label>
+                <input type="date" name="experience_end_date[${index}]" class="w-full p-3 border rounded-lg" />
+                </div>
+              <button type="button" class="abcd remove-experience py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300" style="position:relative; top:12px; max-width: 150px;">Remove</button>
               </div>`;
             section.insertAdjacentHTML('beforeend', entry);
           });
@@ -255,7 +414,7 @@ block content %}
             const section = document.getElementById('skills-section');
             const entry = `<div class="flex items-center space-x-4 skill-entry">
                 <input type="text" name="skills[]" placeholder="Skill" class="flex-1 p-3 border rounded-lg" />
-                <button type="button" class="remove-skill text-red-500">Remove</button>
+                <button type="button" class="abcd remove-skill py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300">Remove</button>
               </div>`;
             section.insertAdjacentHTML('beforeend', entry);
           });

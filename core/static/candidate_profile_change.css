@@ -338,13 +338,13 @@
         display: none;
       }
       #webcrumbs .h-32 {
-        height: 128px;
+        height: 300px;
       }
       #webcrumbs .h-full {
         height: 100%;
       }
       #webcrumbs .w-32 {
-        width: 128px;
+        width: 300px;
       }
       #webcrumbs .w-\[800px\] {
         width: 800px;
@@ -556,4 +556,15 @@
       }
       .abc{
         min-width:200px;
+      }
+      .abcd{
+        min-width: 150px;
+      }
+      .ca{
+        background: linear-gradient(to right, #1e40af, #7e22ce);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-size: 1.125rem;
+        text-transform: uppercase;
       }
