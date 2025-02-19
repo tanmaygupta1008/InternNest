@@ -366,9 +366,8 @@ video {
 }
 #webcrumbs .transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y))
-    rotate(var(--tw-rotate)) skewX(var(--tw-skew-x))
-    skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x))
-    scaleY(var(--tw-scale-y));
+    rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+    scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 #webcrumbs .cursor-default {
   cursor: default;
@@ -463,10 +462,7 @@ video {
   background-color: rgb(254 249 195 / var(--tw-bg-opacity));
 }
 #webcrumbs .bg-gradient-to-br {
-  background-image: linear-gradient(
-    to bottom right,
-    var(--tw-gradient-stops)
-  );
+  background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
 }
 #webcrumbs .bg-gradient-to-r {
   background-image: linear-gradient(to right, var(--tw-gradient-stops));
@@ -641,9 +637,8 @@ video {
 #webcrumbs .hover\:scale-105:hover,
 #webcrumbs .hover\:scale-110:hover {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y))
-    rotate(var(--tw-rotate)) skewX(var(--tw-skew-x))
-    skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x))
-    scaleY(var(--tw-scale-y));
+    rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+    scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 #webcrumbs .hover\:scale-110:hover {
   --tw-scale-x: 1.1;
@@ -690,9 +685,8 @@ video {
   --tw-scale-x: 1.05;
   --tw-scale-y: 1.05;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y))
-    rotate(var(--tw-rotate)) skewX(var(--tw-skew-x))
-    skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x))
-    scaleY(var(--tw-scale-y));
+    rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+    scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 #webcrumbs :is(.group:hover .group-hover\:shadow-xl) {
   --tw-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
@@ -701,6 +695,17 @@ video {
     0 8px 10px -6px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
     var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+#webcrumbs .from-blue-500 {
+  --tw-gradient-from: #3b82f6 var(--tw-gradient-from-position);
+  --tw-gradient-to: rgba(59, 130, 246, 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+#webcrumbs .to-purple-500 {
+  --tw-gradient-to: #a855f7 var(--tw-gradient-to-position);
+}
+#webcrumbs .capatalize {
+  text-transform: capitalize;
 }
 
 body {
@@ -713,25 +718,22 @@ body {
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #ffffff, #d4d4d4);
-  
-
 }
 
-.birres{
+.birres {
   gap: 70px;
-
 }
 
-.birthdate{
+.birthdate {
   min-width: 200px;
 }
-.resume{
+.resume {
   min-width: 250px;
 }
-.employment{
+.employment {
   min-width: 300px;
 }
 
-.hidden{
+.hidden {
   display: none;
 }

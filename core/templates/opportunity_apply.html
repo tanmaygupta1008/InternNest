@@ -6,16 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>apply</title>
     <link rel="stylesheet"  href="{% static 'style.css' %}" />
-    <link rel="stylesheet"  href="{% static 'styless1.css' %}" />
     <link rel="stylesheet"  href="{% static 'candidate_prof.css' %}" />
 </head>
-<body>
-    <div class="space-y-6">
+<body id="webcrumbs">
+    <div class="space-y-2 bg-white p-4 rounded-lg shadow-md">
         <h2 class="text-2xl font-bold">{{ opportunity.title }}</h2>
-        <p class="text-gray-600">{{ opportunity.description }}</p>
-        <p class="text-gray-600 font-medium">{{ opportunity.location }}</p>
-        <p class="text-gray-600 font-medium">Deadline: {{ opportunity.application_deadline }}</p>
-      
+        <p class="text-gray-600 capatalize">{{ opportunity.description }}</p>
+        <p class="text-gray-600 font-semibold capatalize">{{ opportunity.location }}</p>
+        <p class="text-gray-600 font-semibold">Deadline: {{ opportunity.application_deadline }}</p>
+
+        <h1 class="text-xl font-bold pt-8">Application Form</h1>
         <form method="POST">
           {% csrf_token %}
           <div class="space-y-4">
@@ -25,22 +25,24 @@
                 type="url"
                 name="resume_url"
                 required
-                class="block w-full mt-1 p-2 border rounded-lg"
+                class="mb-4 w-full px-4 py-3 rounded-lg border border-gray-300"
               />
             </label>
             <label class="block">
               <span class="text-gray-700">Cover Letter</span>
               <textarea
                 name="cover_letter"
-                class="block w-full mt-1 p-2 border rounded-lg"
+                class="mb-4 w-full px-4 py-3 rounded-lg border border-gray-300"
+                cols="30"
+                rows="10"
               ></textarea>
             </label>
           </div>
           <button
             type="submit"
-            class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg"
+            class="mt-4 px-4 py-2 bg-indigo-500 text-white font-medium rounded-lg w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
           >
-            Apply
+            Submit
           </button>
         </form>
       </div>
