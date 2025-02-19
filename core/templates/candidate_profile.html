@@ -274,55 +274,55 @@ block content %}
 <button type="button" class="abc add-education  py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300">Add Education</button>
 
         
-          <!-- Experience -->
-          <div id="experience-section">
-            <label class="ca block font-medium" style="position:relative; left:12px;">Experience</label>
-            {% for exp in opportunity.experience %}
-            <div class="flex space-x-4 items-center experience-entry">
-              <div class="flex-1">
-                <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">Company Name</label>
-              <input
-                type="text"
-                name="experience_company[]"
-                value="{{ exp.company }}"
-                placeholder="Company"
-                class="flex-1 p-3 border rounded-lg"
-              />
-              </div>
-              <div class="flex-1">
-                <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">Position</label>
-              <input
-                type="text"
-                name="experience_position[]"
-                value="{{ exp.position }}"
-                placeholder="Position"
-                class="flex-1 p-3 border rounded-lg"
-              />
-              </div>
-              <div class="flex-1">
-                <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">Start Date</label>
-              <input
-                type="date"
-                name="experience_start_date[]"
-                value="{{ exp.start_date }}"
-                class="flex-1 p-3 border rounded-lg"
-              />
-              </div>
-              <div class="flex-1">
-                <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">End Date</label>
-              <input
-                type="date"
-                name="experience_end_date[]"
-                value="{{ exp.end_date }}"
-                class="flex-1 p-3 border rounded-lg"
-              />
-              </div>
-              <button type="button" class="abc remove-experience py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300">Remove</button>
-            </div>
-            {% endfor %}
-          </div>
-          <button type="button" class="add-experience abc add-education  py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300">Add Experience</button>
-        
+         <!-- Experience -->
+<div id="experience-section" > 
+  <label class="ca block font-medium" style="position:relative; left:12px;">Experience</label>
+  {% for exp in opportunity.experience %}
+  <div class="flex space-x-4 items-center experience-entry">
+    <div class="flex-1" style="max-width: 200px;">
+      <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">Company Name</label>
+      <input
+        type="text"
+        name="experience[{{ forloop.counter0 }}][company]"
+        value="{{ exp.company }}"
+        placeholder="Company Name" 
+        class="w-full p-3 border rounded-lg"
+      />
+    </div>
+    <div class="flex-1" style="max-width: 150px;">
+      <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">Position</label>
+      <input
+        type="text"
+        name="experience[{{ forloop.counter0 }}][position]"
+        value="{{ exp.position }}"
+        placeholder="Position"
+        class="w-full p-3 border rounded-lg"
+      />
+    </div>
+    <div class="flex-1" style="max-width: 150px;">
+      <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">Start Date</label>
+      <input
+        type="date"
+        name="experience[{{ forloop.counter0 }}][start_date]"
+        value="{{ exp.start_date }}"
+        class="w-full p-3 border rounded-lg"
+      />
+    </div>
+    <div class="flex-1" style="max-width: 150px;">
+      <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">End Date</label>
+      <input
+        type="date"
+        name="experience[{{ forloop.counter0 }}][end_date]"
+        value="{{ exp.end_date }}"
+        class="w-full p-3 border rounded-lg"
+      />
+    </div>
+    <button type="button" class="abcd remove-experience py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300" style="position:relative; top:12px; max-width: 150px;">Remove</button>
+  </div>
+  {% endfor %}
+</div>
+<button type="button" class="add-experience abc add-education py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300">Add Experience</button>
+
           <!-- Skills -->
           <div id="skills-section">
             <label class="ca block font-medium" style="position:relative; left:12px;">Skills</label>
@@ -388,27 +388,29 @@ block content %}
           document.querySelector('.add-experience').addEventListener('click', () => {
             const section = document.getElementById('experience-section');
             const index = section.querySelectorAll('.experience-entry').length;
-            const entry = `<div class="flex space-x-4 items-center experience-entry">
-              <div class="flex-1" style="max-width: 200px;">
-              <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">Company Name</label>
-              <input type="text" name="experience_company[${index}]" placeholder="Company Name" class="w-full p-3 border rounded-lg" />
-              </div>
-              <div class="flex-1" style="max-width: 150px;">
-              <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">Position</label>
-              <input type="text" name="experience_position[${index}]" placeholder="Position" class="w-full p-3 border rounded-lg" />
+            const entry = `
+              <div class="flex space-x-4 items-center experience-entry">
+                <div class="flex-1" style="max-width: 200px;">
+                  <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">Company Name</label>
+                  <input type="text" name="experience[${index}][company]" placeholder="Company Name" class="w-full p-3 border rounded-lg" />
                 </div>
                 <div class="flex-1" style="max-width: 150px;">
-                <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">Start Date</label>
-                <input type="date" name="experience_start_date[${index}]" class="w-full p-3 border rounded-lg" />
+                  <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">Position</label>
+                  <input type="text" name="experience[${index}][position]" placeholder="Position" class="w-full p-3 border rounded-lg" />
                 </div>
                 <div class="flex-1" style="max-width: 150px;">
-                <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">End Date</label>
-                <input type="date" name="experience_end_date[${index}]" class="w-full p-3 border rounded-lg" />
+                  <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">Start Date</label>
+                  <input type="date" name="experience[${index}][start_date]" class="w-full p-3 border rounded-lg" />
                 </div>
-              <button type="button" class="abcd remove-experience py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300" style="position:relative; top:12px; max-width: 150px;">Remove</button>
+                <div class="flex-1" style="max-width: 150px;">
+                  <label style="position:relative; left:12px; font-size:0.875rem; color:#6B7280;">End Date</label>
+                  <input type="date" name="experience[${index}][end_date]" class="w-full p-3 border rounded-lg" />
+                </div>
+                <button type="button" class="abcd remove-experience py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300" style="position:relative; top:12px; max-width: 150px;">Remove</button>
               </div>`;
             section.insertAdjacentHTML('beforeend', entry);
-          });
+        });
+        
           
           document.querySelector('.add-skill').addEventListener('click', () => {
             const section = document.getElementById('skills-section');
