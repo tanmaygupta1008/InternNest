@@ -265,35 +265,54 @@ def candidate_home(request):
 
 @login_required
 def candidate_profile(request):
+    # Ensure only candidates can access this view
     if request.user.user_type != 'candidate':
         return redirect('login')
+
+    # Retrieve the candidate's profile or set it to None if it doesn't exist
     try:
         profile = request.user.candidate_profile
     except CandidateProfile.DoesNotExist:
         profile = None
 
-    candidate_prof = CandidateProfile.objects.all()  # Define this outside the conditional blocks
-    
+    # Query all candidate profiles (if needed for the template)
+    candidate_prof = CandidateProfile.objects.all()
+
     if request.method == 'POST':
         print("1")
+        # Bind the form with POST data and files
         form = CandidateProfileForm(request.POST, request.FILES, instance=profile)
         print("POST data:", request.POST)
 
         if form.is_valid():
             print("2")
+            print(form)
+            # Save the form but don't commit yet
             candidate_profile = form.save(commit=False)
             candidate_profile.user = request.user
-            candidate_profile.save()
+            request.user.first_name = form.cleaned_data.get('first_name')
+            request.user.last_name = form.cleaned_data.get('last_name')
+            request.user.save()
+            
+            candidate_profile.save()  # Save to the database
+            print("Profile saved:", candidate_profile)
+
+            # Add a success message
             messages.success(request, "Profile updated successfully.")
             return redirect('candidate_profile')
         else:
-            # Print the form errors to the console
+            # Print form errors for debugging
             print("Form is invalid. Errors:", form.errors)
     else:
-        form = CandidateProfileForm(instance=profile)
+        # Create a form instance pre-filled with the user's data
+        form = CandidateProfileForm(instance=profile, user=request.user)
 
-    return render(request, 'candidate_profile.html', {'form': form, 'candidate_prof': candidate_prof})
- 
+    # Render the form and any additional data
+    return render(request, 'candidate_profile.html', {
+        'form': form,
+        'candidate_prof': candidate_prof,
+    })
+
 
 @login_required
 def candidate_prof(request):

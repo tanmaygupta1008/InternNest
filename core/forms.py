@@ -49,16 +49,44 @@ class CustomUserChangeForm(UserChangeForm):
 #############################
 # Candidate & Employer Profile Forms
 #############################
-
 class CandidateProfileForm(forms.ModelForm):
+    first_name = forms.CharField(max_length=150, required=True)
+    last_name = forms.CharField(max_length=150, required=True)
+
     class Meta:
         model = CandidateProfile
-        fields = ('resume_url', 'education', 'experience', 'skills', 'profile_summary', 'profile_picture', 'birthdate','currently')
-  
-    widgets = {
+        fields = (
+            'resume_url', 'education', 'experience', 'skills', 'profile_summary', 
+            'profile_picture', 'birthdate', 'currently', 'first_name', 'last_name'
+        )
+        widgets = {
             'birthdate': forms.DateInput(attrs={'type': 'date'}),
             'currently': forms.Select(choices=CandidateProfile.EMPLOYMENT_STATUS_CHOICES),
         }
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)  # Pop user from kwargs
+        super().__init__(*args, **kwargs)
+        if user:
+            # Prepopulate first_name and last_name if the user is passed
+            self.fields['first_name'].initial = user.first_name
+            self.fields['last_name'].initial = user.last_name
+
+    def save(self, commit=True):
+      candidate_profile = super().save(commit=False)
+      candidate_profile.experience = self.cleaned_data.get('experience')
+
+      user = candidate_profile.user
+      user.first_name = self.cleaned_data.get('first_name')
+      user.last_name = self.cleaned_data.get('last_name')
+
+      if commit:
+        candidate_profile.save()
+        user.save()
+
+      return candidate_profile
+
+
     def clean_education(self):
         education_data = {}
         for key, value in self.data.items():
@@ -98,14 +126,18 @@ class CandidateProfileForm(forms.ModelForm):
                 experience_data[index] = {}
             experience_data[index][field] = value
 
-     # Convert grouped data into a list of dictionaries
-     experience_list = [entry for entry in experience_data.values()]
+     experience_list = list(experience_data.values())
 
      # Validate each entry
      for entry in experience_list:
-        if not all(key in entry for key in ['company', 'position', 'start_date', 'end_date']):
+        required_fields = ['company', 'position', 'start_date', 'end_date']
+        if not all(field in entry and entry[field] for field in required_fields):
             raise forms.ValidationError("Each experience entry must include company, position, start date, and end date.")
+
      return experience_list
+ 
+
+
 
 
     def clean_birthdate(self):

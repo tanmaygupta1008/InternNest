@@ -1,7 +1,7 @@
 <!-- yourapp/templates/opportunity_detail.html -->
-{% extends 'base.html' %}
+{% comment %} {% extends 'base.html' %} {% endcomment %}
 {% load static %}
-{% block title %}Opportunity Details{% endblock %}
+{% comment %} {% block title %}Opportunity Details{% endblock %}
 {% block content %}
   <h2>{{ opportunity.title }}</h2>
   <p><strong>Employer:</strong> {{ opportunity.employer.company_name }}</p>
@@ -56,4 +56,225 @@
       >
         View Details
       </a>
-{% endblock %}
+{% endblock %} {% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Webcrumbs Plugin</title>
+    <link rel="stylesheet" href="{% static "opportunity_detail.css" %}"/>
+    <link rel="stylesheet"  href="{% static 'styless1.css' %}" />
+  </head>
+  <body>
+    <div id="webcrumbs">
+      <nav
+          class="bg-white shadow-lg sticky top-0 z-50 transition-all duration-300 hover:shadow-xl"
+        >
+          <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+              <h1 class="text-2xl font-semibold relative group">
+                InternNext
+                <svg
+                  class="absolute -right-8 -top-4 text-violet-400 w-8 h-8 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3 17C6.5 14.5 9.5 14.5 13 17M12 6.5C11 6.5 10 7 9.5 8M3 8.5C6.5 11 9.5 11 13 8.5"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  ></path>
+                </svg>
+              </h1>
+              <div class="flex items-center space-x-6">
+                <details class="relative group">
+                  <summary
+                    class="hover:text-violet-600 cursor-pointer list-none flex items-center"
+                  >
+                    Categories
+                    <svg
+                      class="w-4 h-4 ml-1 transition-transform duration-200 group-open:rotate-180"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 9l-7 7-7-7"
+                      ></path>
+                    </svg>
+                  </summary>
+                  <div
+                    class="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50"
+                  >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Software Development</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Data Science</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Marketing</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Design</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Business</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Engineering</a
+                    >
+                  </div>
+                </details>
+                <a
+                  class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
+                  href="{% url 'candidate_home' %}"
+                  >Home</a
+                >
+                <a
+                  class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
+                  href="{% url 'job_seeking' %}"
+                  >Jobs</a
+                >
+                <a
+                  class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
+                  href="{% url 'candidate_profile' %}"
+                  >Profile</a
+                >
+                <button
+                  class="bg-violet-600 text-white px-4 py-2 rounded-lg hover:bg-violet-700 transform hover:scale-105 transition-all duration-300 hover:shadow-lg relative group"
+                >
+                  <a href="{% url 'logout' %}">Logout</a>
+                  <svg
+                    class="absolute -right-4 -bottom-3 text-violet-400 w-6 h-6 transition-transform duration-300 group-hover:rotate-12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M19 9C19 11 17.5 14.5 12 14.5C6.5 14.5 5 11 5 9"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </nav>
+      <div class="w-[800px] bg-white rounded-lg shadow-lg p-8">
+      <div class="space-y-6">
+        <div class="flex justify-between items-center mb-8">
+        <div class="flex items-center space-x-4">
+          <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center p-3 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+          <span class="material-symbols-outlined text-4xl text-white">business</span>
+          </div>
+          <h1 class="text-2xl font-bold">{{ opportunity.title }}</h1>
+        </div>
+        <div class="flex space-x-4">
+          <button class="px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300 shadow-md">
+          Know About Company
+          </button>
+          <a href="{% url 'job_seeking' %}" class="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300 shadow-md">
+          Back to Listings
+          </a>
+        </div>
+        </div>
+        <div class="grid grid-cols-2 gap-6">
+        <div class="space-y-4">
+          <div class="bg-gray-50 p-4 rounded-lg hover:shadow-md transition-all duration-300 border border-transparent hover:border-blue-100">
+          <h3 class="text-sm text-gray-500">Employer</h3>
+          <p class="font-semibold">{{ opportunity.employer.company_name }}</p>
+          </div>
+          <div class="bg-gray-50 p-4 rounded-lg hover:shadow-md transition-all duration-300 border border-transparent hover:border-blue-100">
+          <h3 class="text-sm text-gray-500">Location</h3>
+          <p class="font-semibold">{{ opportunity.location }}</p>
+          </div>
+          <div class="bg-gray-50 p-4 rounded-lg hover:shadow-md transition-all duration-300 border border-transparent hover:border-blue-100">
+          <h3 class="text-sm text-gray-500">Opportunity Type</h3>
+          <p class="font-semibold">{{ opportunity.opportunity_type|title }}</p>
+          </div>
+          {% if opportunity.salary_range or opportunity.stipend %}
+          <div class="bg-gray-50 p-4 rounded-lg hover:shadow-md transition-all duration-300 border border-transparent hover:border-blue-100">
+          <h3 class="text-sm text-gray-500">{% if opportunity.salary_range %}Salary Range{% else %}Stipend{% endif %}</h3>
+          <p class="font-semibold">{% if opportunity.salary_range %}{{ opportunity.salary_range }}{% else %}{{ opportunity.stipend }}{% endif %}</p>
+          </div>
+          {% endif %}
+        </div>
+        <div class="space-y-4">
+          {% if opportunity.duration %}
+          <div class="bg-gray-50 p-4 rounded-lg hover:shadow-md transition-all duration-300 border border-transparent hover:border-blue-100">
+          <h3 class="text-sm text-gray-500">Duration</h3>
+          <p class="font-semibold">{{ opportunity.duration }}</p>
+          </div>
+          {% endif %}
+          {% if opportunity.start_date %}
+          <div class="bg-gray-50 p-4 rounded-lg hover:shadow-md transition-all duration-300 border border-transparent hover:border-blue-100">
+          <h3 class="text-sm text-gray-500">Start Date</h3>
+          <p class="font-semibold">{{ opportunity.start_date|date:"d F, Y" }}</p>
+          </div>
+          {% endif %}
+          {% if opportunity.application_deadline %}
+          <div class="bg-gray-50 p-4 rounded-lg hover:shadow-md transition-all duration-300 border border-transparent hover:border-blue-100">
+          <h3 class="text-sm text-gray-500">Application Deadline</h3>
+          <p class="font-semibold">{{ opportunity.application_deadline|date:"d F, Y" }}</p>
+          </div>
+          {% endif %}
+          {% if opportunity.experience_required %}
+          <div class="bg-gray-50 p-4 rounded-lg hover:shadow-md transition-all duration-300 border border-transparent hover:border-blue-100">
+          <h3 class="text-sm text-gray-500">Experience Required</h3>
+          <p class="font-semibold">{{ opportunity.experience_required }}</p>
+          </div>
+          {% endif %}
+        </div>
+        </div>
+        {% if opportunity.skills_required.all %}
+        <div class="bg-gray-50 p-4 rounded-lg hover:shadow-md transition-all duration-300 border border-transparent hover:border-blue-100">
+        <h3 class="text-sm text-gray-500 mb-2">Skills Required</h3>
+        <p class="font-semibold">
+          {% for skill in opportunity.skills_required.all %}
+          {{ skill.name }}{% if not forloop.last %}, {% endif %}
+          {% empty %}
+          No skills listed.
+          {% endfor %}
+        </p>
+        </div>
+        {% endif %}
+        <div class="bg-gray-50 p-4 rounded-lg hover:shadow-md transition-all duration-300 border border-transparent hover:border-blue-100">
+        <h3 class="text-sm text-gray-500 mb-2">Description</h3>
+        <p class="font-semibold">{{ opportunity.description }}</p>
+        </div>
+        <div class="flex justify-between items-center text-sm text-gray-500">
+        <div>
+          <p>Posted at: {{ opportunity.posted_at|date:"d F, Y H:i" }}</p>
+          <p>Last Updated: {{ opportunity.updated_at|date:"d F, Y H:i" }}</p>
+        </div>
+        <a href="{% url 'opportunity_apply' opportunity.id %}" class="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300 shadow-md">
+          View Details
+        </a>
+        </div>
+      </div>
+      </div>
+    </div>
+
+  </body>
+</html>
