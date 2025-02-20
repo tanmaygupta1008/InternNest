@@ -1,12 +1,152 @@
+{% comment %}
 <!-- yourapp/templates/register.html -->
-{% extends 'base.html' %}
-{% block title %}Register{% endblock %}
-{% block content %}
-  <h2>Register</h2>
-  <form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Register</button>
-  </form>
-  <p>Already have an account? <a href="{% url 'login' %}">Login here</a>.</p>
-{% endblock %}
+{% extends 'base.html' %} {% block title %}Register{% endblock %} {% block
+content %}
+<h2>Register</h2>
+<form method="POST">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit">Register</button>
+</form>
+<p>Already have an account? <a href="{% url 'login' %}">Login here</a>.</p>
+{% endblock %} {% endcomment %} {%load static%}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Webcrumbs Plugin</title>
+    <link rel="stylesheet" href="{% static 'register.css' %}" />
+  </head>
+  <body>
+    <div id="webcrumbs">
+      <div class="w-[800px] bg-white rounded-lg shadow-lg p-8">
+        <form method="POST" action="{% url 'register' %}">
+          {% csrf_token %}
+          <div class="space-y-6">
+            <div class="flex justify-between items-center mb-8">
+              <div class="flex items-center space-x-4">
+                <div
+                  class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center p-3 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                >
+                  <span class="material-symbols-outlined text-4xl text-white"
+                    >person_add</span
+                  >
+                </div>
+                <h1 class="text-2xl font-bold">Register</h1>
+              </div>
+            </div>
+            <div class="space-y-4">
+              <div class="grid grid-cols-2 gap-6">
+                <div class="space-y-4">
+                  <div
+                    class="bg-gray-50 p-4 rounded-lg hover:shadow-md transition-all duration-300"
+                  >
+                    <h3 class="text-sm text-gray-500 mb-2">First Name</h3>
+                    <input
+                      type="text"
+                      name="first_name"
+                      value="{{ form.first_name.value|default:'' }}"
+                      class="w-full p-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
+                    />
+                    <p class="text-red-500 text-xs mt-1">{{ form.first_name.errors }}</p>
+                  </div>
+                  <div
+                    class="bg-gray-50 p-4 rounded-lg hover:shadow-md transition-all duration-300"
+                  >
+                    <h3 class="text-sm text-gray-500 mb-2">Email</h3>
+                    <input
+                      type="email"
+                      name="email"
+                      value="{{ form.email.value|default:'' }}"
+                      class="w-full p-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
+                    />
+                    <p class="text-red-500 text-xs mt-1">{{ form.email.errors }}</p>
+                  </div>
+                  <div
+                    class="bg-gray-50 p-4 rounded-lg hover:shadow-md transition-all duration-300"
+                  >
+                    <h3 class="text-sm text-gray-500 mb-2">Password</h3>
+                    <input
+                      type="password"
+                      name="password1"
+                      class="w-full p-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
+                    />
+                    <p class="text-red-500 text-xs mt-1">{{ form.password1.errors }}</p>
+                  </div>
+                </div>
+                <div class="space-y-4">
+                  <div
+                    class="bg-gray-50 p-4 rounded-lg hover:shadow-md transition-all duration-300"
+                  >
+                    <h3 class="text-sm text-gray-500 mb-2">Last Name</h3>
+                    <input
+                      type="text"
+                      name="last_name"
+                      value="{{ form.last_name.value|default:'' }}"
+                      class="w-full p-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
+                    />
+                    <p class="text-red-500 text-xs mt-1">{{ form.last_name.errors }}</p>
+                  </div>
+                  <div
+                    class="bg-gray-50 p-4 rounded-lg hover:shadow-md transition-all duration-300"
+                  >
+                    <h3 class="text-sm text-gray-500 mb-2">Phone</h3>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value="{{ form.phone.value|default:'' }}"
+                      class="w-full p-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
+                    />
+                    <p class="text-red-500 text-xs mt-1">{{ form.phone.errors }}</p>
+                  </div>
+                  <div
+                    class="bg-gray-50 p-4 rounded-lg hover:shadow-md transition-all duration-300"
+                  >
+                    <h3 class="text-sm text-gray-500 mb-2">Confirm Password</h3>
+                    <input
+                      type="password"
+                      name="password2"
+                      class="w-full p-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
+                    />
+                    <p class="text-red-500 text-xs mt-1">{{ form.password2.errors }}</p>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="bg-gray-50 p-4 rounded-lg hover:shadow-md transition-all duration-300"
+              >
+                <h3 class="text-sm text-gray-500 mb-2">User Type</h3>
+                <select
+                  name="user_type"
+                  class="w-full p-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
+                >
+                  <option value="">Select user type</option>
+                  <option value="student" {% if form.user_type.value == "student" %}selected{% endif %}>Student</option>
+                  <option value="employer" {% if form.user_type.value == "employer" %}selected{% endif %}>Employer</option>
+                </select>
+                <p class="text-red-500 text-xs mt-1">{{ form.user_type.errors }}</p>
+              </div>
+            </div>
+            <div class="flex justify-between items-center pt-6">
+              <p class="text-sm text-gray-500">
+                Already have an account?
+                <a
+                  href="{% url 'login' %}"
+                  class="text-blue-500 hover:text-blue-600 transition-colors duration-300"
+                  >Login here</a
+                >
+              </p>
+              <button
+                type="submit"
+                class="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300 shadow-md"
+              >
+                Register
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+  </body>
+</html>

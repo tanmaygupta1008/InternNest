@@ -1,85 +1,3 @@
-# from django.shortcuts import render, get_object_or_404
-# from django.contrib.auth.decorators import login_required
-# from .models import JobInternshipPosting, Application
-
-# @login_required
-# def home(request):
-#     if request.user.user_type == 'normal':
-#         # Normal user dashboard
-#         applications = Application.objects.filter(user=request.user)
-#         return render(request, 'core/normal_user_dashboard.html', {'applications': applications})
-#     else:
-#         # Employer dashboard
-#         postings = JobInternshipPosting.objects.filter(employer=request.user)
-#         return render(request, 'core/employer_dashboard.html', {'postings': postings})
-
-# @login_required
-# def job_internship_detail(request, posting_id):
-#     posting = get_object_or_404(JobInternshipPosting, id=posting_id)
-#     return render(request, 'core/job_internship_detail.html', {'posting': posting})
-
-# @login_required
-# def apply(request, posting_id):
-#     if request.method == 'POST':
-#         posting = get_object_or_404(JobInternshipPosting, id=posting_id)
-#         Application.objects.create(
-#             posting=posting,
-#             user=request.user,
-#             cover_letter_url=request.POST.get('cover_letter_url'),
-#             resume_url=request.POST.get('resume_url')
-#         )
-#         return redirect('home')
-#     return render(request, 'core/apply.html', {'posting_id': posting_id})
-# from django.shortcuts import render, redirect
-# from django.contrib.auth import login
-# from .models import JobListing
-# from .forms import JobSeekerSignUpForm, EmployerSignUpForm, JobListingForm
-
-# # Homepage
-# def home(request):
-#     jobs = JobListing.objects.all()
-#     return render(request, 'home.html', {'jobs': jobs})
-
-# # Job Seeker Registration
-# def job_seeker_register(request):
-#     if request.method == "POST":
-#         form = JobSeekerSignUpForm(request.POST)
-#         if form.is_valid():
-#             user = form.save(commit=False)
-#             user.is_employer = False
-#             user.save()
-#             login(request, user)
-#             return redirect('home')
-#     else:
-#         form = JobSeekerSignUpForm()
-#     return render(request, 'register.html', {'form': form})
-
-# # Employer Registration
-# def employer_register(request):
-#     if request.method == "POST":
-#         form = EmployerSignUpForm(request.POST)
-#         if form.is_valid():
-#             user = form.save(commit=False)
-#             user.is_employer = True
-#             user.save()
-#             login(request, user)
-#             return redirect('home')
-#     else:
-#         form = EmployerSignUpForm()
-#     return render(request, 'register.html', {'form': form})
-
-# # Job Posting (For Employers)
-# def post_job(request):
-#     if request.method == "POST":
-#         form = JobListingForm(request.POST)
-#         if form.is_valid():
-#             job = form.save(commit=False)
-#             job.employer = request.user
-#             job.save()
-#             return redirect('home')
-#     else:
-#         form = JobListingForm()
-#     return render(request, 'post_job.html', {'form': form})
 
 # yourapp/views.py
 from django.core.mail import send_mail
@@ -110,15 +28,22 @@ def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()  # Save the user instance
-            messages.success(request, "Registration successful. You can now log in.")
+            # Save the user instance
+            user = form.save()
+
+            # Create an EmailDevice for the user
+            try:
+                EmailDevice.objects.create(user=user, email=user.email, confirmed=True)
+                messages.success(request, "Registration successful. You can now log in.")
+            except Exception as e:
+                messages.error(request, f"Failed to set up OTP device: {e}")
+
             return redirect('login')
         else:
             messages.error(request, "Please correct the errors below.")
     else:
         form = CustomUserCreationForm()
     return render(request, 'register.html', {'form': form})
-
 
 # # ----------------------------
 # # Login and Logout Views

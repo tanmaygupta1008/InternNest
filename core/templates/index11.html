@@ -19,22 +19,10 @@
         >
           <div class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
-              <h1 class="text-2xl font-semibold relative group">
-                InternNext
-                <svg
-                  class="absolute -right-8 -top-4 text-violet-400 w-8 h-8 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M3 17C6.5 14.5 9.5 14.5 13 17M12 6.5C11 6.5 10 7 9.5 8M3 8.5C6.5 11 9.5 11 13 8.5"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                  ></path>
-                </svg>
-              </h1>
+              <span
+                    class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600"
+                    >InternNext</span
+                  >
               <div class="flex items-center space-x-6">
                 <details class="relative group">
                   <summary
@@ -92,19 +80,25 @@
                 </details>
                 <a
                   class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
-                  href="/browse"
-                  >Browse</a
+                  href="{% url 'home' %}"
+                  >Home</a
                 >
                 <a
                   class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
-                  href="/post"
+                  href="{% url 'job_seeking' %}"
+                  >Jobs</a
+                >
+                <a
+                  class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
+                  href="{% url 'job_posting' %}"
                   >Post</a
                 >
-                
-                <a href="{% url 'login' %}"
-                class="bg-violet-600 text-white px-4 py-2 rounded-lg hover:bg-violet-700 transform hover:scale-105 transition-all duration-300 hover:shadow-lg relative group"
-                >Login</a>
-                 
+                <button
+                  class="bg-violet-600 text-white px-4 py-2 rounded-lg hover:bg-violet-700 transform hover:scale-105 transition-all duration-300 hover:shadow-lg relative group"
+                >
+                  <a href="{% url 'logout' %}">Logout</a>
+                  
+                </button>
               </div>
             </div>
           </div>
