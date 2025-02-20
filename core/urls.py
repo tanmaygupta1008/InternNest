@@ -40,4 +40,6 @@ urlpatterns = [
     path('employer/profile/', views.employer_profile, name='employer_profile'),
     path('employer/job-posting/', views.job_posting, name='job_posting'),
     path('opportunity_apply/<int:pk>/', views.opportunity_apply, name='opportunity_apply'),
+
+    path('search_list/', views.search_list, name='search_list'),
 ]

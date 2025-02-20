@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Global Search with Persistent Filtering</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <div class="container mx-auto p-8">
+    <!-- Tabs -->
+    <div class="flex justify-center gap-4 mb-8">
+      <button
+        id="tabCandidate"
+        class="tab-btn px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium hover:shadow-lg transition-all"
+      >
+        Candidates
+      </button>
+      <button
+        id="tabEmployer"
+        class="tab-btn px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium hover:shadow-lg transition-all"
+      >
+        Employers
+      </button>
+      <button
+        id="tabJobs"
+        class="tab-btn px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium hover:shadow-lg transition-all"
+      >
+        Jobs
+      </button>
+    </div>
+
+    <!-- Global Search Bar -->
+    <div class="mb-6">
+      <input
+        id="globalSearch"
+        type="text"
+        placeholder="Search across all sections..."
+        class="w-full p-4 rounded-lg border shadow-sm focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+
+    <!-- Candidate Section -->
+    <div id="candidateContent" class="section">
+      <h2 class="text-2xl font-bold mb-4">Candidates Section</h2>
+      <div id="candidateContainer">
+        <!-- Candidate content goes here -->
+        <p class="candidate-item" data-name="John Doe">John Doe</p>
+        <p class="candidate-item" data-name="Jane Smith">Jane Smith</p>
+      </div>
+    </div>
+
+    <!-- Employer Section -->
+    <div id="employerContent" class="section hidden">
+      <h2 class="text-2xl font-bold mb-4">Employers Section</h2>
+      <div id="employerContainer">
+        <!-- Employer content goes here -->
+        <p class="employer-item" data-name="TechCorp">TechCorp</p>
+        <p class="employer-item" data-name="InnovateX">InnovateX</p>
+      </div>
+    </div>
+
+    <!-- Jobs Section -->
+    <div id="jobsContent" class="section hidden">
+      <h2 class="text-2xl font-bold mb-4">Jobs Section</h2>
+
+      <!-- Sort Controls -->
+      <div class="mb-8">
+        <select
+          id="sortJobs"
+          class="w-full md:w-1/4 p-4 rounded-lg border shadow-sm focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="">Sort By</option>
+          <option value="title">Title</option>
+          <option value="employer">Employer</option>
+          <option value="salary">Salary</option>
+          <option value="duration">Duration</option>
+          <option value="start-date">Start Date</option>
+        </select>
+      </div>
+
+      <!-- Job Cards -->
+<div id="jobContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for opportunity in opportunities %}
+    <div
+      class="job-card bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 hover:scale-[1.02] cursor-pointer border border-transparent hover:border-purple-100"
+      data-title="{{ opportunity.title|lower }}"
+      data-employer="{{ opportunity.employer.company_name|lower }}"
+      data-salary="{{ opportunity.salary_range|default:0 }}"
+      data-duration="{{ opportunity.duration|default:'' }}"
+      data-start-date="{{ opportunity.start_date|default:'' }}"
+    >
+      <h3 class="text-xl font-bold text-blue-900">{{ opportunity.title }}</h3>
+      <p class="text-lg text-gray-700">{{ opportunity.employer.company_name }}</p>
+      <p class="text-gray-600 mb-6 line-clamp-2">
+        {{ opportunity.description|truncatewords:15 }}
+      </p>
+      <div class="flex gap-2 mb-6 flex-wrap">
+        <span class="px-4 py-1.5 bg-blue-100 text-blue-600 rounded-full text-sm font-medium">
+          {{ opportunity.opportunity_type|title }}
+        </span>
+        {% if opportunity.salary_range %}
+        <span class="px-4 py-1.5 bg-purple-100 text-purple-600 rounded-full text-sm font-medium">
+          {{ opportunity.salary_range }}
+        </span>
+        {% endif %}
+        {% if opportunity.duration %}
+        <span class="px-4 py-1.5 bg-green-100 text-green-600 rounded-full text-sm font-medium">
+          {{ opportunity.duration }}
+        </span>
+        {% endif %}
+      </div>
+      <a
+        href="{% url 'opportunity_detail' opportunity.id %}"
+        class="block w-full py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-medium hover:shadow-lg hover:scale-[1.02] transition-all duration-300 text-center"
+      >
+        View Details
+      </a>
+    </div>
+    {% empty %}
+    <p class="text-gray-500 text-center col-span-full">No jobs found matching your criteria.</p>
+    {% endfor %}
+  </div>
+  
+    </div>
+  </div>
+
+  <script>
+    const tabs = document.querySelectorAll(".tab-btn");
+    const sections = document.querySelectorAll(".section");
+    const globalSearch = document.getElementById("globalSearch");
+    const sortJobs = document.getElementById("sortJobs");
+
+    // Tab Switching
+    tabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => {
+        sections.forEach((section) => section.classList.add("hidden"));
+        sections[index].classList.remove("hidden");
+        applySearch(globalSearch.value); // Apply search to the new section
+      });
+    });
+
+    // Global Search
+    globalSearch.addEventListener("input", (e) => {
+      const query = e.target.value.toLowerCase();
+      applySearch(query);
+    });
+
+    // Apply Search Logic
+    function applySearch(query) {
+      const activeSection = document.querySelector(".section:not(.hidden)");
+
+      if (activeSection.id === "candidateContent") {
+        filterContent("candidate-item", query);
+      } else if (activeSection.id === "employerContent") {
+        filterContent("employer-item", query);
+      } else if (activeSection.id === "jobsContent") {
+        filterContent("job-card", query);
+      }
+    }
+
+    // Filtering Logic
+    function filterContent(className, query) {
+      const items = document.querySelectorAll(`.${className}`);
+      items.forEach((item) => {
+        const dataName = item.dataset.name || item.dataset.title || "";
+        item.style.display = dataName.includes(query) ? "block" : "none";
+      });
+    }
+
+    // Job Sorting Logic
+    sortJobs.addEventListener("change", () => {
+      const sortBy = sortJobs.value;
+      const jobCards = Array.from(document.querySelectorAll(".job-card"));
+
+      jobCards.sort((a, b) => {
+        let valA = a.dataset[sortBy] || "";
+        let valB = b.dataset[sortBy] || "";
+
+        // Handle numeric sorting
+        if (sortBy === "salary") {
+          valA = parseFloat(valA) || 0;
+          valB = parseFloat(valB) || 0;
+        } else if (sortBy === "start-date") {
+          valA = new Date(valA);
+          valB = new Date(valB);
+        }
+
+        return valA > valB ? 1 : valA < valB ? -1 : 0;
+      });
+
+      // Append sorted cards back to the container
+      const jobContainer = document.getElementById("jobContainer");
+      jobCards.forEach((card) => jobContainer.appendChild(card));
+    });
+  </script>
+</body>
+</html>

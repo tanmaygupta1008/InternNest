@@ -359,3 +359,15 @@ def opportunity_apply(request, pk):
 
     return render(request, 'opportunity_apply.html', {'opportunity': opportunity})
 
+
+
+def search_list(request):
+    # Fetch all job opportunities
+    opportunities = Opportunity.objects.all()
+
+    # Pass the opportunities to the template
+    context = {
+        'opportunities': opportunities,
+    }
+    return render(request, 'search.html', context)
+
