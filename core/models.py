@@ -236,18 +236,34 @@ class CandidateProfile(models.Model):
         return f"{self.user.email}'s Candidate Profile"
 
 
-
 class EmployerProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='employer_profile')
     company_name = models.CharField(max_length=255)
-    company_logo = models.ImageField(upload_to='company_logos/', blank=True, null=True)
+    company_logo = models.ImageField(upload_to='', blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     website = models.URLField(blank=True, null=True)
     location = models.CharField(max_length=255, blank=True, null=True)
+    industry = models.CharField(max_length=255, blank=True, null=True)
+    company_size = models.CharField(
+        max_length=50,
+        choices=[
+            ('1-50', '1-50 employees'),
+            ('51-200', '51-200 employees'),
+            ('201-1000', '201-1000 employees'),
+            ('1000+', '1000+ employees')
+        ],
+        blank=True,
+        null=True
+    )
+    email = models.EmailField(blank=True, null=True)
+    phone = models.CharField(max_length=15, blank=True, null=True)
+    social_links = models.JSONField(default=dict, blank=True)  # For LinkedIn, Twitter, etc.
+    achievements = models.JSONField(default=list, blank=True)  # For storing multiple achievements as a list
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.company_name
+
 
 ###########################
 # Supporting Tables

@@ -153,10 +153,22 @@ class CandidateProfileForm(forms.ModelForm):
         return birthdate
 
 
+from django import forms
+from .models import EmployerProfile
+
 class EmployerProfileForm(forms.ModelForm):
+    achievements = forms.CharField(
+        widget=forms.HiddenInput(),
+        required=False
+    )
+
     class Meta:
         model = EmployerProfile
-        fields = ('company_name', 'company_logo', 'description', 'website', 'location')
+        fields = [
+            'company_name', 'company_logo', 'description', 'website', 'location',
+            'industry', 'company_size', 'email', 'phone', 'social_links', 'achievements'
+        ]
+
 
 #############################
 # Opportunity & Application Forms

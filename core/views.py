@@ -287,26 +287,55 @@ def employer_home(request):
     opportunities = Opportunity.objects.filter(employer=profile) if profile else []
     return render(request, 'employer_home.html', {'opportunities': opportunities})
 
+from django.shortcuts import render, redirect
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core.files.storage import FileSystemStorage
+import json
 
 @login_required
 def employer_profile(request):
     if request.user.user_type != 'employer':
         return redirect('login')
+
     try:
         profile = request.user.employer_profile
     except EmployerProfile.DoesNotExist:
         profile = None
+
     if request.method == 'POST':
         form = EmployerProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
+            print(form)
             employer_profile = form.save(commit=False)
             employer_profile.user = request.user
+
+            # Handle achievements input
+            achievements_data = request.POST.getlist('achievements[]')
+            employer_profile.achievements = achievements_data if achievements_data else []
+
+            # employer_profile.company_url=request.POST.get("")
+
+            # Handle social links
+            employer_profile.social_links = {
+                "linkedin": request.POST.get("social_links[linkedin]", ""),
+                "twitter": request.POST.get("social_links[twitter]", ""),
+                "facebook": request.POST.get("social_links[facebook]", ""),
+            }
+
+            # Handle logo upload
+            if 'logo' in request.FILES:
+                employer_profile.company_logo = request.FILES['logo']
+
             employer_profile.save()
             messages.success(request, "Profile updated successfully.")
             return redirect('employer_profile')
     else:
         form = EmployerProfileForm(instance=profile)
-    return render(request, 'employer_profile.html', {'form': form})
+
+    return render(request, 'Employeer-Profile-Editing.html', {'form': form, 'profile': profile})
+
 
 
 @login_required
