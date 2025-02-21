@@ -304,7 +304,7 @@ class Opportunity(models.Model):
     application_deadline = models.DateField(blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     # Using a ManyToManyField to Skill. This works as a pivot table automatically.
-    skills_required = models.ManyToManyField(Skill, blank=True, related_name='opportunities')
+    skills_required = models.JSONField(default=list)  # Default to an empty list if no skills are provided
     experience_required = models.CharField(max_length=100, blank=True, null=True)
     posted_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

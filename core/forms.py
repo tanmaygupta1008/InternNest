@@ -173,6 +173,7 @@ class EmployerProfileForm(forms.ModelForm):
 #############################
 # Opportunity & Application Forms
 #############################
+import json
 
 class OpportunityForm(forms.ModelForm):
     class Meta:
@@ -182,7 +183,32 @@ class OpportunityForm(forms.ModelForm):
             'stipend', 'duration', 'start_date', 'application_deadline', 'category',
             'skills_required', 'experience_required'
         )
+        category = forms.ModelChoiceField(
+           queryset=Category.objects.all(),
+           empty_label="Select a category",
+        )
+        skills_required = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={
+            'placeholder': 'Enter skills separated by commas',
+            'class': 'w-full p-3 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 hover:border-blue-300',
+        }),
+        help_text="Enter skills separated by commas, e.g., Python, Django, React.",
+        )
 
+        class Meta:
+          model = Opportunity
+          fields = '__all__'
+
+        def clean_skills_required(self):
+         data = self.cleaned_data['skills_required']
+         try:
+            skills = json.loads(data)
+            if not isinstance(skills, list):
+              raise ValueError("Skills must be a list.")
+            return skills
+         except json.JSONDecodeError:
+            raise forms.ValidationError("Invalid skills format.")
 
 
 

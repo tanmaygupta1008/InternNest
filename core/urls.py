@@ -43,5 +43,5 @@ urlpatterns = [
 
     path('search_list/', views.search_list, name='search_list'),
     path('dashboard/', views.dashboard, name='dashboard'),
-    path('post-job/', views.post_job, name='post_job')
+    # path('post-job/', views.post_job, name='post_job')
 ]

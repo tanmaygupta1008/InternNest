@@ -349,29 +349,34 @@ def employer_profile(request):
     return render(request, 'Employeer-Profile-Editing.html', {'form': form, 'profile': profile})
 
 
-
+from .models import Category
 @login_required
 def job_posting(request):
     if request.user.user_type != 'employer':
         return redirect('login')
+    
     if request.method == 'POST':
         form = OpportunityForm(request.POST)
         if form.is_valid():
             opportunity = form.save(commit=False)
-            # Assign the employer profile to the opportunity
             try:
                 opportunity.employer = request.user.employer_profile
             except EmployerProfile.DoesNotExist:
                 messages.error(request, "Employer profile not found.")
                 return redirect('employer_profile')
+            
             opportunity.save()
-            # ManyToMany relationships need to be saved after saving the instance
             form.save_m2m()
             messages.success(request, "Job posted successfully.")
             return redirect('employer_home')
+        else:
+            print("Form errors:", form.errors)
     else:
         form = OpportunityForm()
-    return render(request, 'job_posting.html', {'form': form})
+    categories = Category.objects.all()  # Fetch categories
+    return render(request, 'job_posting.html', {'form': form, 'categories': categories})
+
+
 
 @login_required
 def opportunity_detail(request, opportunity_id):
@@ -412,26 +417,26 @@ def search_list(request):
     }
     return render(request, 'search.html', context)
 
-@login_required
-def post_job(request):
-    if request.method == "POST":
-        form = JobForm(request.POST)
-        if form.is_valid():
-            job = form.save(commit=False)
-            job.posted_by = request.user
-            job.save()
+# @login_required
+# def post_job(request):
+#     if request.method == "POST":
+#         form = JobForm(request.POST)
+#         if form.is_valid():
+#             job = form.save(commit=False)
+#             job.posted_by = request.user
+#             job.save()
             
-            # Create a notification
-            Notification.objects.create(
-                job=job,
-                message=f"New job posted: {job.title}"
-            )
+#             # Create a notification
+#             Notification.objects.create(
+#                 job=job,
+#                 message=f"New job posted: {job.title}"
+#             )
 
-            return redirect('job_list')  # Redirect to job listing
-    else:
-        form = JobForm()
+#             return redirect('job_list')  # Redirect to job listing
+#     else:
+#         form = JobForm()
     
-    return render(request, 'post_a_job.html', {'form': form})
+    # return render(request, 'post_a_job.html', {'form': form})
 
 @login_required  # Ensure the user is logged in
 def dashboard(request):
