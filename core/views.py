@@ -275,6 +275,17 @@ def job_seeking(request):
 # ----------------------------
 # Employer Views
 # ----------------------------
+# @login_required
+# def employer_home(request):
+#     if request.user.user_type != 'employer':
+#         return redirect('login')
+#     # For demonstration, load employer opportunities and applications
+#     try:
+#         profile = request.user.employer_profile
+#     except EmployerProfile.DoesNotExist:
+#         profile = None
+#     opportunities = Opportunity.objects.filter(employer=profile) if profile else []
+#     return render(request, 'employer_home.html', {'opportunities': opportunities})
 @login_required
 def employer_home(request):
     if request.user.user_type != 'employer':
@@ -285,7 +296,8 @@ def employer_home(request):
     except EmployerProfile.DoesNotExist:
         profile = None
     opportunities = Opportunity.objects.filter(employer=profile) if profile else []
-    return render(request, 'employer_home.html', {'opportunities': opportunities})
+    return render(request, 'Emplyer-home.html', {'opportunities': opportunities})
+
 
 from django.shortcuts import render, redirect
 from django.conf import settings
@@ -399,4 +411,37 @@ def search_list(request):
         'opportunities': opportunities,
     }
     return render(request, 'search.html', context)
+
+@login_required
+def post_job(request):
+    if request.method == "POST":
+        form = JobForm(request.POST)
+        if form.is_valid():
+            job = form.save(commit=False)
+            job.posted_by = request.user
+            job.save()
+            
+            # Create a notification
+            Notification.objects.create(
+                job=job,
+                message=f"New job posted: {job.title}"
+            )
+
+            return redirect('job_list')  # Redirect to job listing
+    else:
+        form = JobForm()
+    
+    return render(request, 'post_a_job.html', {'form': form})
+
+@login_required  # Ensure the user is logged in
+def dashboard(request):
+    # Fetch the logged-in user's name
+    user_name = request.user.get_full_name() or request.user.username  # Use full name or fallback to username
+    context = {
+        'user_name': user_name,
+    }
+    return render(request, 'Dashboard-Employer.html', context)
+
+
+
 
