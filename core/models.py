@@ -353,7 +353,9 @@ class JobApplication(models.Model):
                 ApplicationCounter.update_counters(self.opportunity.employer, previous.status, self.status)
         else:  # New application
             ApplicationCounter.increment(self.opportunity.employer, 'applied')
+            ApplicationCounter.increment_total(self.opportunity.employer)  # Increment total for new application
         super().save(*args, **kwargs)
+
 
 class ApplicationCounter(models.Model):
     employer = models.OneToOneField(EmployerProfile, on_delete=models.CASCADE, related_name='application_counter')
@@ -362,6 +364,7 @@ class ApplicationCounter(models.Model):
     shortlisted = models.PositiveIntegerField(default=0)
     rejected = models.PositiveIntegerField(default=0)
     hired = models.PositiveIntegerField(default=0)
+    total = models.PositiveIntegerField(default=0)
 
     @classmethod
     def increment(cls, employer, status):
@@ -377,6 +380,12 @@ class ApplicationCounter(models.Model):
             counter.save()
 
     @classmethod
+    def increment_total(cls, employer):
+        counter, _ = cls.objects.get_or_create(employer=employer)
+        counter.total += 1
+        counter.save()
+
+    @classmethod
     def update_counters(cls, employer, old_status, new_status):
         if old_status != new_status:
             cls.decrement(employer, old_status)
@@ -384,6 +393,7 @@ class ApplicationCounter(models.Model):
 
     def __str__(self):
         return f"Application counters for {self.employer.company_name}"
+
 
 ###########################
 # Saved Opportunities

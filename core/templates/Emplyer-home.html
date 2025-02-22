@@ -789,7 +789,7 @@
           grid-template-columns: repeat(3, minmax(0, 1fr));
         }
         #webcrumbs .md\:grid-cols-4 {
-          grid-template-columns: repeat(4, minmax(0, 1fr));
+          grid-template-columns: repeat(5, minmax(0, 1fr));
         }
       }
       
@@ -840,31 +840,38 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-8"> 
             <div class="bg-white p-6 rounded-2xl shadow-sm border hover:shadow-md transition duration-300 group"> 
               <div class="flex items-center justify-between mb-4"> 
-                <h3 class="font-semibold">Active Jobs</h3> 
+                <h3 class="font-semibold">Applied Applications</h3> 
                 <span class="material-symbols-outlined text-blue-500 group-hover:rotate-12 transition-transform duration-300">business_center</span> 
               </div> 
-              <p class="text-3xl font-bold group-hover:scale-105 transition-transform duration-300">12</p>
+              <p class="text-3xl font-bold group-hover:scale-105 transition-transform duration-300">{{counters.applied}}</p>
              </div>
               <div class="bg-white p-6 rounded-2xl shadow-sm border hover:shadow-md transition duration-300 group"> 
                 <div class="flex items-center justify-between mb-4"> 
                   <h3 class="font-semibold">Total Applications</h3> 
                   <span class="material-symbols-outlined text-green-500 group-hover:rotate-12 transition-transform duration-300">file_present</span> 
                 </div> 
-                <p class="text-3xl font-bold group-hover:scale-105 transition-transform duration-300">48</p>
+                <p class="text-3xl font-bold group-hover:scale-105 transition-transform duration-300">{{counters.total}}</p>
                </div> 
                <div class="bg-white p-6 rounded-2xl shadow-sm border hover:shadow-md transition duration-300 group"> 
                 <div class="flex items-center justify-between mb-4">
-                   <h3 class="font-semibold">Interviews Scheduled</h3> <span class="material-symbols-outlined text-purple-500 group-hover:rotate-12 transition-transform duration-300">event_available</span> 
+                   <h3 class="font-semibold">Under_Review</h3> <span class="material-symbols-outlined text-purple-500 group-hover:rotate-12 transition-transform duration-300">event_available</span> 
                 </div> 
-                <p class="text-3xl font-bold group-hover:scale-105 transition-transform duration-300">8</p> 
+                <p class="text-3xl font-bold group-hover:scale-105 transition-transform duration-300">{{counters.under_review}}</p> 
               </div> 
               <div class="bg-white p-6 rounded-2xl shadow-sm border hover:shadow-md transition duration-300 group"> 
                 <div class="flex items-center justify-between mb-4"> 
                   <h3 class="font-semibold">Hired</h3> 
                   <span class="material-symbols-outlined text-orange-500 group-hover:rotate-12 transition-transform duration-300">diversity_3</span> 
                 </div>
-                 <p class="text-3xl font-bold group-hover:scale-105 transition-transform duration-300">5</p> 
+                 <p class="text-3xl font-bold group-hover:scale-105 transition-transform duration-300">{{counters.hired}}</p> 
                 </div> 
+                <div class="bg-white p-6 rounded-2xl shadow-sm border hover:shadow-md transition duration-300 group"> 
+                  <div class="flex items-center justify-between mb-4"> 
+                    <h3 class="font-semibold">Rejected</h3> 
+                    <span class="material-symbols-outlined text-orange-500 group-hover:rotate-12 transition-transform duration-300">diversity_3</span> 
+                  </div>
+                   <p class="text-3xl font-bold group-hover:scale-105 transition-transform duration-300">{{counters.rejected}}</p> 
+                  </div>
               </div> 
               <div class="grid grid-cols-1 md:grid-cols-3 gap-6"> 
                 <div class="md:col-span-2 space-y-6"> 

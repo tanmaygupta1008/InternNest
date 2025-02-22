@@ -288,13 +288,20 @@ def job_seeking(request):
 def employer_home(request):
     if request.user.user_type != 'employer':
         return redirect('login')
-    # For demonstration, load employer opportunities and applications
+    
     try:
         profile = request.user.employer_profile
+        opportunities = Opportunity.objects.filter(employer=profile)
+        counters = profile.application_counter  # Fetch the counters for this employer
     except EmployerProfile.DoesNotExist:
         profile = None
-    opportunities = Opportunity.objects.filter(employer=profile) if profile else []
-    return render(request, 'Emplyer-home.html', {'opportunities': opportunities})
+        opportunities = []
+        counters = None  # No counters if no profile exists
+    
+    return render(request, 'Emplyer-home.html', {
+        'opportunities': opportunities,
+        'counters': counters
+    })
 
 
 from django.shortcuts import render, redirect
@@ -396,9 +403,6 @@ def opportunity_apply(request, pk):
             resume_url=resume_url,
             cover_letter=cover_letter,
         )
-
-        # Increment the applied counter
-        ApplicationCounter.increment(opportunity.employer, 'applied')
         return redirect('candidate_prof')  # Redirect to a success page or dashboard
 
     return render(request, 'opportunity_apply.html', {'opportunity': opportunity})
