@@ -208,7 +208,7 @@ block content %}
             </div>
           </div>
         </div>
-          <div>
+          {% comment %} <div>
             <label class="ca block font-medium" style="position:relative; left:12px;">Resume url</label>
             <input
               type="url"
@@ -217,7 +217,27 @@ block content %}
               class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300"
             />
           </div>
-        
+         {% endcomment %}
+        <!-- Resume Section -->
+      <div>
+        <label class="ca block font-medium" style="position:relative; left:12px;">Upload Resume (PDF)</label>
+        <input type="file" name="resume" accept=".pdf"
+             class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300">
+        {% if opportunity.resume %}
+          <p class="text-blue-500 mt-2">
+          <a href="{{ opportunity.resume.url }}" target="_blank">View Current Resume</a>
+         </p>
+        {% endif %}
+        </div>
+
+        <!-- OR Resume URL -->
+      <div>
+      <label class="ca block font-medium" style="position:relative; left:12px;">Resume URL</label>
+      <input type="url" name="resume_url"
+           value="{{ opportunity.resume_url }}"
+           class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300">
+      </div>
+
           <!-- Education Section -->
 <div id="education-section">
   <label class="ca block font-medium" style="position:relative; left:12px;">Education</label>

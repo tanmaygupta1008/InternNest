@@ -88,7 +88,7 @@
             </div>
             {% endif %}
 
-            <!-- Resume -->
+            {% comment %} <!-- Resume -->
             {% if profile.resume_url %}
             <div>
                 <h2 class="text-xl font-semibold mb-4">Resume</h2>
@@ -97,8 +97,60 @@
                     View Resume
                 </a>
             </div>
+            {% endif %} {% endcomment %}
+            {% if profile.resume %}
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold mb-4">Resume</h2>
+                <button id="viewResumeBtn" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300">
+                    View Resume
+                </button>
+            </div>
+            
+            <!-- Modal for PDF Preview -->
+            <div id="resumeModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+                <div class="bg-white rounded-lg shadow-lg w-11/12 md:w-3/4 lg:w-1/2 p-4">
+                    <div class="flex justify-between items-center border-b pb-2 mb-4">
+                        <h2 class="text-lg font-semibold">Resume Preview</h2>
+                        <button id="closeResumeBtn" class="text-gray-600 hover:text-gray-900">&times;</button>
+                    </div>
+                    <iframe id="resumeIframe" src="{{ profile.resume.url }}" class="w-full h-[500px]"></iframe>
+                </div>
+            </div>
+            {% elif profile.resume_url %}
+            <div>
+                <h2 class="text-xl font-semibold mb-4">Resume</h2>
+                <a href="{{ profile.resume_url }}" target="_blank" 
+                   class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300">
+                    View Resume
+                </a>
+            </div>
             {% endif %}
+            
         </div>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const viewResumeBtn = document.getElementById("viewResumeBtn");
+            const resumeModal = document.getElementById("resumeModal");
+            const closeResumeBtn = document.getElementById("closeResumeBtn");
+    
+            if (viewResumeBtn && resumeModal && closeResumeBtn) {
+                viewResumeBtn.addEventListener("click", function() {
+                    resumeModal.classList.remove("hidden");
+                });
+    
+                closeResumeBtn.addEventListener("click", function() {
+                    resumeModal.classList.add("hidden");
+                });
+    
+                // Close modal if clicking outside
+                resumeModal.addEventListener("click", function(event) {
+                    if (event.target === resumeModal) {
+                        resumeModal.classList.add("hidden");
+                    }
+                });
+            }
+        });
+    </script>    
 </body>
 </html>
