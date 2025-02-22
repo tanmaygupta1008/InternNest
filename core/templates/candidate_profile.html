@@ -216,29 +216,62 @@ block content %}
               value="{{ opportunity.resume_url}}"
               class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300"
             />
-          </div>
-         {% endcomment %}
+          </div>{% endcomment %}
         <!-- Resume Section -->
-      <div>
-        <label class="ca block font-medium" style="position:relative; left:12px;">Upload Resume (PDF)</label>
-        <input type="file" name="resume" accept=".pdf"
-             class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300">
-        {% if opportunity.resume %}
-          <p class="text-blue-500 mt-2">
-          <a href="{{ opportunity.resume.url }}" target="_blank">View Current Resume</a>
-         </p>
-        {% endif %}
+        <div class="space-y-4">
+          <label class="ca block font-medium" style="position:relative; left:12px;">Resume Type</label>
+          <select id="resumeType" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300">
+            <option value="">Select Resume Type</option>
+            <option value="pdf">Upload PDF</option>
+            <option value="url">Provide URL</option>
+          </select>
+
+          <!-- PDF Upload Section -->
+          <div id="pdfSection" class="hidden">
+            <label class="ca block font-medium" style="position:relative; left:12px;">Upload Resume (PDF)</label>
+            <input type="file" name="pdf_file" id="resumePdf" accept=".pdf"
+                 class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300">
+            {% if opportunity.resume %}
+              <p class="text-blue-500 mt-2">
+              <a href="{{ opportunity.resume_url }}" target="_blank">View Current Resume</a>
+             </p>
+            {% endif %}
+          </div>
+
+          <!-- URL Section -->
+          <div id="urlSection" class="hidden">
+            <label class="ca block font-medium" style="position:relative; left:12px;">Resume URL</label>
+            <input type="url" name="resume_url" id="resumeUrl"
+                 value="{{ opportunity.resume_url }}"
+                 class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300">
+          </div>
         </div>
 
-        <!-- OR Resume URL -->
-      <div>
-      <label class="ca block font-medium" style="position:relative; left:12px;">Resume URL</label>
-      <input type="url" name="resume_url"
-           value="{{ opportunity.resume_url }}"
-           class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#8B5CF6] outline-none transition-all duration-300">
-      </div>
+        <script>
+        document.getElementById('resumeType').addEventListener('change', function() {
+          const pdfSection = document.getElementById('pdfSection');
+          const urlSection = document.getElementById('urlSection');
+          const pdfInput = document.getElementById('resumePdf');
+          const urlInput = document.getElementById('resumeUrl');
 
-          <!-- Education Section -->
+          if (this.value === 'pdf') {
+            pdfSection.classList.remove('hidden');
+            urlSection.classList.add('hidden');
+            urlInput.value = '';
+          } else if (this.value === 'url') {
+            urlSection.classList.remove('hidden');
+            pdfSection.classList.add('hidden');
+            pdfInput.value = '';
+          } else {
+            pdfSection.classList.add('hidden');
+            urlSection.classList.add('hidden');
+            pdfInput.value = '';
+            urlInput.value = '';
+          }
+        });
+        </script>
+
+        <!-- Education Section -->
 <div id="education-section">
   <label class="ca block font-medium" style="position:relative; left:12px;">Education</label>
   {% for edu in opportunity.education %}

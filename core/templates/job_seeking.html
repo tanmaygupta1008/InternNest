@@ -20,7 +20,7 @@
               {% endif %}
             </p>
             <div class="company-logo">
-              <img src="{% static 'images/default_job.png' %}" alt="Company Logo">
+              <img src="{{ opportunity.employer.company_logo.url }}" alt="Company Logo">
             </div>
           </div>
           
@@ -31,8 +31,8 @@
 
           <div class="tag-list">
             <p class="skills tag">
-              {% for skill in opportunity.skills_required.all %}
-                {{ skill.name }}{% if not forloop.last %}, {% endif %}
+              {% for skill in opportunity.skills_required %}
+                {{ skill }}{% if not forloop.last %}, {% endif %}
               {% empty %}
                 No skills listed
               {% endfor %}

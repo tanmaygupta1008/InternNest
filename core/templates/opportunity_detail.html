@@ -179,15 +179,21 @@
           <h1 class="text-2xl font-bold">{{ opportunity.title }}</h1>
         </div>
         <div class="flex space-x-4">
-          <button class="px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300 shadow-md">
+          <a href="{% url 'view_employer_profile' opportunity.employer.id %}" class="px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300 shadow-md">
           Know About Company
-          </button>
-          <a href="{% url 'job_seeking' %}" class="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300 shadow-md">
-          Back to Listings
           </a>
+            <a href="javascript:history.back()" class="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300 shadow-md">
+            Back to Listings
+            </a>
         </div>
         </div>
+        <div class="bg-gray-50 p-4 rounded-lg hover:shadow-md transition-all duration-300 border border-transparent hover:border-blue-100">
+          <h3 class="text-sm text-gray-500 mb-2">Description</h3>
+          <p class="font-semibold">{{ opportunity.description }}</p>
+          </div>
+
         <div class="grid grid-cols-2 gap-6">
+          
         <div class="space-y-4">
           <div class="bg-gray-50 p-4 rounded-lg hover:shadow-md transition-all duration-300 border border-transparent hover:border-blue-100">
           <h3 class="text-sm text-gray-500">Employer</h3>
@@ -235,22 +241,19 @@
           {% endif %}
         </div>
         </div>
-        {% if opportunity.skills_required.all %}
+        {% if opportunity.skills_required %}
         <div class="bg-gray-50 p-4 rounded-lg hover:shadow-md transition-all duration-300 border border-transparent hover:border-blue-100">
         <h3 class="text-sm text-gray-500 mb-2">Skills Required</h3>
         <p class="font-semibold">
-          {% for skill in opportunity.skills_required.all %}
-          {{ skill.name }}{% if not forloop.last %}, {% endif %}
+          {% for skill in opportunity.skills_required %}
+          {{ skill }}{% if not forloop.last %}, {% endif %}
           {% empty %}
           No skills listed.
           {% endfor %}
         </p>
         </div>
         {% endif %}
-        <div class="bg-gray-50 p-4 rounded-lg hover:shadow-md transition-all duration-300 border border-transparent hover:border-blue-100">
-        <h3 class="text-sm text-gray-500 mb-2">Description</h3>
-        <p class="font-semibold">{{ opportunity.description }}</p>
-        </div>
+        
         <div class="flex justify-between items-center text-sm text-gray-500">
         <div>
           <p>Posted at: {{ opportunity.posted_at|date:"d F, Y H:i" }}</p>

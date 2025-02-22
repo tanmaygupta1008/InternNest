@@ -57,7 +57,7 @@ class CandidateProfileForm(forms.ModelForm):
         model = CandidateProfile
         fields = (
             'resume_url', 'education', 'experience', 'skills', 'profile_summary', 
-            'profile_picture', 'birthdate', 'currently', 'first_name', 'last_name'
+            'profile_picture', 'birthdate', 'currently', 'first_name', 'last_name','pdf_file'
         )
         widgets = {
             'birthdate': forms.DateInput(attrs={'type': 'date'}),
@@ -151,6 +151,15 @@ class CandidateProfileForm(forms.ModelForm):
             raise forms.ValidationError("Birthdate cannot be in the future.")
         
         return birthdate
+    
+    def clean_pdf_file(self):
+     file = self.cleaned_data.get('pdf_file')
+     if file:
+        if not file.name.endswith('.pdf'):
+            raise forms.ValidationError("Only PDF files are allowed.")
+        if file.size > 5 * 1024 * 1024:  # Limit size to 5 MB
+            raise forms.ValidationError("The file size should not exceed 5 MB.")
+     return file
 
 
 from django import forms

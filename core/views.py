@@ -109,6 +109,10 @@ def register(request):
 
 #     return render(request, "login.html")
 def user_login(request):
+    # Check if user is already logged in
+    if request.user.is_authenticated:
+        user_type = request.user.user_type
+        return redirect('candidate_home' if user_type == 'candidate' else 'employer_home')
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -383,7 +387,7 @@ def job_posting(request):
 
 
 
-@login_required
+
 def opportunity_detail(request, opportunity_id):
     opportunity = get_object_or_404(Opportunity, id=opportunity_id)
     return render(request, 'opportunity_detail.html', {'opportunity': opportunity})
@@ -461,8 +465,11 @@ def view_employer_profile(request, employer_id):
 @login_required  # Ensure the user is logged in
 def dashboard(request):
     # Fetch the logged-in user's name
+  if request.user=='employer':  
     user_name = request.user.get_full_name() or request.user.username  # Use full name or fallback to username
     context = {
         'user_name': user_name,
     }
     return render(request, 'Dashboard-Employer.html', context)
+  else:
+    return redirect('login')
