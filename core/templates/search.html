@@ -1,198 +1,297 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Global Search with Persistent Filtering</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{% static 'styless1.css' %}" />
+  <link rel="stylesheet" href="{% static 'company_details.css' %}" />
 </head>
 <body>
-  <div class="container mx-auto p-8">
-    <!-- Tabs -->
-    <div class="flex justify-center gap-4 mb-8">
-      <button
-        id="tabCandidate"
-        class="tab-btn px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium hover:shadow-lg transition-all"
-      >
-        Candidates
-      </button>
-      <button
-        id="tabEmployer"
-        class="tab-btn px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium hover:shadow-lg transition-all"
-      >
-        Employers
-      </button>
-      <button
-        id="tabJobs"
-        class="tab-btn px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium hover:shadow-lg transition-all"
-      >
-        Jobs
-      </button>
-    </div>
-
-    <!-- Global Search Bar -->
-    <div class="mb-6">
-      <input
-        id="globalSearch"
-        type="text"
-        placeholder="Search across all sections..."
-        class="w-full p-4 rounded-lg border shadow-sm focus:ring-2 focus:ring-blue-500"
-      />
-    </div>
-
-    <!-- Candidate Section -->
-    <div id="candidateContent" class="section">
-      <h2 class="text-2xl font-bold mb-4">Candidates Section</h2>
-      <div id="candidateContainer">
-        <!-- Candidate content goes here -->
-        <p class="candidate-item" data-name="John Doe">John Doe</p>
-        <p class="candidate-item" data-name="Jane Smith">Jane Smith</p>
+  <div id="webcrumbs">
+    <nav class="bg-white shadow-lg fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 hover:shadow-xl">
+      <div class="container mx-auto px-8 py-4">
+        <div class="flex items-center justify-between">
+          <span class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+            InternNext
+          </span>
+          <div class="flex items-center space-x-6">
+            <details class="relative group">
+              <summary class="hover:text-violet-600 cursor-pointer list-none flex items-center">
+                Categories
+                <svg class="w-4 h-4 ml-1 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </summary>
+              <div class="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50">
+                <a href="#" class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200">
+                  Web Development
+                </a>
+                <a href="#" class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200">
+                  Mobile Development
+                </a>
+                <a href="#" class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200">
+                  Data Science
+                </a>
+                <a href="#" class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200">
+                  UI/UX Design
+                </a>
+              </div>
+            </details>
+            <a href="{% url 'home' %}" class="hover:text-violet-600">Home</a>
+            <a href="{% url 'job_seeking' %}" class="hover:text-violet-600">Jobs</a>
+            <a href="{% url 'search_list' %}" class="hover:text-violet-600">Search</a>
+            {% if user.is_authenticated %}
+              <a href="{% url 'dashboard' %}" class="hover:text-violet-600">Dashboard</a>
+              <a href="{% url 'logout' %}" class="hover:text-violet-600">Logout</a>
+            {% else %}
+              <a href="{% url 'login' %}" class="hover:text-violet-600">Login</a>
+              <a href="{% url 'register' %}" class="hover:text-violet-600">Register</a>
+            {% endif %}
+          </div>
+        </div>
       </div>
-    </div>
+    </nav>
 
-    <!-- Employer Section -->
-    <div id="employerContent" class="section hidden">
-      <h2 class="text-2xl font-bold mb-4">Employers Section</h2>
-      <div id="employerContainer">
-        <!-- Employer content goes here -->
-        <p class="employer-item" data-name="TechCorp">TechCorp</p>
-        <p class="employer-item" data-name="InnovateX">InnovateX</p>
-      </div>
-    </div>
-
-    <!-- Jobs Section -->
-    <div id="jobsContent" class="section hidden">
-      <h2 class="text-2xl font-bold mb-4">Jobs Section</h2>
-
-      <!-- Sort Controls -->
-      <div class="mb-8">
-        <select
-          id="sortJobs"
-          class="w-full md:w-1/4 p-4 rounded-lg border shadow-sm focus:ring-2 focus:ring-blue-500"
+    <div class="container mx-auto p-8 mt-24">
+      <!-- Tabs -->
+      <div class="flex justify-center gap-4 mb-8">
+        <button
+          id="tabCandidate"
+          class="tab-btn px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium hover:shadow-lg transition-all"
         >
-          <option value="">Sort By</option>
-          <option value="title">Title</option>
-          <option value="employer">Employer</option>
-          <option value="salary">Salary</option>
-          <option value="duration">Duration</option>
-          <option value="start-date">Start Date</option>
-        </select>
+          Candidates
+        </button>
+        <button
+          id="tabEmployer"
+          class="tab-btn px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium hover:shadow-lg transition-all"
+        >
+          Employers
+        </button>
+        <button
+          id="tabJobs"
+          class="tab-btn px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium hover:shadow-lg transition-all"
+        >
+          Jobs
+        </button>
       </div>
 
-      <!-- Job Cards -->
-<div id="jobContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    {% for opportunity in opportunities %}
-    <div
-      class="job-card bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 hover:scale-[1.02] cursor-pointer border border-transparent hover:border-purple-100"
-      data-title="{{ opportunity.title|lower }}"
-      data-employer="{{ opportunity.employer.company_name|lower }}"
-      data-salary="{{ opportunity.salary_range|default:0 }}"
-      data-duration="{{ opportunity.duration|default:'' }}"
-      data-start-date="{{ opportunity.start_date|default:'' }}"
-    >
-      <h3 class="text-xl font-bold text-blue-900">{{ opportunity.title }}</h3>
-      <p class="text-lg text-gray-700">{{ opportunity.employer.company_name }}</p>
-      <p class="text-gray-600 mb-6 line-clamp-2">
-        {{ opportunity.description|truncatewords:15 }}
-      </p>
-      <div class="flex gap-2 mb-6 flex-wrap">
-        <span class="px-4 py-1.5 bg-blue-100 text-blue-600 rounded-full text-sm font-medium">
-          {{ opportunity.opportunity_type|title }}
-        </span>
-        {% if opportunity.salary_range %}
-        <span class="px-4 py-1.5 bg-purple-100 text-purple-600 rounded-full text-sm font-medium">
-          {{ opportunity.salary_range }}
-        </span>
-        {% endif %}
-        {% if opportunity.duration %}
-        <span class="px-4 py-1.5 bg-green-100 text-green-600 rounded-full text-sm font-medium">
-          {{ opportunity.duration }}
-        </span>
-        {% endif %}
+      <!-- Global Search Bar -->
+      <div class="mb-6">
+        <input
+          id="globalSearch"
+          type="text"
+          placeholder="Search across all sections..."
+          class="w-full p-4 rounded-lg border shadow-sm focus:ring-2 focus:ring-blue-500"
+        />
       </div>
-      <a
-        href="{% url 'opportunity_detail' opportunity.id %}"
-        class="block w-full py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-medium hover:shadow-lg hover:scale-[1.02] transition-all duration-300 text-center"
-      >
-        View Details
-      </a>
+
+      <!-- Candidate Section -->
+      <div id="candidateContent" class="section">
+        <h2 class="text-2xl font-bold mb-4">Candidates Section</h2>
+        <div id="candidateContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {% for candidate in candidates %}
+          <a href="{% url 'view_profile' candidate.id %}" 
+             class="candidate-item bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 hover:scale-[1.02] cursor-pointer border border-transparent hover:border-purple-100" 
+             data-name="{{ candidate.user.get_full_name|lower }}">
+            <div class="flex items-center space-x-4 mb-4">
+              {% if candidate.profile_picture %}
+                <img src="{{ candidate.profile_picture.url }}" alt="Profile" class="w-12 h-12 rounded-full object-cover">
+              {% else %}
+                <div class="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white text-lg font-bold">
+                  {{ candidate.user.get_full_name|make_list|first }}
+                </div>
+              {% endif %}
+              <div>
+                <h3 class="text-xl font-bold text-blue-900">{{ candidate.user.get_full_name }}</h3>
+                <p class="text-gray-600">{{ candidate.currently|default:"Candidate" }}</p>
+              </div>
+            </div>
+            {% if candidate.skills %}
+            <div class="flex flex-wrap gap-2 mt-4">
+              {% for skill in candidate.skills|slice:":3" %}
+                <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">{{ skill }}</span>
+              {% endfor %}
+              {% if candidate.skills|length > 3 %}
+                <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">+{{ candidate.skills|length|add:"-3" }} more</span>
+              {% endif %}
+            </div>
+            {% endif %}
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Employer Section -->
+      <div id="employerContent" class="section hidden">
+        <h2 class="text-2xl font-bold mb-4">Employers Section</h2>
+        <div id="employerContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {% for employer in employers %}
+          <a href="{% url 'view_employer_profile' employer.id %}" 
+             class="employer-item bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 hover:scale-[1.02] cursor-pointer border border-transparent hover:border-purple-100" 
+             data-name="{{ employer.company_name|lower }}">
+            <div class="flex items-center space-x-4 mb-4">
+              {% if employer.company_logo %}
+                <img src="{{ employer.company_logo.url }}" alt="Company Logo" class="w-12 h-12 rounded-full object-cover">
+              {% else %}
+                <div class="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white text-lg font-bold">
+                  {{ employer.company_name|make_list|first }}
+                </div>
+              {% endif %}
+              <div>
+                <h3 class="text-xl font-bold text-blue-900">{{ employer.company_name }}</h3>
+                <p class="text-gray-600">{{ employer.industry|default:"Company" }}</p>
+              </div>
+            </div>
+            {% if employer.achievements %}
+            <div class="flex flex-wrap gap-2 mt-4">
+              {% for achievement in employer.achievements|slice:":3" %}
+                <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">{{ achievement }}</span>
+              {% endfor %}
+              {% if employer.achievements|length > 3 %}
+                <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">+{{ employer.achievements|length|add:"-3" }} more</span>
+              {% endif %}
+            </div>
+            {% endif %}
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Jobs Section -->
+      <div id="jobsContent" class="section hidden">
+        <h2 class="text-2xl font-bold mb-4">Jobs Section</h2>
+
+        <!-- Sort Controls -->
+        <div class="mb-8">
+          <select
+            id="sortJobs"
+            class="w-full md:w-1/4 p-4 rounded-lg border shadow-sm focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">Sort By</option>
+            <option value="title">Title</option>
+            <option value="employer">Employer</option>
+            <option value="salary">Salary</option>
+            <option value="duration">Duration</option>
+            <option value="start-date">Start Date</option>
+          </select>
+        </div>
+
+        <!-- Job Cards -->
+        <div id="jobContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {% for opportunity in opportunities %}
+          <div
+            class="job-card bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 hover:scale-[1.02] cursor-pointer border border-transparent hover:border-purple-100"
+            data-title="{{ opportunity.title|lower }}"
+            data-employer="{{ opportunity.employer.company_name|lower }}"
+            data-salary="{{ opportunity.salary_range|default:0 }}"
+            data-duration="{{ opportunity.duration|default:'' }}"
+            data-start-date="{{ opportunity.start_date|default:'' }}"
+          >
+            <h3 class="text-xl font-bold text-blue-900">{{ opportunity.title }}</h3>
+            <p class="text-lg text-gray-700">{{ opportunity.employer.company_name }}</p>
+            <p class="text-gray-600 mb-6 line-clamp-2">
+              {{ opportunity.description|truncatewords:15 }}
+            </p>
+            <div class="flex gap-2 mb-6 flex-wrap">
+              <span class="px-4 py-1.5 bg-blue-100 text-blue-600 rounded-full text-sm font-medium">
+                {{ opportunity.opportunity_type|title }}
+              </span>
+              {% if opportunity.salary_range %}
+              <span class="px-4 py-1.5 bg-purple-100 text-purple-600 rounded-full text-sm font-medium">
+                {{ opportunity.salary_range }}
+              </span>
+              {% endif %}
+              {% if opportunity.duration %}
+              <span class="px-4 py-1.5 bg-green-100 text-green-600 rounded-full text-sm font-medium">
+                {{ opportunity.duration }}
+              </span>
+              {% endif %}
+            </div>
+            <a
+              href="{% url 'opportunity_detail' opportunity.id %}"
+              class="block w-full py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-medium hover:shadow-lg hover:scale-[1.02] transition-all duration-300 text-center"
+            >
+              View Details
+            </a>
+          </div>
+          {% empty %}
+          <p class="text-gray-500 text-center col-span-full">No jobs found matching your criteria.</p>
+          {% endfor %}
+        </div>
+      </div>
     </div>
-    {% empty %}
-    <p class="text-gray-500 text-center col-span-full">No jobs found matching your criteria.</p>
-    {% endfor %}
-  </div>
-  
-    </div>
-  </div>
 
-  <script>
-    const tabs = document.querySelectorAll(".tab-btn");
-    const sections = document.querySelectorAll(".section");
-    const globalSearch = document.getElementById("globalSearch");
-    const sortJobs = document.getElementById("sortJobs");
+    <script>
+      const tabs = document.querySelectorAll(".tab-btn");
+      const sections = document.querySelectorAll(".section");
+      const globalSearch = document.getElementById("globalSearch");
+      const sortJobs = document.getElementById("sortJobs");
 
-    // Tab Switching
-    tabs.forEach((tab, index) => {
-      tab.addEventListener("click", () => {
-        sections.forEach((section) => section.classList.add("hidden"));
-        sections[index].classList.remove("hidden");
-        applySearch(globalSearch.value); // Apply search to the new section
+      // Tab Switching
+      tabs.forEach((tab, index) => {
+        tab.addEventListener("click", () => {
+          sections.forEach((section) => section.classList.add("hidden"));
+          sections[index].classList.remove("hidden");
+          applySearch(globalSearch.value); // Apply search to the new section
+        });
       });
-    });
 
-    // Global Search
-    globalSearch.addEventListener("input", (e) => {
-      const query = e.target.value.toLowerCase();
-      applySearch(query);
-    });
-
-    // Apply Search Logic
-    function applySearch(query) {
-      const activeSection = document.querySelector(".section:not(.hidden)");
-
-      if (activeSection.id === "candidateContent") {
-        filterContent("candidate-item", query);
-      } else if (activeSection.id === "employerContent") {
-        filterContent("employer-item", query);
-      } else if (activeSection.id === "jobsContent") {
-        filterContent("job-card", query);
-      }
-    }
-
-    // Filtering Logic
-    function filterContent(className, query) {
-      const items = document.querySelectorAll(`.${className}`);
-      items.forEach((item) => {
-        const dataName = item.dataset.name || item.dataset.title || "";
-        item.style.display = dataName.includes(query) ? "block" : "none";
+      // Global Search
+      globalSearch.addEventListener("input", (e) => {
+        const query = e.target.value.toLowerCase();
+        applySearch(query);
       });
-    }
 
-    // Job Sorting Logic
-    sortJobs.addEventListener("change", () => {
-      const sortBy = sortJobs.value;
-      const jobCards = Array.from(document.querySelectorAll(".job-card"));
+      // Apply Search Logic
+      function applySearch(query) {
+        const activeSection = document.querySelector(".section:not(.hidden)");
 
-      jobCards.sort((a, b) => {
-        let valA = a.dataset[sortBy] || "";
-        let valB = b.dataset[sortBy] || "";
-
-        // Handle numeric sorting
-        if (sortBy === "salary") {
-          valA = parseFloat(valA) || 0;
-          valB = parseFloat(valB) || 0;
-        } else if (sortBy === "start-date") {
-          valA = new Date(valA);
-          valB = new Date(valB);
+        if (activeSection.id === "candidateContent") {
+          filterContent("candidate-item", query);
+        } else if (activeSection.id === "employerContent") {
+          filterContent("employer-item", query);
+        } else if (activeSection.id === "jobsContent") {
+          filterContent("job-card", query);
         }
+      }
 
-        return valA > valB ? 1 : valA < valB ? -1 : 0;
+      // Filtering Logic
+      function filterContent(className, query) {
+        const items = document.querySelectorAll(`.${className}`);
+        items.forEach((item) => {
+          const dataName = item.dataset.name || item.dataset.title || "";
+          item.style.display = dataName.includes(query) ? "block" : "none";
+        });
+      }
+
+      // Job Sorting Logic
+      sortJobs.addEventListener("change", () => {
+        const sortBy = sortJobs.value;
+        const jobCards = Array.from(document.querySelectorAll(".job-card"));
+
+        jobCards.sort((a, b) => {
+          let valA = a.dataset[sortBy] || "";
+          let valB = b.dataset[sortBy] || "";
+
+          // Handle numeric sorting
+          if (sortBy === "salary") {
+            valA = parseFloat(valA) || 0;
+            valB = parseFloat(valB) || 0;
+          } else if (sortBy === "start-date") {
+            valA = new Date(valA);
+            valB = new Date(valB);
+          }
+
+          return valA > valB ? 1 : valA < valB ? -1 : 0;
+        });
+
+        // Append sorted cards back to the container
+        const jobContainer = document.getElementById("jobContainer");
+        jobCards.forEach((card) => jobContainer.appendChild(card));
       });
-
-      // Append sorted cards back to the container
-      const jobContainer = document.getElementById("jobContainer");
-      jobCards.forEach((card) => jobContainer.appendChild(card));
-    });
-  </script>
-</body>
+    </script>
+  </body>
 </html>

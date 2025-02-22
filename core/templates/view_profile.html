@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ profile.user.get_full_name }} - Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed top-0 left-0 right-0 z-50 transition-all duration-300 hover:shadow-xl">
+        <div class="max-w-7xl mx-auto px-8 py-4">
+            <div class="flex items-center justify-between">
+                <a href="/" class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+                    InternNext
+                </a>
+                <div class="flex items-center space-x-6">
+                    <a href="{% url 'search_list' %}" class="hover:text-violet-600">Back to Search</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Content -->
+    <div class="container mx-auto px-4 py-8 mt-24">
+        <div class="bg-white rounded-lg shadow-lg p-8 max-w-4xl mx-auto">
+            <!-- Profile Header -->
+            <div class="flex items-center space-x-6 mb-8">
+                {% if profile.profile_picture %}
+                    <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" class="w-32 h-32 rounded-full object-cover">
+                {% else %}
+                    <div class="w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center">
+                        <span class="text-4xl text-gray-500">{{ profile.user.get_full_name|make_list|first }}</span>
+                    </div>
+                {% endif %}
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900">{{ profile.user.get_full_name }}</h1>
+                    <p class="text-lg text-gray-600">{{ profile.currently }}</p>
+                </div>
+            </div>
+
+            <!-- About -->
+            {% if profile.about %}
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold mb-4">About</h2>
+                <p class="text-gray-700">{{ profile.about }}</p>
+            </div>
+            {% endif %}
+
+            <!-- Education -->
+            {% if profile.education %}
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold mb-4">Education</h2>
+                {% for edu in profile.education %}
+                <div class="mb-4">
+                    <h3 class="font-medium text-gray-900">{{ edu.institution }}</h3>
+                    <p class="text-gray-600">{{ edu.degree }} - {{ edu.field_of_study }}</p>
+                    <p class="text-sm text-gray-500">{{ edu.start_date }} - {{ edu.end_date }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Experience -->
+            {% if profile.experience %}
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold mb-4">Experience</h2>
+                {% for exp in profile.experience %}
+                <div class="mb-4">
+                    <h3 class="font-medium text-gray-900">{{ exp.title }} at {{ exp.company }}</h3>
+                    <p class="text-sm text-gray-500">{{ exp.start_date }} - {{ exp.end_date }}</p>
+                    <p class="text-gray-700">{{ exp.description }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Skills -->
+            {% if profile.skills %}
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold mb-4">Skills</h2>
+                <div class="flex flex-wrap gap-2">
+                    {% for skill in profile.skills %}
+                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">{{ skill }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Resume -->
+            {% if profile.resume_url %}
+            <div>
+                <h2 class="text-xl font-semibold mb-4">Resume</h2>
+                <a href="{{ profile.resume_url }}" target="_blank" 
+                   class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all duration-300">
+                    View Resume
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

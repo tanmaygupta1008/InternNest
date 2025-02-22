@@ -1,4 +1,3 @@
-
 # yourapp/views.py
 from django.core.mail import send_mail
 from django_otp.plugins.otp_email.models import EmailDevice
@@ -271,7 +270,6 @@ def job_seeking(request):
     opportunities = Opportunity.objects.all()
     return render(request, 'job_seeking.html', {'opportunities': opportunities})
 
-
 # ----------------------------
 # Employer Views
 # ----------------------------
@@ -408,14 +406,32 @@ def opportunity_apply(request, pk):
 
 
 def search_list(request):
-    # Fetch all job opportunities
+    # Fetch all job opportunities, candidates, and employers
     opportunities = Opportunity.objects.all()
+    candidates = CandidateProfile.objects.select_related('user').all()
+    employers = EmployerProfile.objects.select_related('user').all()
 
-    # Pass the opportunities to the template
+    # Pass the data to the template
     context = {
         'opportunities': opportunities,
+        'candidates': candidates,
+        'employers': employers,
     }
     return render(request, 'search.html', context)
+
+def view_profile(request, user_id):
+    """
+    View for displaying a user's profile
+    """
+    profile = get_object_or_404(CandidateProfile, id=user_id)
+    return render(request, 'view_profile.html', {'profile': profile})
+
+def view_employer_profile(request, employer_id):
+    """
+    View for displaying an employer's profile
+    """
+    employer = get_object_or_404(EmployerProfile, id=employer_id)
+    return render(request, 'view_employer_profile.html', {'employer': employer})
 
 # @login_required
 # def post_job(request):
@@ -446,7 +462,3 @@ def dashboard(request):
         'user_name': user_name,
     }
     return render(request, 'Dashboard-Employer.html', context)
-
-
-
-
