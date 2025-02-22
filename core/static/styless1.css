@@ -352,12 +352,12 @@ video {
 }
 @media (min-width: 1280px) {
   .container {
-    max-width: 1280px;
+    min-width: 1400px;
   }
 }
 @media (min-width: 1536px) {
   .container {
-    max-width: 1536px;
+    min-width: 1400px;
   }
 }
 #webcrumbs .absolute {
@@ -940,4 +940,7 @@ body {
     border-radius: 8px;
     padding: 8px 0;
 }
-
+body{
+  min-width: 1400px;
+  max-width: 1400px;
+}

@@ -46,12 +46,12 @@
             {% for skill in opportunity.skills_required %}
               <p class="skills tag">{{ skill }}</p>
             {% empty %}
-              <p class="skills tag">No skills listed</p>
+              <p class="skills tag">No skills required</p>
             {% endfor %}
 
             <p class="job-type tag">{{ opportunity.opportunity_type|title }}</p>
 
-            <p class="experience tag">{{ opportunity.experience_required }} Year Experience</p>
+            <p class="experience tag">{{ opportunity.experience_required }}</p>
 
             <p class="work-arrangement tag">
               {% if opportunity.opportunity_type == "job" %}
