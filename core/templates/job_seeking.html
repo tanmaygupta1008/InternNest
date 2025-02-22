@@ -3,6 +3,19 @@
 {% block title %}Job Listings{% endblock %}
 {% block extra_css %}
   <link rel="stylesheet" href="{% static 'styles.css' %}">
+  <style>
+    .all-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+    
+  </style>
 {% endblock %}
 {% block content %}
   <h2 class="heading">Available Jobs and Internships</h2>
@@ -30,13 +43,11 @@
           </div>
 
           <div class="tag-list">
-            <p class="skills tag">
-              {% for skill in opportunity.skills_required %}
-                {{ skill }}{% if not forloop.last %}, {% endif %}
-              {% empty %}
-                No skills listed
-              {% endfor %}
-            </p>
+            {% for skill in opportunity.skills_required %}
+              <p class="skills tag">{{ skill }}</p>
+            {% empty %}
+              <p class="skills tag">No skills listed</p>
+            {% endfor %}
 
             <p class="job-type tag">{{ opportunity.opportunity_type|title }}</p>
 
