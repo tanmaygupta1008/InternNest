@@ -13,12 +13,26 @@
       flex-wrap: wrap;
       gap: 5px;
     }
+    body{
+      min-width: 1400px;
+      max-width: 1400px;
+    }
+    @media (min-width: 1280px) {
+      .container {
+        min-width: 1400px;
+      }
+    }
+    @media (min-width: 1536px) {
+      .container {
+        min-width: 1400px;
+      }
+    }
     
   </style>
 {% endblock %}
 {% block content %}
   <h2 class="heading">Available Jobs and Internships</h2>
-  <div class="all-cards">
+  <div class="all-cards" style="margin-left:36px;">
     {% for opportunity in opportunities %}
       <div class="card">
         

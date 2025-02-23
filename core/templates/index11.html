@@ -16,6 +16,7 @@
         
         <nav
           class="bg-white shadow-lg sticky top-0 z-50 transition-all duration-300 hover:shadow-xl"
+          style="border-radius:30px;"
         >
           <div class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
@@ -85,13 +86,8 @@
                 >
                 <a
                   class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
-                  href="{% url 'job_seeking' %}"
-                  >Jobs</a
-                >
-                <a
-                  class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
                   href="{% url 'search_list' %}"
-                  >Post</a
+                  >Search</a
                 >
                 <button
                   class="bg-violet-600 text-white px-4 py-2 rounded-lg hover:bg-violet-700 transform hover:scale-105 transition-all duration-300 hover:shadow-lg relative group"
@@ -129,13 +125,13 @@
                   </button>
                 </div>
               </div>
-              <div class="h-[500px] relative group">
-                <iframe
-                  class="w-full h-full rounded-2xl shadow-2xl transform transition-all duration-500 group-hover:scale-105 group-hover:rotate-2"
-                  src="https://webcrumbs.cloud/placeholder"
-                  frameborder="0"
-                ></iframe>
-              </div>
+              <div class="h-[500px] relative group overflow-hidden rounded-2xl">
+                <img 
+                  src="{% static 'i1.jpg' %}"
+                  alt="Internship"
+                  class="w-full h-full object-cover shadow-2xl transform transition-all duration-500 group-hover:scale-105 group-hover:rotate-2"
+                />
+                </div>
             </div>
           </section>
           <section class="grid grid-cols-3 gap-8 mb-24">

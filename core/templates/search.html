@@ -10,52 +10,125 @@
   <link rel="stylesheet" href="{% static 'company_details.css' %}" />
 </head>
 <body>
-  <div id="webcrumbs">
-    <nav class="bg-white shadow-lg fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 hover:shadow-xl">
-      <div class="container mx-auto px-8 py-4">
-        <div class="flex items-center justify-between">
-          <span class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
-            InternNext
-          </span>
-          <div class="flex items-center space-x-6">
-            <details class="relative group">
-              <summary class="hover:text-violet-600 cursor-pointer list-none flex items-center">
-                Categories
-                <svg class="w-4 h-4 ml-1 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                </svg>
-              </summary>
-              <div class="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50">
-                <a href="#" class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200">
-                  Web Development
-                </a>
-                <a href="#" class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200">
-                  Mobile Development
-                </a>
-                <a href="#" class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200">
-                  Data Science
-                </a>
-                <a href="#" class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200">
-                  UI/UX Design
-                </a>
+  <div id="webcrumbs" style="min-width:1200px">
+      <nav
+          class="bg-white shadow-lg sticky top-0 z-50 transition-all duration-300 hover:shadow-xl"
+          style="border-radius:30px;"
+        >
+          <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+              <span
+                    class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600"
+                    >InternNext</span
+                  >
+              <div class="flex items-center space-x-6">
+                <details class="relative group">
+                  <summary
+                    class="hover:text-violet-600 cursor-pointer list-none flex items-center"
+                  >
+                    Categories
+                    <svg
+                      class="w-4 h-4 ml-1 transition-transform duration-200 group-open:rotate-180"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 9l-7 7-7-7"
+                      ></path>
+                    </svg>
+                  </summary>
+                  <div
+                    class="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50"
+                  >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Software Development</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Data Science</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Marketing</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Design</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Business</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Engineering</a
+                    >
+                  </div>
+                </details>
+                {% if user.is_authenticated %}
+                <a
+                  class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
+                  href="{% url 'candidate_home' %}"
+                  >Home</a
+                >
+                <a
+                  class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
+                  href="{% url 'search_list' %}"
+                  >Search</a
+                >
+                <a
+                  class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
+                  href="{% url 'job_seeking' %}"
+                  >Jobs</a
+                >
+                <a
+                  class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
+                  href="{% url 'candidate_prof' %}"
+                  >Profile</a
+                >
+                <button
+                  class="bg-violet-600 text-white px-4 py-2 rounded-lg hover:bg-violet-700 transform hover:scale-105 transition-all duration-300 hover:shadow-lg relative group"
+                >
+                  <a href="{% url 'logout' %}">Logout</a>
+                  
+                </button>
+                {% else %}
+                <a
+                  class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
+                  href="{% url 'home' %}"
+                  >Home</a
+                >
+                <a
+                  class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
+                  href="{% url 'search_list' %}"
+                  >Search</a
+                >
+                <button
+                  class="bg-violet-600 text-white px-4 py-2 rounded-lg hover:bg-violet-700 transform hover:scale-105 transition-all duration-300 hover:shadow-lg relative group"
+                >
+                  <a href="{% url 'login' %}">Login</a>
+                  
+                </button>
+                
+                {% endif %}
               </div>
-            </details>
-            <a href="{% url 'home' %}" class="hover:text-violet-600">Home</a>
-            <a href="{% url 'job_seeking' %}" class="hover:text-violet-600">Jobs</a>
-            <a href="{% url 'search_list' %}" class="hover:text-violet-600">Search</a>
-            {% if user.is_authenticated %}
-              <a href="{% url 'dashboard' %}" class="hover:text-violet-600">Dashboard</a>
-              <a href="{% url 'logout' %}" class="hover:text-violet-600">Logout</a>
-            {% else %}
-              <a href="{% url 'login' %}" class="hover:text-violet-600">Login</a>
-              <a href="{% url 'register' %}" class="hover:text-violet-600">Register</a>
-            {% endif %}
+            </div>
           </div>
-        </div>
-      </div>
-    </nav>
+        </nav>
+        
 
-    <div class="container mx-auto p-8 mt-24">
+    <div class="container mx-auto p-8">
       <!-- Tabs -->
       <div class="flex justify-center gap-4 mb-8">
         <button
@@ -90,7 +163,7 @@
 
       <!-- Candidate Section -->
       <div id="candidateContent" class="section">
-        <h2 class="text-2xl font-bold mb-4">Candidates Section</h2>
+        <h2 class="text-2xl font-bold mb-4" style="justify-self: center;">Candidates Section</h2>
         <div id="candidateContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {% for candidate in candidates %}
           <a href="{% url 'view_profile' candidate.id %}" 
@@ -126,7 +199,7 @@
 
       <!-- Employer Section -->
       <div id="employerContent" class="section hidden">
-        <h2 class="text-2xl font-bold mb-4">Employers Section</h2>
+        <h2 class="text-2xl font-bold mb-4" style="justify-self: center;">Employers Section</h2>
         <div id="employerContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {% for employer in employers %}
           <a href="{% url 'view_employer_profile' employer.id %}" 
@@ -162,7 +235,7 @@
 
       <!-- Jobs Section -->
       <div id="jobsContent" class="section hidden">
-        <h2 class="text-2xl font-bold mb-4">Jobs Section</h2>
+        <h2 class="text-2xl font-bold mb-4" style="justify-self: center;">Jobs Section</h2>
 
         <!-- Sort Controls -->
         <div class="mb-8">
@@ -201,12 +274,12 @@
               </span>
               {% if opportunity.salary_range %}
               <span class="px-4 py-1.5 bg-purple-100 text-purple-600 rounded-full text-sm font-medium">
-                {{ opportunity.salary_range }}
+                ₹  {{ opportunity.salary_range }}
               </span>
               {% endif %}
               {% if opportunity.duration %}
               <span class="px-4 py-1.5 bg-green-100 text-green-600 rounded-full text-sm font-medium">
-                {{ opportunity.duration }}
+                {{ opportunity.duration }} months
               </span>
               {% endif %}
             </div>

@@ -24,6 +24,7 @@ block content %}
     <div id="webcrumbs">
       <nav
           class="bg-white shadow-lg sticky top-0 z-50 transition-all duration-300 hover:shadow-xl"
+          style="border-radius: 30px;"
         >
           <div class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
@@ -93,31 +94,24 @@ block content %}
                 >
                 <a
                   class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
+                  href="{% url 'search_list' %}"
+                  >Search</a
+                >
+                <a
+                  class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
                   href="{% url 'job_seeking' %}"
                   >Jobs</a
                 >
                 <a
                   class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
-                  href="{% url 'candidate_profile' %}"
+                  href="{% url 'candidate_prof' %}"
                   >Profile</a
                 >
                 <button
                   class="bg-violet-600 text-white px-4 py-2 rounded-lg hover:bg-violet-700 transform hover:scale-105 transition-all duration-300 hover:shadow-lg relative group"
                 >
                   <a href="{% url 'logout' %}">Logout</a>
-                  <svg
-                    class="absolute -right-4 -bottom-3 text-violet-400 w-6 h-6 transition-transform duration-300 group-hover:rotate-12"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M19 9C19 11 17.5 14.5 12 14.5C6.5 14.5 5 11 5 9"
-                      stroke="currentColor"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                    ></path>
-                  </svg>
+                  
                 </button>
               </div>
             </div>
