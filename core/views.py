@@ -12,6 +12,7 @@ from .forms import (
     OpportunityForm
 )
 from .models import CustomUser, CandidateProfile, EmployerProfile, Opportunity,JobApplication, CandidateProfile, ApplicationCounter
+from django.http import JsonResponse
 
 # ----------------------------
 # Registration View
@@ -109,10 +110,6 @@ def register(request):
 
 #     return render(request, "login.html")
 def user_login(request):
-    # Check if user is already logged in
-    if request.user.is_authenticated:
-        user_type = request.user.user_type
-        return redirect('candidate_home' if user_type == 'candidate' else 'employer_home')
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -246,19 +243,12 @@ def candidate_profile(request):
 def candidate_prof(request):
     if request.user.user_type != 'candidate':
         return redirect('login')
-    
-    # First check if profile exists
     try:
-        candidate_profile = CandidateProfile.objects.get(user=request.user)
+        profile = request.user.candidate_profile
     except CandidateProfile.DoesNotExist:
-        # Redirect to profile creation if it doesn't exist
-        messages.warning(request, "Please complete your profile first.")
-        return redirect('candidate_profile')
-
-    # Get all candidate profiles
-    candidate_prof = CandidateProfile.objects.all()
-    
-    # Get application statistics
+        profile = None
+    candidate_prof=CandidateProfile.objects.all()
+    candidate_profile = get_object_or_404(CandidateProfile, user=request.user)
     application_status = {
         "total_applications": JobApplication.objects.filter(candidate=candidate_profile).count(),
         "under_review": JobApplication.objects.filter(candidate=candidate_profile, status="Under Review").count(),
@@ -394,7 +384,7 @@ def job_posting(request):
 
 
 
-
+@login_required
 def opportunity_detail(request, opportunity_id):
     opportunity = get_object_or_404(Opportunity, id=opportunity_id)
     return render(request, 'opportunity_detail.html', {'opportunity': opportunity})
@@ -438,12 +428,8 @@ def view_profile(request, user_id):
     """
     View for displaying a user's profile
     """
-    try:
-        profile = CandidateProfile.objects.get(id=user_id)
-        return render(request, 'view_profile.html', {'profile': profile})
-    except CandidateProfile.DoesNotExist:
-        messages.error(request, "The requested profile does not exist.")
-        return redirect('home')
+    profile = get_object_or_404(CandidateProfile, id=user_id)
+    return render(request, 'view_profile.html', {'profile': profile})
 
 def view_employer_profile(request, employer_id):
     """
@@ -476,11 +462,70 @@ def view_employer_profile(request, employer_id):
 @login_required  # Ensure the user is logged in
 def dashboard(request):
     # Fetch the logged-in user's name
-  if request.user=='employer':  
     user_name = request.user.get_full_name() or request.user.username  # Use full name or fallback to username
     context = {
         'user_name': user_name,
     }
     return render(request, 'Dashboard-Employer.html', context)
-  else:
-    return redirect('login')
+
+
+@login_required  # Ensure the user is logged in
+def employer_applications(request):
+    # Fetch the logged-in user's name and employer profile
+    user = request.user
+    employer_profile = user.employer_profile
+    user_name = user.get_full_name() or user.username
+
+    # Get status filter from URL parameter or default to 'all'
+    status_filter = request.GET.get('status', 'all')
+    
+    # Get all applications for opportunities posted by this employer
+    applications = JobApplication.objects.filter(
+        opportunity__employer=employer_profile
+    ).select_related('opportunity', 'candidate', 'candidate__user').order_by('-applied_at')
+    
+    # Apply status filter if not 'all'
+    if status_filter != 'all':
+        applications = applications.filter(status=status_filter)
+    
+    # Get application counts for each status
+    status_counts = {
+        'all': applications.count(),
+        'applied': applications.filter(status='applied').count(),
+        'under_review': applications.filter(status='under_review').count(),
+        'shortlisted': applications.filter(status='shortlisted').count(),
+        'rejected': applications.filter(status='rejected').count(),
+        'hired': applications.filter(status='hired').count(),
+    }
+
+    context = {
+        'user_name': user_name,
+        'applications': applications,
+        'current_status': status_filter,
+        'status_counts': status_counts,
+    }
+    return render(request, 'employer_applications.html', context)
+
+@login_required
+def update_application_status(request):
+    if request.method == 'POST':
+        application_id = request.POST.get('application_id')
+        new_status = request.POST.get('status')
+        
+        try:
+            application = JobApplication.objects.get(id=application_id, 
+                                                   opportunity__employer=request.user.employer_profile)
+            
+            # Update application status
+            old_status = application.status
+            application.status = new_status
+            application.save()
+            
+            # Update counter
+            ApplicationCounter.update_counters(application.opportunity.employer, old_status, new_status)
+            
+            return JsonResponse({'status': 'success'})
+        except JobApplication.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Application not found'}, status=404)
+    
+    return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
