@@ -242,12 +242,19 @@ def candidate_profile(request):
 def candidate_prof(request):
     if request.user.user_type != 'candidate':
         return redirect('login')
+    
+    # First check if profile exists
     try:
-        profile = request.user.candidate_profile
+        candidate_profile = CandidateProfile.objects.get(user=request.user)
     except CandidateProfile.DoesNotExist:
-        profile = None
-    candidate_prof=CandidateProfile.objects.all()
-    candidate_profile = get_object_or_404(CandidateProfile, user=request.user)
+        # Redirect to profile creation if it doesn't exist
+        messages.warning(request, "Please complete your profile first.")
+        return redirect('candidate_profile')
+
+    # Get all candidate profiles
+    candidate_prof = CandidateProfile.objects.all()
+    
+    # Get application statistics
     application_status = {
         "total_applications": JobApplication.objects.filter(candidate=candidate_profile).count(),
         "under_review": JobApplication.objects.filter(candidate=candidate_profile, status="Under Review").count(),
@@ -427,8 +434,12 @@ def view_profile(request, user_id):
     """
     View for displaying a user's profile
     """
-    profile = get_object_or_404(CandidateProfile, id=user_id)
-    return render(request, 'view_profile.html', {'profile': profile})
+    try:
+        profile = CandidateProfile.objects.get(id=user_id)
+        return render(request, 'view_profile.html', {'profile': profile})
+    except CandidateProfile.DoesNotExist:
+        messages.error(request, "The requested profile does not exist.")
+        return redirect('home')
 
 def view_employer_profile(request, employer_id):
     """
