@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ employer.company_name }} - Employer Profile</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="{% static 'employer_profile_edit.css' %}"></link>
 </head>
 <body class="bg-gray-50">
     <!-- Navigation -->
@@ -42,10 +45,10 @@
             </div>
 
             <!-- Company Description -->
-            {% if employer.company_description %}
+            {% if employer.description %}
             <div class="mb-8">
                 <h2 class="text-xl font-semibold mb-4">About the Company</h2>
-                <p class="text-gray-700">{{ employer.company_description }}</p>
+                <p class="text-gray-700">{{ employer.description }}</p>
             </div>
             {% endif %}
 
@@ -94,24 +97,51 @@
             {% endif %}
 
             <!-- Contact Information -->
-            {% if employer.contact_email or employer.contact_phone %}
+            {% if employer.email or employer.phone %}
             <div>
                 <h2 class="text-xl font-semibold mb-4">Contact Information</h2>
                 <div class="space-y-2">
-                    {% if employer.contact_email %}
+                    {% if employer.email %}
                     <p class="text-gray-700">
                         <span class="font-medium">Email:</span> 
-                        <a href="mailto:{{ employer.contact_email }}" class="text-blue-600 hover:text-blue-800 hover:underline">
-                            {{ employer.contact_email }}
+                        <a href="mailto:{{ employer.email }}" class="text-blue-600 hover:text-blue-800 hover:underline">
+                            {{ employer.email }}
                         </a>
                     </p>
                     {% endif %}
-                    {% if employer.contact_phone %}
+                    {% if employer.phone %}
                     <p class="text-gray-700">
-                        <span class="font-medium">Phone:</span> {{ employer.contact_phone }}
+                        <span class="font-medium">Phone:</span> {{ employer.phone }}
                     </p>
                     {% endif %}
                 </div>
+            </div>
+            {% endif %}
+            <!-- Socail Links-->
+            {% if employer.social_links %}
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold mb-4 mt-4">Social Links : </h2>
+                <div class="flex items-center gap-4">
+                    <i class="fa-brands fa-linkedin text-2xl text-blue-600"></i>  :
+                    <a href="{{ employer.social_links.linkedin }}" target="_blank" 
+                      class="text-blue-600 hover:text-blue-800 hover:underline">
+                    {{ employer.social_links.linkedin }}
+                </a>
+            </div>
+            <div class="flex items-center gap-4">
+                <i class="fa-brands fa-twitter text-2xl text-blue-600"></i> : 
+                    <a href="{{ employer.social_links.twitter }}" target="_blank" 
+                      class="text-blue-600 hover:text-blue-800 hover:underline">
+                    {{ employer.social_links.twitter }}
+                </a>
+            </div>
+            <div class="flex items-center gap-4">
+                <i class="fa-brands fa-facebook text-2xl text-blue-600"></i> :
+                    <a href="{{ employer.social_links.facebook  }}" target="_blank" 
+                      class="text-blue-600 hover:text-blue-800 hover:underline">
+                    {{ employer.social_links.facebook }}
+                </a>
+            </div>
             </div>
             {% endif %}
         </div>

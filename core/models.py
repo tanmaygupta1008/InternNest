@@ -219,6 +219,7 @@ class CandidateProfile(models.Model):
 
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='candidate_profile')
     resume_url = models.URLField(blank=True, null=True)
+    pdf_file = models.FileField(upload_to='',blank=True)  # Directory to save PDF files
     education = models.JSONField(default=list, blank=True)  # To store multiple education entries
     experience = models.JSONField(default=list, blank=True)  # To store multiple experiences
     skills = models.JSONField(default=list, blank=True)  # To store multiple skills

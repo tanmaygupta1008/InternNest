@@ -5,142 +5,127 @@
 <head>
   <meta charset="UTF-8">
   <title>{% block title %}Internshala Clone{% endblock %}</title>
-  <link rel="stylesheet"  href="{% static 'style.css' %}" />
+
   <link rel="stylesheet"  href="{% static 'styless1.css' %}" />
+  <link rel="stylesheet"  href="{% static 'login.css' %}" />
   {% block extra_css %}{% endblock %}
 </head>
 <body>
   <div id="webcrumbs">
     <div class="w-[1280px] mx-auto">
-    <nav
-    class=" sticky top-0 z-50 transition-all duration-300 hover:shadow-xl"
-  >
+    
       
         {% if user.is_authenticated %}
           
           {% if user.user_type == 'candidate' %}
-            {% comment %} <li><a href="{% url 'candidate_home' %}">Home</a></li>
-            <li><a href="{% url 'candidate_profile' %}">Profile</a></li>
-            <li><a href="{% url 'job_seeking' %}">Jobs</a></li> {% endcomment %}
-            <div class="container mx-auto px-6 py-4">
-              <div class="flex items-center justify-between">
-                <h1 class="text-2xl font-semibold relative group">
-                  InternNext
-                  <svg
-                    class="absolute -right-8 -top-4 text-violet-400 w-8 h-8 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+          <nav
+          class="bg-white shadow-lg sticky top-0 z-50 transition-all duration-300 hover:shadow-xl"
+          style="border-radius: 30px; min-width: 1400px;"
+        >
+          <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+              <span
+                    class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600"
+                    >InternNext</span
                   >
-                    <path
-                      d="M3 17C6.5 14.5 9.5 14.5 13 17M12 6.5C11 6.5 10 7 9.5 8M3 8.5C6.5 11 9.5 11 13 8.5"
-                      stroke="currentColor"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                    ></path>
-                  </svg>
-                </h1>
-                <div class="flex items-center space-x-6">
-                  <details class="relative group">
-                    <summary
-                      class="hover:text-violet-600 cursor-pointer list-none flex items-center"
-                    >
-                      Categories
-                      <svg
-                        class="w-4 h-4 ml-1 transition-transform duration-200 group-open:rotate-180"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M19 9l-7 7-7-7"
-                        ></path>
-                      </svg>
-                    </summary>
-                    <div
-                      class="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50"
-                    >
-                      <a
-                        href="#"
-                        class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
-                        >Software Development</a
-                      >
-                      <a
-                        href="#"
-                        class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
-                        >Data Science</a
-                      >
-                      <a
-                        href="#"
-                        class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
-                        >Marketing</a
-                      >
-                      <a
-                        href="#"
-                        class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
-                        >Design</a
-                      >
-                      <a
-                        href="#"
-                        class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
-                        >Business</a
-                      >
-                      <a
-                        href="#"
-                        class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
-                        >Engineering</a
-                      >
-                    </div>
-                  </details>
-                  <a
-                    class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
-                    href="{% url 'candidate_home' %}"
-                    >Home</a
+              <div class="flex items-center space-x-6">
+                <details class="relative group">
+                  <summary
+                    class="hover:text-violet-600 cursor-pointer list-none flex items-center"
                   >
-                  <a
-                    class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
-                    href="{% url 'job_seeking' %}"
-                    >Jobs</a
-                  >
-                  
-                  <a
-                    class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
-                    href={% url 'candidate_prof' %}
-                    >Profile</a
-                  >
-                  
-                  <button
-                    class="bg-violet-600 text-white px-4 py-2 rounded-lg hover:bg-violet-700 transform hover:scale-105 transition-all duration-300 hover:shadow-lg relative group"
-                  >
-                  <a href="{% url 'logout' %}">Logout</a>
+                    Categories
                     <svg
-                      class="absolute -right-4 -bottom-3 text-violet-400 w-6 h-6 transition-transform duration-300 group-hover:rotate-12"
+                      class="w-4 h-4 ml-1 transition-transform duration-200 group-open:rotate-180"
                       viewBox="0 0 24 24"
                       fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+                      stroke="currentColor"
                     >
                       <path
-                        d="M19 9C19 11 17.5 14.5 12 14.5C6.5 14.5 5 11 5 9"
-                        stroke="currentColor"
-                        stroke-width="1.5"
                         stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 9l-7 7-7-7"
                       ></path>
                     </svg>
-                  </button>
-                </div>
+                  </summary>
+                  <div
+                    class="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50"
+                  >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Software Development</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Data Science</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Marketing</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Design</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Business</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 hover:bg-violet-50 hover:text-violet-600 transition-colors duration-200"
+                      >Engineering</a
+                    >
+                  </div>
+                </details>
+                <a
+                  class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
+                  href="{% url 'candidate_home' %}"
+                  >Home</a
+                >
+                <a
+                  class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
+                  href="{% url 'search_list' %}"
+                  >Search</a
+                >
+                <a
+                  class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
+                  href="{% url 'job_seeking' %}"
+                  >Jobs</a
+                >
+                <a
+                  class="hover:underline transform hover:scale-105 transition-all duration-300 hover:text-violet-600"
+                  href="{% url 'candidate_prof' %}"
+                  >Profile</a
+                >
+                
+                  <a href="{% url 'logout' %}" class="bg-violet-600 text-white px-4 py-2 rounded-lg hover:bg-violet-700 transform hover:scale-105 transition-all duration-300 hover:shadow-lg relative group">Logout</a>
+                  
+               
               </div>
             </div>
-            <ul>
-          {% elif user.user_type == 'employer' %}
+          </div>
+        </nav>
+        {% elif user.user_type == 'employer' %}
+        <nav
+    class=" sticky top-0 z-50 transition-all duration-300 hover:shadow-xl"
+  >
+         <ul> 
           <li><a href="{% url 'logout' %}">Logout</a></li>
             <li><a href="{% url 'employer_home' %}">Home</a></li>
             <li><a href="{% url 'employer_profile' %}">Profile</a></li>
             <li><a href="{% url 'job_posting' %}">Post a Job</a></li>
           {% endif %}
         {% else %}
+        <nav
+    class=" sticky top-0 z-50 transition-all duration-300 hover:shadow-xl"
+  >
+         <ul>
           <li><a href="{% url 'login' %}">Login</a></li>
           <li><a href="{% url 'register' %}">Register</a></li>
         {% endif %}
@@ -158,11 +143,74 @@
     {% endif %}
     {% block content %}{% endblock %}
   </div>
-  </div>
-  </div>
+  
 
-  <footer>
-    <p>&copy; 2025 Internshala Clone</p>
-  </footer>
+   <footer class="bg-gray-900 text-white" style="
+   min-width: 1400px; border-radius:30px;">
+            <div class="max-w-7xl mx-auto px-4 py-12">
+              <div class="grid grid-cols-4 gap-8">
+                <div>
+                  <h3 class="text-xl font-semibold mb-4">About Us</h3>
+                  <p class="text-gray-400">
+                    Building bridges between talent and opportunities.
+                  </p>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold mb-4">Quick Links</h3>
+                  <div class="space-y-2">
+                    <div
+                      class="text-gray-400 hover:text-white transition-all duration-300"
+                    >
+                      Home
+                    </div>
+                    <div
+                      class="text-gray-400 hover:text-white transition-all duration-300"
+                    >
+                      Jobs
+                    </div>
+                    <div
+                      class="text-gray-400 hover:text-white transition-all duration-300"
+                    >
+                      About Us
+                    </div>
+                    <div
+                      class="text-gray-400 hover:text-white transition-all duration-300"
+                    >
+                      Contact
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold mb-4">Contact Info</h3>
+                  <div class="space-y-2 text-gray-400">
+                    <div>contact@example.com</div>
+                    <div>+1 234 567 890</div>
+                    <div>123 Street, City, Country</div>
+                  </div>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold mb-4">Follow Us</h3>
+                  <div class="flex space-x-4">
+                    <i
+                      class="fa-brands fa-facebook text-2xl hover:text-blue-500 transition-all duration-300"
+                    ></i>
+                    <i
+                      class="fa-brands fa-twitter text-2xl hover:text-blue-400 transition-all duration-300"
+                    ></i>
+                    <i
+                      class="fa-brands fa-linkedin text-2xl hover:text-blue-600 transition-all duration-300"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400"
+              >
+                © 2025 All rights reserved.
+              </div>
+            </div>
+          </footer>
+        </div>
+      </div>
 </body>
 </html>

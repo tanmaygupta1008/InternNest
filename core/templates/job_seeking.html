@@ -3,10 +3,36 @@
 {% block title %}Job Listings{% endblock %}
 {% block extra_css %}
   <link rel="stylesheet" href="{% static 'styles.css' %}">
+  <style>
+    .all-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+    body{
+      min-width: 1400px;
+      max-width: 1400px;
+    }
+    @media (min-width: 1280px) {
+      .container {
+        min-width: 1400px;
+      }
+    }
+    @media (min-width: 1536px) {
+      .container {
+        min-width: 1400px;
+      }
+    }
+    
+  </style>
 {% endblock %}
 {% block content %}
-  <h2 class="heading">Available Jobs and Internships</h2>
-  <div class="all-cards">
+  <h2 class="heading  font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">Available Jobs and Internships</h2>
+  <div class="all-cards" style="margin-left:36px;">
     {% for opportunity in opportunities %}
       <div class="card">
         
@@ -20,7 +46,7 @@
               {% endif %}
             </p>
             <div class="company-logo">
-              <img src="{% static 'images/default_job.png' %}" alt="Company Logo">
+              <img src="{{ opportunity.employer.company_logo.url }}" alt="Company Logo">
             </div>
           </div>
           
@@ -30,17 +56,15 @@
           </div>
 
           <div class="tag-list">
-            <p class="skills tag">
-              {% for skill in opportunity.skills_required.all %}
-                {{ skill.name }}{% if not forloop.last %}, {% endif %}
-              {% empty %}
-                No skills listed
-              {% endfor %}
-            </p>
+            {% for skill in opportunity.skills_required %}
+              <p class="skills tag">{{ skill }}</p>
+            {% empty %}
+              <p class="skills tag">No skills required</p>
+            {% endfor %}
 
             <p class="job-type tag">{{ opportunity.opportunity_type|title }}</p>
 
-            <p class="experience tag">{{ opportunity.experience_required }} Year Experience</p>
+            <p class="experience tag">{{ opportunity.experience_required }}</p>
 
             <p class="work-arrangement tag">
               {% if opportunity.opportunity_type == "job" %}

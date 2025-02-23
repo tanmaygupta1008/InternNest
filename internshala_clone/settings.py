@@ -155,3 +155,6 @@ LOGOUT_REDIRECT_URL = "/login/"  # Ensure logout goes to the right place
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+import mimetypes
+mimetypes.add_type("application/javascript", ".mjs", True)
