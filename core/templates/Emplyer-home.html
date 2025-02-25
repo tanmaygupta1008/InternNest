@@ -838,14 +838,7 @@
         </nav> 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 pb-16"> 
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-8"> 
-            <a href="{% url 'employer_applications' %}?status=applied" 
-               class="bg-white p-6 rounded-2xl shadow-sm border hover:shadow-md transition-all duration-200 cursor-pointer">
-              <div class="flex items-center justify-between mb-4"> 
-                <h3 class="font-semibold">Applied Applications</h3> 
-                <span class="material-symbols-outlined text-blue-500 group-hover:rotate-12 transition-transform duration-300">business_center</span> 
-              </div> 
-              <p class="text-3xl font-bold group-hover:scale-105 transition-transform duration-300">{{counters.applied}}</p>
-            </a>
+            
             <a href="{% url 'employer_applications' %}" 
                class="bg-white p-6 rounded-2xl shadow-sm border hover:shadow-md transition-all duration-200 cursor-pointer">
               <div class="flex items-center justify-between mb-4"> 
@@ -853,6 +846,14 @@
                 <span class="material-symbols-outlined text-green-500 group-hover:rotate-12 transition-transform duration-300">file_present</span> 
               </div> 
               <p class="text-3xl font-bold group-hover:scale-105 transition-transform duration-300">{{counters.total}}</p>
+            </a>
+            <a href="{% url 'employer_applications' %}?status=applied" 
+               class="bg-white p-6 rounded-2xl shadow-sm border hover:shadow-md transition-all duration-200 cursor-pointer">
+              <div class="flex items-center justify-between mb-4"> 
+                <h3 class="font-semibold">Applied Applications</h3> 
+                <span class="material-symbols-outlined text-blue-500 group-hover:rotate-12 transition-transform duration-300">business_center</span> 
+              </div> 
+              <p class="text-3xl font-bold group-hover:scale-105 transition-transform duration-300">{{counters.applied}}</p>
             </a>
             <a href="{% url 'employer_applications' %}?status=under_review" 
                class="bg-white p-6 rounded-2xl shadow-sm border hover:shadow-md transition-all duration-200 cursor-pointer">

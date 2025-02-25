@@ -333,7 +333,7 @@ class Job(models.Model):
 class JobApplication(models.Model):
     STATUS_CHOICES = [
         ('applied', 'Applied'),
-        ('under_review', 'Under Review'),
+        ('under_review', 'Under_Review'),
         ('shortlisted', 'Shortlisted'),
         ('rejected', 'Rejected'),
         ('hired', 'Hired'),
@@ -349,12 +349,16 @@ class JobApplication(models.Model):
 
     def save(self, *args, **kwargs):
         if self.pk:  # Update existing application
-            previous = JobApplication.objects.get(pk=self.pk)
-            if previous.status != self.status:
-                ApplicationCounter.update_counters(self.opportunity.employer, previous.status, self.status)
+            try:
+                previous = JobApplication.objects.get(pk=self.pk)
+                if previous.status != self.status:
+                    ApplicationCounter.decrement(self.opportunity.employer, previous.status)
+                    ApplicationCounter.increment(self.opportunity.employer, self.status)
+            except JobApplication.DoesNotExist:
+                pass
         else:  # New application
             ApplicationCounter.increment(self.opportunity.employer, 'applied')
-            ApplicationCounter.increment_total(self.opportunity.employer)  # Increment total for new application
+            ApplicationCounter.increment_total(self.opportunity.employer)
         super().save(*args, **kwargs)
 
 

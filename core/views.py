@@ -110,6 +110,9 @@ def register(request):
 
 #     return render(request, "login.html")
 def user_login(request):
+    if request.user.is_authenticated:
+        user_type = request.user.user_type
+        return redirect('candidate_home' if user_type == 'candidate' else 'employer_home')
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -251,7 +254,7 @@ def candidate_prof(request):
     candidate_profile = get_object_or_404(CandidateProfile, user=request.user)
     application_status = {
         "total_applications": JobApplication.objects.filter(candidate=candidate_profile).count(),
-        "under_review": JobApplication.objects.filter(candidate=candidate_profile, status="Under Review").count(),
+        "under_review": JobApplication.objects.filter(candidate=candidate_profile, status="Under_Review").count(),
         "shortlisted": JobApplication.objects.filter(candidate=candidate_profile, status="Shortlisted").count(),
     }
     recent_applications = JobApplication.objects.filter(candidate=candidate_profile).order_by('-applied_at')[:5]
@@ -521,8 +524,8 @@ def update_application_status(request):
             application.status = new_status
             application.save()
             
-            # Update counter
-            ApplicationCounter.update_counters(application.opportunity.employer, old_status, new_status)
+            # # Update counter
+            # ApplicationCounter.update_counters(application.opportunity.employer, old_status, new_status)
             
             return JsonResponse({'status': 'success'})
         except JobApplication.DoesNotExist:
