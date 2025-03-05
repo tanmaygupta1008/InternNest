@@ -11,23 +11,33 @@
       href="{% static 'employer_profile_edit.css' %}"></link>
 </head>
 <body class="bg-gray-50">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-lg fixed top-0 left-0 right-0 z-50 transition-all duration-300 hover:shadow-xl">
-        <div class="max-w-7xl mx-auto px-8 py-4">
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+    </style>
+    <div class="pt-24 " >
+        <nav
+        class="bg-white shadow-lg fixed top-0 left-0 right-0 z-50 transition-all duration-300 hover:shadow-xl mx-auto mt-4"
+        style="border-radius:30px; max-width: 900px;"
+        >
+        <div class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
-                <a href="/" class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
-                    InternNext
-                </a>
-                <div class="flex items-center space-x-6">
-                    <a href="{% url 'search_list' %}" class="hover:text-violet-600">Back to Search</a>
-                </div>
+            <span
+            class="text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600"
+            >InternNext</span
+          >
+            <div class="flex items-center space-x-6">
+                <a href="{% url 'search_list' %}" class="hover:text-violet-600">Back to Search</a>
+            </div>
             </div>
         </div>
-    </nav>
+        </nav>
+    </div>
 
     <!-- Profile Content -->
-    <div class="container mx-auto px-4 py-8 mt-24">
-        <div class="bg-white rounded-lg shadow-lg p-8 max-w-4xl mx-auto">
+    <div class="container mx-auto px-4 py-8">
+        <div class="bg-white rounded-lg shadow-lg p-8 max-w-4xl mx-auto" style="border-radius:30px; max-width: 900px;">
             <!-- Company Header -->
             <div class="flex items-center space-x-6 mb-8">
                 {% if employer.company_logo %}
@@ -70,7 +80,8 @@
                 <div class="space-y-4">
                     {% for achievement in employer.achievements %}
                     <div class="bg-blue-50 p-4 rounded-lg">
-                        <p class="text-gray-800">{{ achievement }}</p>
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">{{ achievement.name|upper }}</h3>
+                        <p class="text-gray-800">{{ achievement.description }}</p>
                     </div>
                     {% endfor %}
                 </div>

@@ -328,13 +328,20 @@ def employer_profile(request):
     if request.method == 'POST':
         form = EmployerProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
-            print(form)
+  
             employer_profile = form.save(commit=False)
             employer_profile.user = request.user
 
-            # Handle achievements input
-            achievements_data = request.POST.getlist('achievements[]')
-            employer_profile.achievements = achievements_data if achievements_data else []
+           # Parse achievements data from JSON
+            achievements_json = request.POST.get('achievements', '[]')
+            print("Achievements JSON:", achievements_json)
+            try:
+                achievements_data = json.loads(achievements_json)
+                employer_profile.achievements = achievements_data
+            except json.JSONDecodeError:
+                employer_profile.achievements = []
+            
+            print("Achievements:", employer_profile.achievements)
 
             # employer_profile.company_url=request.POST.get("")
 
@@ -356,6 +363,29 @@ def employer_profile(request):
         form = EmployerProfileForm(instance=profile)
 
     return render(request, 'Employeer-Profile-Editing.html', {'form': form, 'profile': profile})
+
+
+@login_required
+def employer_prof(request):
+    if request.user.user_type != 'employer':
+        return redirect('login')
+    
+    try:
+        profile = request.user.employer_profile
+        # Get all opportunities posted by this employer
+        emprof = EmployerProfile.objects.all()
+        opportunities = Opportunity.objects.filter(employer=profile)
+    except EmployerProfile.DoesNotExist:
+        profile = None
+        opportunities = []
+        emprof = None
+    
+    context = {
+        'profile': profile,
+        'emprof': emprof,
+        'opportunities': opportunities,
+    }
+    return render(request, 'Profile-Employer.html', context)
 
 
 from .models import Category

@@ -38,6 +38,7 @@ urlpatterns = [
     # Employer URLs
     path('employer/home/', views.employer_home, name='employer_home'),
     path('employer/profile/', views.employer_profile, name='employer_profile'),
+    path('employer/prof/', views.employer_prof, name='employer_prof'),
     path('employer/job-posting/', views.job_posting, name='job_posting'),
     path('opportunity_apply/<int:pk>/', views.opportunity_apply, name='opportunity_apply'),
 

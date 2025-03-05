@@ -125,38 +125,97 @@
                   </div>
                 </div>
           
-                <!-- Company Achievements -->
-                <div class="bg-gray-50 p-6 rounded-xl">
-                  <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-xl font-semibold">Company Achievements</h2>
-                    <button
-                      type="button"
-                      id="add-achievement"
-                      class="px-4 py-2 border-2 border-blue-600 text-blue-600 rounded-full hover:bg-blue-600 hover:text-white transition-all duration-300 flex items-center gap-2">
-                      <span class="material-symbols-outlined">add</span>Add Achievement
-                    </button>
-                  </div>
-                  <div id="achievements-container" class="space-y-4">
-                    {% for achievement in profile.achievements %}
-                    <div class="flex items-center gap-4 p-4 border-2 rounded-lg group hover:border-blue-200 transition-all">
-                        <input
-                            type="text"
-                            name="achievements[]"
-                            value="{{ achievement }}"
-                            class="flex-1 px-4 py-2 border-2 rounded-lg"
-                            required
-                        />
-                        <button
-                            type="button"
-                            class="text-red-500 opacity-0 group-hover:opacity-100 transition-all remove-achievement">
-                            <span class="material-symbols-outlined">delete</span>
-                        </button>
-                    </div>
-                    {% endfor %}
-                </div>
-                     
-                </div>
-              </div>
+<!-- Company Achievements -->
+<div class="bg-gray-50 p-6 rounded-xl">
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="text-xl font-semibold">Company Achievements</h2>
+    <button
+      type="button"
+      id="add-achievement"
+      class="px-4 py-2 border-2 border-blue-600 text-blue-600 rounded-full hover:bg-blue-600 hover:text-white transition-all duration-300 flex items-center gap-2">
+      <span class="material-symbols-outlined">add</span>Add Achievement
+    </button>
+  </div>
+  <div id="achievements-container" class="space-y-4">
+    {% for achievement in profile.achievements %}
+    <div class="flex flex-col gap-2 p-4 border-2 rounded-lg group hover:border-blue-200 transition-all">
+      <input
+        type="text"
+        name="achievements[][name]"
+        value="{{ achievement.name }}"
+        placeholder="Achievement Name"
+        class="flex-1 px-4 py-2 border-2 rounded-lg"
+        required
+      />
+      <textarea
+        name="achievements[][description]"
+        placeholder="Achievement Description"
+        class="flex-1 px-4 py-2 border-2 rounded-lg"
+        required
+      >{{ achievement.description }}</textarea>
+      <button
+        type="button"
+        class="text-red-500 opacity-0 group-hover:opacity-100 transition-all remove-achievement">
+        <span class="material-symbols-outlined">delete</span>
+      </button>
+    </div>
+    {% endfor %}
+  </div>
+  <input type="hidden" name="achievements" />
+</div>
+</div>
+<script>
+  // Add new achievement dynamically
+document.getElementById('add-achievement').addEventListener('click', () => {
+  const container = document.getElementById('achievements-container');
+  const achievementTemplate = `
+    <div class="flex flex-col gap-2 p-4 border-2 rounded-lg group hover:border-blue-200 transition-all">
+      <input
+        type="text"
+        name="achievements[][name]"
+        placeholder="Achievement Name"
+        class="flex-1 px-4 py-2 border-2 rounded-lg"
+        required
+      />
+      <textarea
+        name="achievements[][description]"
+        placeholder="Achievement Description"
+        class="flex-1 px-4 py-2 border-2 rounded-lg"
+        required
+      ></textarea>
+      <button
+        type="button"
+        class="text-red-500 opacity-0 group-hover:opacity-100 transition-all remove-achievement">
+        <span class="material-symbols-outlined">delete</span>
+      </button>
+    </div>`;
+  container.insertAdjacentHTML('beforeend', achievementTemplate);
+});
+
+// Remove achievement dynamically
+document.addEventListener('click', (e) => {
+  if (e.target.classList.contains('remove-achievement') || e.target.closest('.remove-achievement')) {
+    e.target.closest('div').remove();
+  }
+});
+
+// Serialize achievements into JSON before submitting the form
+document.querySelector('form').addEventListener('submit', (e) => {
+  const achievements = [];
+  document.querySelectorAll('#achievements-container > div').forEach((div) => {
+    const name = div.querySelector('input[name="achievements[][name]"]').value;
+    const description = div.querySelector('textarea[name="achievements[][description]"]').value;
+    if (name && description) {
+      achievements.push({ name, description });
+    }
+  });
+
+  // Serialize achievements into a hidden input field
+  const achievementsInput = document.querySelector('input[name="achievements"]');
+  achievementsInput.value = JSON.stringify(achievements);
+});
+
+</script>
           
               <!-- Sidebar -->
 <div class="space-y-6">
@@ -248,39 +307,6 @@
         </div>
     </div>
 
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const container = document.getElementById("achievements-container");
-        const addButton = document.getElementById("add-achievement");
     
-        addButton.addEventListener("click", () => {
-            const newDiv = document.createElement("div");
-            newDiv.className =
-                "flex items-center gap-4 p-4 border-2 rounded-lg group hover:border-blue-200 transition-all";
-            newDiv.innerHTML = `
-                <input
-                    type="text"
-                    name="achievements[]"
-                    class="flex-1 px-4 py-2 border-2 rounded-lg"
-                    placeholder="New Achievement"
-                    required
-                />
-                <button
-                    type="button"
-                    class="text-red-500 opacity-0 group-hover:opacity-100 transition-all remove-achievement">
-                    <span class="material-symbols-outlined">delete</span>
-                </button>
-            `;
-            container.appendChild(newDiv);
-        });
-    
-        container.addEventListener("click", (e) => {
-            if (e.target.closest(".remove-achievement")) {
-                e.target.closest(".remove-achievement").parentElement.remove();
-            }
-        });
-    });
-    
-    </script>
 </body>
 </html>
