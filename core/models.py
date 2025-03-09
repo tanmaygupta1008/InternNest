@@ -345,6 +345,7 @@ class JobApplication(models.Model):
     applied_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     resume_url = models.URLField(blank=True, null=True)
+    pdf_file = models.FileField(upload_to='',blank=True)  # Directory to save PDF files
     cover_letter = models.TextField(blank=True, null=True)
 
     def save(self, *args, **kwargs):

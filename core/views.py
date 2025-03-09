@@ -256,13 +256,17 @@ def candidate_prof(request):
         "total_applications": JobApplication.objects.filter(candidate=candidate_profile).count(),
         "under_review": JobApplication.objects.filter(candidate=candidate_profile, status="Under_Review").count(),
         "shortlisted": JobApplication.objects.filter(candidate=candidate_profile, status="Shortlisted").count(),
+        "hired": JobApplication.objects.filter(candidate=candidate_profile, status="Hired").count(),
+        "rejected": JobApplication.objects.filter(candidate=candidate_profile, status="Rejected").count(),
+        "applied": JobApplication.objects.filter(candidate=candidate_profile, status="Applied").count(),
     }
-    recent_applications = JobApplication.objects.filter(candidate=candidate_profile).order_by('-applied_at')[:5]
+    recent_applications = JobApplication.objects.filter(candidate=candidate_profile)
 
     return render(request, 'candidate_prof.html', {
         "application_status": application_status,
         "recent_applications": recent_applications,
-        'candidate_prof': candidate_prof
+        'candidate_prof': candidate_prof,
+
     })
     
 
@@ -428,12 +432,15 @@ def opportunity_apply(request, pk):
     if request.method == 'POST':
         candidate_profile = get_object_or_404(CandidateProfile, user=request.user)
         resume_url = request.POST.get('resume_url')
+        pdf_file = request.FILES.get('pdf_file')
+        print("PDF file:", pdf_file)
         cover_letter = request.POST.get('cover_letter')
 
         # Create the application
         JobApplication.objects.create(
             opportunity=opportunity,
             candidate=candidate_profile,
+            pdf_file=pdf_file,
             resume_url=resume_url,
             cover_letter=cover_letter,
         )
@@ -471,26 +478,7 @@ def view_employer_profile(request, employer_id):
     employer = get_object_or_404(EmployerProfile, id=employer_id)
     return render(request, 'view_employer_profile.html', {'employer': employer})
 
-# @login_required
-# def post_job(request):
-#     if request.method == "POST":
-#         form = JobForm(request.POST)
-#         if form.is_valid():
-#             job = form.save(commit=False)
-#             job.posted_by = request.user
-#             job.save()
-            
-#             # Create a notification
-#             Notification.objects.create(
-#                 job=job,
-#                 message=f"New job posted: {job.title}"
-#             )
 
-#             return redirect('job_list')  # Redirect to job listing
-#     else:
-#         form = JobForm()
-    
-    # return render(request, 'post_a_job.html', {'form': form})
 
 @login_required  # Ensure the user is logged in
 def dashboard(request):
