@@ -294,21 +294,26 @@ def job_seeking(request):
 #     return render(request, 'employer_home.html', {'opportunities': opportunities})
 @login_required
 def employer_home(request):
+    # Ensure only employers can access this view
     if request.user.user_type != 'employer':
         return redirect('login')
-    
+
     try:
+        # Fetch the employer's profile
         profile = request.user.employer_profile
         opportunities = Opportunity.objects.filter(employer=profile)
-        counters = profile.application_counter  # Fetch the counters for this employer
+
+        # Fetch application counters if they exist
+        counters = getattr(profile, 'application_counter', None)
     except EmployerProfile.DoesNotExist:
+        # Handle the case where the employer profile does not exist
         profile = None
         opportunities = []
-        counters = None  # No counters if no profile exists
-    
+        counters = None
+
     return render(request, 'Emplyer-home.html', {
         'opportunities': opportunities,
-        'counters': counters
+        'counters': counters,
     })
 
 
